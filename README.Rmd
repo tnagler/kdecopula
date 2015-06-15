@@ -1,0 +1,9 @@
+# kdecopula
+
+The package provides fast implementations of kernel smoothing techniques for bivariate copula densities, in particular density estimation and resampling.
+
+
+To install:
+
+* the latest development version: `install_github("tnagler/kdecopula")`
+

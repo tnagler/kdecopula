@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+cran-comments.md
+.Rprofile
+^README\.Rmd$
+^README-.*\.png$

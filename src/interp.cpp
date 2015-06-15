@@ -1,0 +1,198 @@
+#include <RcppArmadillo.h>
+#include <interp.h>
+using namespace Rcpp;
+
+
+//// evaluate a cubic polynomial with given coefficents
+double cubic_poly(double x, NumericVector a) {
+    double x2 = x*x;
+    double x3 = x2*x;
+    return a[0] + a[1]*x + a[2]*x2 + a[3]*x3;
+}
+
+//// indefinite integral of cubic polynomial
+double cubic_indef_integral(double x, NumericVector a) {
+    double x2 = x*x;
+    double x3 = x2*x;
+    double x4 = x3*x;
+    return a[0]*x + a[1]/2.0*x2 + a[2]/3.0*x3 + a[3]/4.0*x4;
+}
+
+//// integral of cubic polynomial from lowr to upr
+double cubic_integral(double lowr, double upr, NumericVector a) {
+    return cubic_indef_integral(upr, a) - cubic_indef_integral(lowr, a);
+}
+
+//// numerically invert a cubic integral (with 0 as lower bound)
+// -> maximum of 50 search iterations
+double inv_cubic_integral(const double q, NumericVector a) {
+    double x = fabs(q);
+    double qtest, tmpint, sign;
+    for (int i = 0; i < 500; ++i) {
+        tmpint = cubic_integral(0.0, x, a);
+        if (tmpint > 0) sign = 1;
+        else sign = -1;
+        qtest = fabs(tmpint) - q;
+        if (fabs(qtest) < 1e-10) break;
+        x += - sign*qtest/cubic_poly(x, a);
+    }
+    return x;
+}
+
+//// calculate coefficients for cubic splines (input must have length 4)
+NumericVector coef(NumericVector vals, NumericVector grid) {
+    NumericVector a(4);
+    
+    double dt0 = grid[1] - grid[0];
+    double dt1 = grid[2] - grid[1];
+    double dt2 = grid[3] - grid[2];
+    
+    /* check for repeated points (important for boundaries) */
+    if (dt1 < 1e-4) dt1 = 1.0;
+    if (dt0 < 1e-4) dt0 = dt1;
+    if (dt2 < 1e-4) dt2 = dt1;
+    
+    // compute tangents when parameterized in [t1,t2]
+    double dx1 = (vals[1] - vals[0]) / dt0 - (vals[2] - vals[0]) / (dt0 + dt1) + (vals[2] - vals[1]) / dt1;
+    double dx2 = (vals[2] - vals[1]) / dt1 - (vals[3] - vals[1]) / (dt1 + dt2) + (vals[3] - vals[2]) / dt2;
+    
+    // rescale tangents for parametrization in [0,1]
+    dx1 *= dt1;
+    dx2 *= dt1;
+    
+    // compute coefficents
+    a[0] = vals[1];
+    a[1] = dx1;
+    a[2] = -3*vals[1] + 3*vals[2] - 2*dx1 - dx2;
+    a[3] = 2*vals[1] - 2*vals[2] + dx1 + dx2;
+    
+    return a;
+} 
+
+//// interpolate in one dimension (inputs must have length 4)
+double interp_on_grid(double x, NumericVector vals, NumericVector grid) {
+    NumericVector a = coef(vals, grid);
+    return cubic_poly(fmax((x - grid[1]),0)/(grid[2] - grid[1]), a);
+}
+
+//// interpolate in two dimensions
+// [[Rcpp::export]]
+NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid) {
+    int N = x.nrow();
+    int m = grid.size();
+    NumericVector y(4), tmpvals(4), tmpgrid(4), out(N);
+    int i = 0;
+    int j = 0;
+    
+    for (int n = 0; n < N; ++n) {
+        // find cell
+        for (int k = 1; k < (m-1); ++k) {
+            if((x(n, 0) >= grid[k])) i = k;
+            if((x(n, 1) >= grid[k])) j = k;
+        }    
+        
+        // construct grid for first direction
+        tmpgrid = NumericVector::create(grid[std::max(i-1, 0)],
+        grid[i],
+        grid[i+1],
+        grid[std::min(i+2, m-1)]);
+        
+        // interpolate in one direction (four times)
+        for(int s = 0; s < 4; ++s) {
+            tmpvals = NumericVector::create(vals(std::max(i-1, 0), j-1+s),
+            vals(i,   j-1+s),
+            vals(i+1, j-1+s),
+            vals(std::min(i+2, m-1), j-1+s));
+            y[s] = fmax(interp_on_grid(x(n, 0), tmpvals, tmpgrid), 0.0);
+        }
+        
+        // use these four points to interpolate in the remaining direction
+        tmpgrid = NumericVector::create(grid[std::max(j-1, 0)],
+        grid[j],
+        grid[j+1],
+        grid[std::min(j+2, m-1)]);
+        out[n] = fmax(interp_on_grid(x(n, 1), y, tmpgrid), 1e-30);
+    }
+    
+    return out;
+}
+
+// subset array in C++
+IntegerVector get(IntegerMatrix ind, IntegerVector dims) {
+    int ndims = dims.size();
+    int m = dims[0];
+    int N = ind.nrow();
+    IntegerVector tmpi(ndims);
+    IntegerVector out(N);
+    
+    // calcualte correct index for vector instead of array
+    for (int n = 0; n < N; ++n) {
+        for (int i = 0; i < ndims; ++i) {
+            tmpi[i] = ind(n, i) * pow(m, i);
+        }
+        out[n] = sum(tmpi);
+    }
+    
+    return out;
+} 
+
+//// interpolate on an array with more than two dimensions
+// [[Rcpp::export]]
+NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, IntegerMatrix helpind) {
+    int d = x.ncol();
+    int N = x.nrow();
+    int m = grid.size();
+    IntegerVector dims = vals.attr("dim");
+    NumericVector y(4), tmpvals(4), tmpgrid(4), out(N);
+    IntegerMatrix tmpi(4, d); 
+    
+    IntegerVector i = rep(0, d);
+    for (int n = 0; n < N; ++n) { 
+        // find cell
+        for (int k = 2; k < (m-1); ++k) {
+            for (int j = 0; j < d; ++j) {
+                if ((x(n, j) >= grid[k]))
+                i[j] = k;
+            }
+        } 
+        
+        // store grid for first  direction
+        NumericVector newvals(helpind.nrow()/4);
+        tmpgrid = NumericVector::create(grid[std::max(i[0]-1, 0)],
+        grid[i[0]],
+        grid[i[0]+1],
+        grid[std::min(i[0]+2, m-1)]); 
+        // get values and interpolate
+        for (int p = 0; p < helpind.nrow()/4; ++p) {
+            IntegerMatrix tmpi(4, d);
+            for (int kk = 0; kk < 4; ++kk) {
+                for (int jj = 0; jj < d; ++jj){
+                    tmpi(kk, jj) = std::min(std::max(i[jj] + helpind(p*4 + kk, jj), 0), m-1);
+                }        
+            }   
+            tmpvals = vals[get(tmpi, dims)];
+            newvals[p] = fmax(interp_on_grid(x(n, 0), tmpvals, tmpgrid), 0.0);
+        }
+        
+        // do the same for remain directions
+        for (int j = 1; j < d; ++j){
+            tmpgrid = NumericVector::create(grid[std::max(i[j]-1, 0)],
+            grid[i[j]],
+            grid[i[j]+1],
+            grid[std::min(i[j]+2, m-1)]);
+            for (int p = 0; p < helpind.nrow()/pow(4, j + 1); ++p) {
+                tmpvals = NumericVector::create(newvals[p*4],
+                newvals[p*4 + 1],
+                newvals[p*4 + 2],
+                newvals[p*4 + 3]);
+                newvals[p] = fmax(interp_on_grid(x(n, j), tmpvals, tmpgrid), 0.0);
+            }
+        }
+        
+        
+        out[n] = newvals[0];
+    } 
+    
+    return out;
+}
+

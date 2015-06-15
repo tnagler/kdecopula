@@ -1,0 +1,102 @@
+\name{kdecop}
+\alias{kdecop}
+\alias{dkdecop}
+\alias{pkdecop}
+\alias{rkdecop}
+
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Bivariate kernel copula density estimation
+}
+\description{
+Based on samples from a bivariate copula, the copula density is estimated. The user can choose between different methods. If no bandwidth is provided by the user, it will be set by a method-specific automatic selection procedure.
+}
+\usage{
+kdecop(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = FALSE) 
+dkdecop(u, obj, stable = FALSE) 
+pkdecop(u, obj)
+rkdecop(n, obj)
+}
+\arguments{
+  \item{udata}{\code{nx2} matrix of copula data.}
+  
+  \item{bw}{
+    bandwidth specification; if missing, \code{bw} is selected automatically; otherwise, a positive real number for methods \code{"MR"} and  \code{"beta"}, a \eqn{2x2} matrix for method \code{"T"}, or a a list \code{B = <your.B>, alpha = <your.alpha>} containing the \eqn{2x2} rotation matrix and the nearest-neighbor fraction alpha.
+  }
+  \item{mult}{
+    bandwidth multiplier, has to be positive; the bandwidth used for estimation is \code{bw*mult}.
+  }
+  \item{method}{
+    \code{"MR"}: mirror-reflection estimator, \cr
+    \code{"beta"}: beta kernel estimator, \cr
+    \code{"T"}: transformation estimator with standard bivariate kernel estimation, \cr
+    \code{"TLL1"}: transformation estimator with log-linear local likelihood estimation and nearest-neighbor bandwidths, \cr
+    \code{"TLL2"}: transformation estimator with log-quadradtic local likelihood estimation and nearest-neighbor bandwidths.
+  }
+  \item{knots}{integer; number of knots in each dimension for the spline approximation; defaults to \code{50}.}
+  
+  \item{renorm.iter}{integer; number of iterations for the renormalization procedure (see \emph{Details}).}
+    
+  \item{info}{logical; if \code{TRUE}, additional information about the estimate will be gathered (see \emph{Value}).  }
+  \item{u}{\code{mx2} matrix of evaluation points.}
+  \item{obj}{\code{kdecop} object.}
+  \item{stable}{logical; option for stabilizing the estimator: the estimated density is cut off at \eqn{50}.}
+  \item{n}{number of observations.}
+}
+
+\details{
+Details on the estimation methods and bandwidth selection can be found in Geenens et al. (2014) for methods \code{TLL1/2} and Nagler (2014) for other methods. We use a Gaussian product kernel function for all methods except the beta kernel estimator.\cr \cr
+
+Kernel estimates are usually no proper copula densities. In particular, the estimated marginal densities are not uniform. We mitigate this issue bei implementing a renormalization procedure. The number of iterations of the renormalization algorithm can be specified with the \code{renorm.iter} argument. Typically, a very small number of iterations is sufficient.
+}
+
+\value{
+The function \code{\link[kdecopula:kdecop]{kdecop}} returns an object of class \code{kdecopula} that contains all information necessary for evaluation of the estimator. If no bandwidth was provided in the function call, the automatically selected value can be found in the variable \code{object$bw}. If \code{info=TRUE}, also the following will be available under \code{object$info}:
+\item{likvalues}{Estimator evaluated in sample points}
+\item{loglik}{Log likelihood}
+\item{effp}{Effective number of parameters}
+\item{AIC}{Akaike information criterion}
+\item{cAIC}{Bias-corrected version of Akaike information criterion}
+\item{BIC}{Bayesian information criterion.}
+\cr 
+The density estimate can be evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot options are provided by
+\code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.
+}
+\references{
+Geenens, G., Charpentier, A., and Paindaveine, D. (2014). Probit transformation
+for nonparametric kernel estimation of the copula density. arXiv:1404.4414
+[stat.ME]. \cr
+\cr
+Nagler, T. (2014). "Kernel Methods for Vine Copula Estimation", Master's Thesis, Technische Universitaet Muenchen, \url{https://mediatum.ub.tum.de/node?id=1231221} \cr
+}
+
+\author{
+Thomas Nagler
+}
+
+\seealso{
+\code{\link[kdecopula:kdecopula-package]{kdecopula-package}}, 
+\code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}
+}
+
+\examples{
+## load data and transform with empirical cdf
+data(wdbc)
+udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
+
+## estimation of copula density of variables 5 and 6
+dens.est <- kdecop(udat[, 5:6])
+plot(dens.est) 
+
+## evaluate density estimate at (u1,u2)=(0.123,0.321)
+dkdecop(c(0.123, 0.321), dens.est) 
+
+## evaluate cdf estimate at (u1,u2)=(0.123,0.321)
+pkdecop(c(0.123, 0.321), dens.est) 
+
+## simulate 500 samples from density estimate
+rkdecop(500, dens.est)
+}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{Copula density estimation}

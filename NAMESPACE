@@ -1,0 +1,11 @@
+useDynLib(kdecopula)
+import(lattice,
+       cubature,
+       locfit,
+       Rcpp,
+       VineCopula)
+export(kdecop,
+       dkdecop,
+       pkdecop,
+       rkdecop)
+S3method(plot, kdecopula)
