@@ -12,8 +12,12 @@ The package provides fast implementations of kernel smoothing techniques for biv
 Package: \tab kdecopula\cr
 Type: \tab Package\cr
 Version: \tab 0.0.1\cr
-Date: \tab 2015-06-01\cr
-License: \tab GPL-3
+Date: \tab 2015-06-15\cr
+License: \tab GPL-3\cr
+Maintainer: \tab Thomas Nagler <thomas.nagler@tum.de>\cr
+Depends: \tab R (>= 3.0.0)\cr
+Imports: \tab lattice, cubature, locfit, Rcpp (>= 0.11.2), VineCopula (>= 1.2)\cr
+LinkingTo: \tab Rcpp, RcppArmadillo\cr
 }
 The function \code{\link{kdecop}} can be used to estimate a copula density with a number of popular kernel estimators. The density estimate can be evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot options are provided by
 \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.

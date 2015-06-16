@@ -1,4 +1,6 @@
 # Sample .travis.yml for R projects
+apt_packages:
+    - libgsl0ldbl
 
 language: r
 warnings_are_errors: true
