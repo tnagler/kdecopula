@@ -11,7 +11,7 @@ The package provides fast implementations of kernel smoothing techniques for biv
 \tabular{ll}{
 Package: \tab kdecopula\cr
 Type: \tab Package\cr
-Version: \tab 0.0.1\cr
+Version: \tab 0.0.2\cr
 Date: \tab 2015-06-16\cr
 License: \tab GPL-3
 }
