@@ -9,10 +9,11 @@ There was 1 NOTE:
 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Thomas Nagler <thomas.nagler@tum.de>'
-New submission
+
+Days since last update: 0
 
 
-  This is the first submission of the packages.
+  Fixed C++ issues on Prof. Ripleys request.
 
 ## Downstream dependencies
 No downstream dependencies yet.
