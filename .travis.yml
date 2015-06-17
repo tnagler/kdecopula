@@ -9,6 +9,7 @@ apt_packages:
     - libgsl0-dbg
     - libgsl0-dev
     - libgsl0ldbl
+    - qpdf
 
 env:
  global:
