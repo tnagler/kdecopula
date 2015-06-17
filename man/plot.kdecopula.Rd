@@ -16,13 +16,12 @@ Produces contour or perspective plots for a \code{kdecopula} object.
 \code{kdecopula} object.
 }
 \item{type}{
-plot type; either \code{"contour"}, \code{"surface"} or \code{"lambda"} (partial matching is activated); the latter is only implemented for a few families (c.f. \code{\link{BiCopLambda}}).
+plot type; either \code{"contour"} or \code{"surface"} (partial matching is activated) for a contour or perspective/surface plot respectively.
 }
-  \item{margins}{
-only relevant for types \code{"contour"} and \code{"surface"}; either \code{"unif"} for the original copula density or \code{"norm"} for the transformed density with standard normal margins (partial matching is activated). Default is \code{"norm"} for \code{type = "contour"}, and \code{"unif"} for \code{type = "surface"}.
+  \item{margins}{ either \code{"unif"} for the original copula density or \code{"norm"} for the transformed density with standard normal margins (partial matching is activated). Default is \code{"norm"} for \code{type = "contour"}, and \code{"unif"} for \code{type = "surface"}.
 } 
   \item{size}{
-integer; only relevant for types \code{"contour"} and \code{"surface"}; the plot is based on values on a \eqn{size x size} grid; default is 100 for \code{type = "contour"}, and 25 for \code{type = "surface"}.
+integer; the plot is based on values on a \eqn{size x size} grid; default is 100 for \code{type = "contour"}, and 25 for \code{type = "surface"}.
 }
   \item{\dots}{
 optional arguments passed to \code{\link{contour}} or \code{\link{wireframe}}.}
