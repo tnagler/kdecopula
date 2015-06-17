@@ -57,7 +57,7 @@ NumericVector vals, NumericVector grid, const NumericMatrix helpgrid, IntegerMat
         
         // recursively integrate over a sequence of m values
         for (int j = 0; j < uncond_len; ++j){
-            for (int p = 0; p < pow(m, uncond_len - j - 1); ++p) {
+            for (int p = 0; p < pow(static_cast<double>(m), uncond_len - j - 1); ++p) {
                 tmpvals = newvals[p*m + gridsq];
                 tmpvals1 = newvals1[p*m + gridsq];
                 newvals[p] = int_on_grid(uev(n, uncond_var[j]-1), tmpvals, grid);
@@ -117,7 +117,7 @@ NumericMatrix helpgrid, IntegerMatrix helpind) {
         newvals1 = clone(newvals); /* also compute integral to one for rescaling */
         // recursively integrate over a sequence of m values
         for (int j = 0; j < d; ++j){
-            for (int p = 0; p < pow(m, d - j - 1); ++p) {
+            for (int p = 0; p < pow(static_cast<double>(m), d - j - 1); ++p) {
                 tmpvals = newvals[p*m + gridsq];
                 tmpvals1 = newvals1[p*m + gridsq];
                 newvals[p] = int_on_grid(uev(n, j), tmpvals, grid);
