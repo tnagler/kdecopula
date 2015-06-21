@@ -28,14 +28,16 @@ NumericVector eval_hfunc_2d(NumericMatrix uev, int cond_var, NumericMatrix vals,
         tmpvals = interp_2d(tmpgrid, vals, grid);
         tmpint = int_on_grid(upr, tmpvals, grid);
         int1 = int_on_grid(1.0, tmpvals, grid);
-        out[n] = fmin(fmax(tmpint/int1, 1e-10), 1-1e-10);
+        out[n] = tmpint/int1;
+        out[n] = fmax(out[n], 1e-10);
+        out[n] = fmin(out[n], 1-1e-10);
     }
     return out;
 }
 
 // [[Rcpp::export]]
 NumericVector eval_hfunc(NumericMatrix uev, IntegerVector cond_var, IntegerVector uncond_var,
-NumericVector vals, NumericVector grid, const NumericMatrix helpgrid, IntegerMatrix helpind) {
+NumericVector vals, NumericVector grid, NumericMatrix helpgrid, IntegerMatrix helpind) {
     int N = uev.nrow();
     int m = grid.size();
     IntegerVector gridsq = seq_len(m) - 1;
@@ -43,29 +45,31 @@ NumericVector vals, NumericVector grid, const NumericMatrix helpgrid, IntegerMat
     NumericVector tmpvals(m), tmpvals1(m);
     NumericMatrix uev1 = clone(uev);
     NumericVector out(N);
+    NumericMatrix hg_new(clone(helpgrid));
     int uncond_len = uncond_var.size();
     
     for (int n = 0; n < N; ++n) {
         // insert the conditioning values in helpgrid 
         for (int i = 0; i < cond_var.size(); ++i) {
-            helpgrid(_, cond_var[i]-1) = rep(uev(n, cond_var[i]-1), helpgrid.nrow());
+            hg_new(_, cond_var[i]-1) = rep(uev(n, cond_var[i]-1), helpgrid.nrow());
         }
         
         // interpolate on helpgrid
-        newvals = interp(helpgrid, vals, grid, helpind);
+        newvals = interp(hg_new, vals, grid, helpind);
         newvals1 = clone(newvals);
         
         // recursively integrate over a sequence of m values
         for (int j = 0; j < uncond_len; ++j){
-            for (int p = 0; p < pow(static_cast<double>(m), uncond_len - j - 1); ++p) {
+            for (int p = 0; p < pow((double)m, uncond_len - j - 1); ++p) {
                 tmpvals = newvals[p*m + gridsq];
                 tmpvals1 = newvals1[p*m + gridsq];
                 newvals[p] = int_on_grid(uev(n, uncond_var[j]-1), tmpvals, grid);
                 newvals1[p] = int_on_grid(1.0, tmpvals1, grid);
             }
         }
-        
-        out[n] = fmin(fmax(newvals[0]/newvals1[0], 1e-10), 1-1e-10);
+        out[n] = newvals[0]/newvals1[0];
+        out[n] = fmax(out[n], 1e-10);
+        out[n] = fmin(out[n], 1-1e-10);
     }
     return out;
 }
@@ -92,7 +96,9 @@ NumericVector inv_hfunc(NumericMatrix uev, int cond_var, NumericMatrix vals, Num
             tmpgrid(_, 1) = rep(uev(i, 1), m);
         }
         tmpvals = interp_2d(tmpgrid, vals, grid);
-        out[i] = fmin(fmax(inv_int_on_grid(upr, tmpvals, grid), 1e-10), 1-1e-10);
+        out[i] = inv_int_on_grid(upr, tmpvals, grid);
+        out[i] = fmax(out[i], 1e-10);
+        out[i] = fmin(out[i], 1-1e-10);
     }
     return out;
 }
@@ -117,7 +123,7 @@ NumericMatrix helpgrid, IntegerMatrix helpind) {
         newvals1 = clone(newvals); /* also compute integral to one for rescaling */
         // recursively integrate over a sequence of m values
         for (int j = 0; j < d; ++j){
-            for (int p = 0; p < pow(static_cast<double>(m), d - j - 1); ++p) {
+            for (int p = 0; p < pow((double)m, d - j - 1); ++p) {
                 tmpvals = newvals[p*m + gridsq];
                 tmpvals1 = newvals1[p*m + gridsq];
                 newvals[p] = int_on_grid(uev(n, j), tmpvals, grid);
@@ -125,7 +131,9 @@ NumericMatrix helpgrid, IntegerMatrix helpind) {
             }
         }
         
-        out[n] = fmin(fmax(newvals[0]/newvals1[0], 1e-10), 1-1e-10);
+        out[n] = newvals[0]/newvals1[0];
+        out[n] = fmax(out[n], 1e-10);
+        out[n] = fmin(out[n], 1-1e-10);
     }
     return out;
 }

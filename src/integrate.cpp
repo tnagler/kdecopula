@@ -6,7 +6,7 @@ using namespace Rcpp;
 
 //// integrate an interpolated function for values on a grid
 // [[Rcpp::export]]
-double int_on_grid(double upr, const NumericVector vals, const NumericVector grid) {
+double int_on_grid(double upr, NumericVector vals, NumericVector grid) {
     int m = grid.size();
     NumericVector tmpvals(4), tmpgrid(4), tmpa(4);
     double uprnew, newint;
@@ -57,7 +57,7 @@ double int_on_grid(double upr, const NumericVector vals, const NumericVector gri
 
 //// inverse of the integral of an interpolated function for values on a grid
 // [[Rcpp::export]]
-double inv_int_on_grid(double q, const NumericVector vals, const NumericVector grid) {
+double inv_int_on_grid(double q, NumericVector vals, NumericVector grid) {
     int m = grid.size();
     NumericVector tmpvals(4), tmpgrid(4), tmpa(4);
     double uprnew, newint, out, qtest;
@@ -74,7 +74,7 @@ double inv_int_on_grid(double q, const NumericVector vals, const NumericVector g
     
     // go up the grid and integrate as long as target value is above integral value
     if (q > qtest) {
-        for (int k = 1; k < m-1; ++k) {
+        for (int k = 1; k < m-2; ++k) {
             // select length 4 subvectors and calculate spline coefficients
             tmpvals = NumericVector::create(vals[k-1], vals[k], vals[k+1], vals[k+2]);
             tmpgrid = NumericVector::create(grid[k-1], grid[k], grid[k+1], grid[k+2]);

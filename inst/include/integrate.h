@@ -4,7 +4,7 @@
 #include <RcppArmadillo.h>
 #include <interp.h>
 
-double int_on_grid(double upr, const Rcpp::NumericVector vals, const Rcpp::NumericVector grid);
-double inv_int_on_grid(double q, const Rcpp::NumericVector vals, const Rcpp::NumericVector grid);
+double int_on_grid(double upr, Rcpp::NumericVector vals, Rcpp::NumericVector grid);
+double inv_int_on_grid(double q, Rcpp::NumericVector vals, Rcpp::NumericVector grid);
 
 #endif

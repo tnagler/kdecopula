@@ -25,7 +25,7 @@ double cubic_integral(double lowr, double upr, NumericVector a) {
 
 //// numerically invert a cubic integral (with 0 as lower bound)
 // -> maximum of 50 search iterations
-double inv_cubic_integral(const double q, NumericVector a) {
+double inv_cubic_integral(double q, NumericVector a) {
     double x = fabs(q);
     double qtest, tmpint, sign;
     for (int i = 0; i < 500; ++i) {
@@ -72,7 +72,8 @@ NumericVector coef(NumericVector vals, NumericVector grid) {
 //// interpolate in one dimension (inputs must have length 4)
 double interp_on_grid(double x, NumericVector vals, NumericVector grid) {
     NumericVector a = coef(vals, grid);
-    return cubic_poly(fmax((x - grid[1]),0)/(grid[2] - grid[1]), a);
+    double xev = fmax((x - grid[1]), 0)/(grid[2] - grid[1]);
+    return cubic_poly(xev, a);
 }
 
 //// interpolate in two dimensions
@@ -83,6 +84,7 @@ NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid)
     NumericVector y(4), tmpvals(4), tmpgrid(4), out(N);
     int i = 0;
     int j = 0;
+    int i0, i2;
     
     for (int n = 0; n < N; ++n) {
         // find cell
@@ -92,26 +94,32 @@ NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid)
         }    
         
         // construct grid for first direction
-        tmpgrid = NumericVector::create(grid[std::max(i-1, 0)],
-        grid[i],
-        grid[i+1],
-        grid[std::min(i+2, m-1)]);
+        i0 = std::max(i-1, 0);
+        i2 = std::min(i+2, m-1);
+        tmpgrid = NumericVector::create(grid[i0], grid[i], grid[i+1], grid[i2]);
         
         // interpolate in one direction (four times)
         for(int s = 0; s < 4; ++s) {
-            tmpvals = NumericVector::create(vals(std::max(i-1, 0), j-1+s),
-            vals(i,   j-1+s),
-            vals(i+1, j-1+s),
-            vals(std::min(i+2, m-1), j-1+s));
-            y[s] = fmax(interp_on_grid(x(n, 0), tmpvals, tmpgrid), 0.0);
+            i0 = std::max(i-1, 0);
+            i2 = std::min(i+2, m-1);
+            int jj = std::min(m-1, j-1+s);
+            jj = std::max(0, j-1+s);
+            
+            tmpvals = NumericVector::create(vals(i0, jj),
+            vals(i,   jj),
+            vals(i+1, jj),
+            vals(i2,  jj));
+            
+            y[s] = interp_on_grid(x(n, 0), tmpvals, tmpgrid);
+            y[s] = fmax(y[s], 0.0);
         }
         
-        // use these four points to interpolate in the remaining direction
-        tmpgrid = NumericVector::create(grid[std::max(j-1, 0)],
-        grid[j],
-        grid[j+1],
-        grid[std::min(j+2, m-1)]);
-        out[n] = fmax(interp_on_grid(x(n, 1), y, tmpgrid), 1e-30);
+        // use these four points to interpolate in the remaining direction#
+        i0 = std::max(j-1, 0);
+        i2 = std::min(j+2, m-1);
+        tmpgrid = NumericVector::create(grid[i0], grid[j], grid[j+1], grid[i2]);
+        out[n] = interp_on_grid(x(n, 1), y, tmpgrid);
+        out[n] = fmax(out[n], 1e-30);
     }
     
     return out;
@@ -128,7 +136,7 @@ IntegerVector get(IntegerMatrix ind, IntegerVector dims) {
     // calcualte correct index for vector instead of array
     for (int n = 0; n < N; ++n) {
         for (int i = 0; i < ndims; ++i) {
-            tmpi[i] = ind(n, i) * pow(m, i);
+            tmpi[i] = ind(n, i) * pow((double)m, i);
         }
         out[n] = sum(tmpi);
     }
@@ -145,6 +153,8 @@ NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, In
     IntegerVector dims = vals.attr("dim");
     NumericVector y(4), tmpvals(4), tmpgrid(4), out(N);
     IntegerMatrix tmpi(4, d); 
+    int i0, i2;
+    int ii;
     
     IntegerVector i = rep(0, d);
     for (int n = 0; n < N; ++n) { 
@@ -158,34 +168,37 @@ NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, In
         
         // store grid for first  direction
         NumericVector newvals(helpind.nrow()/4);
-        tmpgrid = NumericVector::create(grid[std::max(i[0]-1, 0)],
-        grid[i[0]],
-        grid[i[0]+1],
-        grid[std::min(i[0]+2, m-1)]); 
+        i0 = std::max(i[0]-1, 0);
+        i2 = std::min(i[0]+2, m-1);
+        tmpgrid = NumericVector::create(grid[i0], grid[i[0]], grid[i[0]+1], grid[i2]); 
         // get values and interpolate
         for (int p = 0; p < helpind.nrow()/4; ++p) {
             IntegerMatrix tmpi(4, d);
             for (int kk = 0; kk < 4; ++kk) {
                 for (int jj = 0; jj < d; ++jj){
-                    tmpi(kk, jj) = std::min(std::max(i[jj] + helpind(p*4 + kk, jj), 0), m-1);
+                    ii = i[jj] + helpind(p*4 + kk, jj);
+                    ii = std::max(ii, 0);
+                    ii = std::min(ii, m-1);
+                    tmpi(kk, jj) = ii;
                 }        
             }   
             tmpvals = vals[get(tmpi, dims)];
-            newvals[p] = fmax(interp_on_grid(x(n, 0), tmpvals, tmpgrid), 0.0);
+            newvals[p] = interp_on_grid(x(n, 0), tmpvals, tmpgrid);
+            newvals[p] = fmax(newvals[p], 0.0);
         }
         
         // do the same for remain directions
         for (int j = 1; j < d; ++j){
-            tmpgrid = NumericVector::create(grid[std::max(i[j]-1, 0)],
-            grid[i[j]],
-            grid[i[j]+1],
-            grid[std::min(i[j]+2, m-1)]);
-            for (int p = 0; p < helpind.nrow()/pow(4, j + 1); ++p) {
+            i0 = std::max(i[j]-1, 0);
+            i2 = std::min(i[j]+2, m-1);
+            tmpgrid = NumericVector::create(grid[i0], grid[i[j]], grid[i[j]+1], grid[i2]);
+            for (int p = 0; p < helpind.nrow()/pow(4.0, j + 1); ++p) {
                 tmpvals = NumericVector::create(newvals[p*4],
                 newvals[p*4 + 1],
                 newvals[p*4 + 2],
                 newvals[p*4 + 3]);
-                newvals[p] = fmax(interp_on_grid(x(n, j), tmpvals, tmpgrid), 0.0);
+                newvals[p] = interp_on_grid(x(n, j), tmpvals, tmpgrid);
+                newvals[p] = fmax(newvals[p], 0.0);
             }
         }
         

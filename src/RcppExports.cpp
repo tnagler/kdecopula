@@ -60,7 +60,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // eval_hfunc
-NumericVector eval_hfunc(NumericMatrix uev, IntegerVector cond_var, IntegerVector uncond_var, NumericVector vals, NumericVector grid, const NumericMatrix helpgrid, IntegerMatrix helpind);
+NumericVector eval_hfunc(NumericMatrix uev, IntegerVector cond_var, IntegerVector uncond_var, NumericVector vals, NumericVector grid, NumericMatrix helpgrid, IntegerMatrix helpind);
 RcppExport SEXP kdecopula_eval_hfunc(SEXP uevSEXP, SEXP cond_varSEXP, SEXP uncond_varSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpgridSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
@@ -70,7 +70,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< IntegerVector >::type uncond_var(uncond_varSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix >::type helpgrid(helpgridSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type helpgrid(helpgridSEXP);
     Rcpp::traits::input_parameter< IntegerMatrix >::type helpind(helpindSEXP);
     __result = Rcpp::wrap(eval_hfunc(uev, cond_var, uncond_var, vals, grid, helpgrid, helpind));
     return __result;
@@ -106,27 +106,27 @@ BEGIN_RCPP
 END_RCPP
 }
 // int_on_grid
-double int_on_grid(double upr, const NumericVector vals, const NumericVector grid);
+double int_on_grid(double upr, NumericVector vals, NumericVector grid);
 RcppExport SEXP kdecopula_int_on_grid(SEXP uprSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< double >::type upr(uprSEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
     __result = Rcpp::wrap(int_on_grid(upr, vals, grid));
     return __result;
 END_RCPP
 }
 // inv_int_on_grid
-double inv_int_on_grid(double q, const NumericVector vals, const NumericVector grid);
+double inv_int_on_grid(double q, NumericVector vals, NumericVector grid);
 RcppExport SEXP kdecopula_inv_int_on_grid(SEXP qSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< double >::type q(qSEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
     __result = Rcpp::wrap(inv_int_on_grid(q, vals, grid));
     return __result;
 END_RCPP

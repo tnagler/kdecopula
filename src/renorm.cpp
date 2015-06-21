@@ -16,7 +16,7 @@ NumericVector ren_subs(NumericVector vals, NumericVector grid, int d) {
     
     // recursively integrate over a sequence of m values
     for (int j = 0; j < d; ++j){
-        for (int p = 0; p < pow(m, d - j - 1); ++p) {
+        for (int p = 0; p < pow((double)m, d - j - 1); ++p) {
             tmpvals = newvals[p*m + gridsq];
             newvals[p] = int_on_grid(1.0, tmpvals, grid);
         }
@@ -60,20 +60,3 @@ NumericVector renorm(NumericVector x, NumericVector grid, int times, IntegerMatr
     }
     return M;
 }
-
-
-//NumericMatrix renorm_2d(NumericMatrix x, NumericVector grid, int times) {
-//    double m = x.nrow();
-//    const NumericMatrix xx(x);
-//    NumericMatrix M = clone(xx);
-//    
-//    for(int k = 0; k < times; ++k) {
-//        for (int i = 0; i < m; ++i) 
-//        M(i, _) = M(i, _)/int_on_grid(1.0, M(i, _), grid);
-//        for (int j = 0; j < m; ++j)
-//        M(_, j) = M(_, j)/int_on_grid(1.0, M(_, j), grid);
-//    }
-//    
-//    return M;
-//}
-
