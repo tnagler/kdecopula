@@ -125,11 +125,12 @@ dkdecop <- function(u, obj, stable = FALSE) {
     u <- as.matrix(u)
     if (ncol(u) == 1) 
         u <- matrix(u, 1L, nrow(u))
-    # adjust for flipping option of kdevine package
-    if (!is.null(obj$flip))
-        u <- u[, 2:1]
     
+    ## adjust for flipping option of kdevine package
     d <- ncol(u)
+    if (!is.null(obj$flip))
+        u <- matrix(u[, 2:1], nrow(u), d)
+    
     
     ## if independence copula is specified return 1
     if ("indep.copula" %in% class(obj))
