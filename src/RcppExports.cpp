@@ -231,17 +231,3 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// calc_errors
-NumericMatrix calc_errors(NumericVector x, NumericVector grid, int times, IntegerMatrix helpind);
-RcppExport SEXP kdecopula_calc_errors(SEXP xSEXP, SEXP gridSEXP, SEXP timesSEXP, SEXP helpindSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< int >::type times(timesSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type helpind(helpindSEXP);
-    __result = Rcpp::wrap(calc_errors(x, grid, times, helpind));
-    return __result;
-END_RCPP
-}

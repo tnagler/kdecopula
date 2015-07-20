@@ -4,6 +4,11 @@ import(lattice,
        locfit,
        Rcpp,
        VineCopula)
+importFrom("graphics", "contour")
+importFrom("grDevices", "colorRampPalette", "rgb")
+importFrom("stats", "cor", "cov", "dbeta", "dnorm", "optim", "pnorm", "predict", "qnorm", "runif")
+importFrom("utils", "modifyList")
+
 export(kdecop,
        dkdecop,
        pkdecop,
