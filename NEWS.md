@@ -1,6 +1,7 @@
-# kdecopula 0.0.1
+# kdecopula 0.0.3
 
 * fixed some memory issues in C++ code
+* adjust imports for R-3.3.0
 
 # kdecopula 0.0.2
 
