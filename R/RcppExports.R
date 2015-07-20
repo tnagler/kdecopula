@@ -69,3 +69,7 @@ renorm <- function(x, grid, times, helpind) {
     .Call('kdecopula_renorm', PACKAGE = 'kdecopula', x, grid, times, helpind)
 }
 
+calc_errors <- function(x, grid, times, helpind) {
+    .Call('kdecopula_calc_errors', PACKAGE = 'kdecopula', x, grid, times, helpind)
+}
+

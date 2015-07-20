@@ -60,3 +60,39 @@ NumericVector renorm(NumericVector x, NumericVector grid, int times, IntegerMatr
     }
     return M;
 }
+
+//// calculate errors for uniform margins
+NumericMatrix calc_errors(NumericVector x, NumericVector grid, int times, IntegerMatrix helpind) {
+    double m = grid.size();
+    IntegerVector dims = x.attr("dim");
+    int d = dims.size();
+    int mtd = pow(m, d-1);
+    NumericMatrix err(times, m);
+    
+    NumericVector M(x.size());
+    M = clone(x);
+    IntegerMatrix tmpind(mtd, d);
+    
+    for(int t = 0; t < times; ++t) {
+        for (int j = 0; j < d; ++j) {
+            for (int k = 0; k < m; ++k) {
+                // get indices for subsetting array M
+                int pl = 0;
+                for (int jj = 0; jj < d; ++jj) {
+                    if (jj == j) {
+                        tmpind(_, jj) = rep(k, mtd);
+                    } else { 
+                        tmpind(_, jj) = helpind(_, pl);
+                        ++pl; 
+                    }
+                }
+                if (j == 0) {
+                    err(t, k) = int_on_grid(1.0, M[get(tmpind, dims)], grid);
+                }
+                M[get(tmpind, dims)] = ren_subs(M[get(tmpind, dims)], grid, d-1);
+            }
+        }
+    }
+    return err;
+}
+
