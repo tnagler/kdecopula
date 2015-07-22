@@ -37,7 +37,7 @@ NumericVector renorm(NumericVector x, NumericVector grid, int times, IntegerMatr
     int d = dims.size();
     int mtd = pow(m, d-1);
     
-    NumericVector M(x.size());
+    NumericVector M(x.size()), vals;
     M = clone(x);
     IntegerMatrix tmpind(mtd, d);
     
@@ -54,7 +54,8 @@ NumericVector renorm(NumericVector x, NumericVector grid, int times, IntegerMatr
                         ++pl; 
                     }
                 }
-                M[get(tmpind, dims)] = ren_subs(M[get(tmpind, dims)], grid, d-1);
+                vals = M[get(tmpind, dims)];
+                M[get(tmpind, dims)] = ren_subs(vals, grid, d-1);
             }
         }
     }

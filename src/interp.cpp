@@ -103,7 +103,7 @@ NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid)
             i0 = std::max(i-1, 0);
             i2 = std::min(i+2, m-1);
             int jj = std::min(m-1, j-1+s);
-            jj = std::max(0, j-1+s);
+            jj = std::max(0, jj);
             
             tmpvals = NumericVector::create(vals(i0, jj),
             vals(i,   jj),
