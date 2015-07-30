@@ -6,5 +6,5 @@ The package provides fast implementations of kernel smoothing techniques for biv
 To install:
 
 * the stable release on CRAN: `install.pacakges("kdecopula")`
-* the latest development version: `install_github("tnagler/kdecopula")`
+* the latest development version: `devtools::install_github("tnagler/kdecopula")`
 
