@@ -127,7 +127,7 @@ bw_tll <- function(zdata, deg) {
         e <- suppressWarnings(try(lscv(lp(x, nn = alpha, deg = deg),
                                        kern = "gauss"),
                                   silent = TRUE))
-        if ("try-error" %in% class(e)) Inf else e[1]
+        if (inherits(e, "try-error")) Inf else e[1]
     }
     # optimization function
     opt <- function(i) {
