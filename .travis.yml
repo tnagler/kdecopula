@@ -2,10 +2,10 @@ language: c
 sudo: required
 
 before_install:
-  - apt-get gsl-bin
-  - apt-get libgsl0-dbg
-  - apt-get libgsl0-dev
-  - apt-get libgsl0ldbl
+  - apt-get install gsl-bin
+  - apt-get install libgsl0-dbg
+  - apt-get install libgsl0-dev
+  - apt-get install libgsl0ldbl
   - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
   - chmod 755 pkg-build.sh
   - ./pkg-build.sh bootstrap
