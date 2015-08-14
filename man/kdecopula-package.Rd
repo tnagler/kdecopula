@@ -5,14 +5,14 @@
 Kernel Smoothing for Bivariate Copula Densities
 }
 \description{
-The package provides fast implementations of kernel smoothing techniques for bivariate copula densities, in particular density estimation and resampling.
+This package provides fast implementations of kernel estimators for the copula density. Due to its several plotting options it is particularly useful for the exploratory analysis of dependece structures. It can be further used for accurate estimation of unusually shaped copula densities and resampling.
 }
 \details{
 \tabular{ll}{
 Package: \tab kdecopula\cr
 Type: \tab Package\cr
-Version: \tab 0.0.3\cr
-Date: \tab 2015-07-20\cr
+Version: \tab 0.0.4\cr
+Date: \tab 2015-08-14\cr
 License: \tab GPL-3
 }
 The function \code{\link{kdecop}} can be used to estimate a copula density with a number of popular kernel estimators. The density estimate can be evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot options are provided by
