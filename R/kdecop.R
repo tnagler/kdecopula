@@ -1,10 +1,10 @@
-kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = FALSE) { 
+kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = FALSE) {
     udata <- as.matrix(udata)
     n <- nrow(udata)
     d <- ncol(udata)
     
     ## sanity checks
-    if (n < 2) 
+    if (n < 2)
         stop("Number of observations has to be at least 2.")
     if (ncol(udata) < 2)
         stop("Dimension has to be at least 2.")
@@ -12,7 +12,7 @@ kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter
         stop("'udata' have to be in the interval [0,1].")
     if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2")))
         stop("method not implemented")
-    if (mult <= 0) 
+    if (mult <= 0)
         stop("'mult' has to be a positive number.")
     if (is.na(knots))
         knots <- 100/d
@@ -23,22 +23,22 @@ kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter
     stopifnot(is.logical(info))
     
     ## bandwidth selection and adjustment (with bandwidth checks)
-    if (missing(bw)) 
+    if (missing(bw))
         bw <- bw_select(udata, method)
     if (method %in% c("TLL1", "TLL2")) {
         if (is.null(bw$B) | is.null(bw$alpha))
-            stop("For methods 'TLL1/2', you have to provide a list 'bw = list(B = <your.B>,  alpha = <your.alpha>)' 
+            stop("For methods 'TLL1/2', you have to provide a list 'bw = list(B = <your.B>,  alpha = <your.alpha>)'
 where both parts of the bandwidth specification are provided via  'your.B', and 'your.alpha'.")
         if (any(c(diag(bw$B), bw$alpha) <= 0))
             stop("Bandwidths have to be positive.")
-        bw$alpha <- mult * bw$alpha  
+        bw$alpha <- mult * bw$alpha
     } else if (method %in% c("T")) {
         B <- as.matrix(bw)
-        if (nrow(B) == 1) 
+        if (nrow(B) == 1)
             bw <- diag(as.numeric(bw), d)
-        bw <- mult * bw 
+        bw <- mult * bw
         bw <- bw * sqrt(min((n^(-1/6))^2 / det(bw), 1))
-    } else if (method == "MR") { 
+    } else if (method == "MR") {
         bw <- min(bw * mult, 1)
     } else if (method == "beta") {
         bw <- bw * mult
@@ -47,13 +47,13 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     ## fit model for method TLL
     if (method %in% c("TLL1", "TLL2")) {
         zdata <-  qnorm(udata)
-        lfit <- my_locfit(zdata, 
-                          bw$B, 
+        lfit <- my_locfit(zdata,
+                          bw$B,
                           bw$alpha,
                           deg = as.numeric(substr(method, 4, 4)))
     } else {
         lfit <- NA
-    } 
+    }
     
     ## construct grid with k knots in dimension d
     pnts <- pnorm(seq(-3.25, 3.25, l = knots))
@@ -71,7 +71,7 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     
     ## rescale copula density to have uniform margins
     if (renorm.iter > 0) {
-        tmplst <- split(rep(seq.int(knots)-1, d-1), 
+        tmplst <- split(rep(seq.int(knots)-1, d-1),
                         ceiling(seq.int(knots*(d-1))/knots))
         helpind <- as.matrix(do.call(expand.grid, tmplst))
         vals <- renorm(vals, pnts, renorm.iter, helpind)
@@ -83,47 +83,42 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                 estimate = vals,
                 bw       = bw,
                 method   = method)
+    class(res) <- "kdecopula"
     
     if (info) {
         # likelihood
         likvalues <- dkdecop(udata, res)
-        loglik <- sum(log(likvalues))  
+        loglik <- sum(log(likvalues))
         # effective number of parameters
-        effp <- eff_num_par(udata, likvalues, bw, method, lfit) 
+        effp <- eff_num_par(udata, likvalues, bw, method, lfit)
         # information criteria
         AIC  <- - 2 * loglik + 2 * effp
-        cAIC <- AIC + (2 * effp * (effp + 1)) / (n - effp - 1)  
+        cAIC <- AIC + (2 * effp * (effp + 1)) / (n - effp - 1)
         BIC  <- - 2 * loglik + log(n) * effp
         
         ## store results
-        res <- list(udata    = udata,
-                    grid     = pnts,
-                    estimate = vals,
-                    bw       = bw,
-                    method   = method,
-                    info     = list(likvalues = likvalues,
-                                    loglik    = loglik,
-                                    effp      = effp ,
-                                    AIC       = AIC, 
-                                    cAIC      = cAIC,
-                                    BIC       = BIC))
+        res <- append(res, list(info = list(likvalues = likvalues,
+                                            loglik    = loglik,
+                                            effp      = effp ,
+                                            AIC       = AIC,
+                                            cAIC      = cAIC,
+                                            BIC       = BIC)))
     }
     
     ## return results
-    class(res) <- "kdecopula"
     res
 }
 
 ##### evaluate density of kdecopula object
 dkdecop <- function(u, obj, stable = FALSE) {
-    stopifnot(!missing(u))
     stopifnot(is.numeric(u))
-    stopifnot(!missing(obj))
+    stopifnot(all(u > 0 & u < 1))
+    stopifnot(inherits(obj, "kdecopula"))
     stopifnot(is.logical(stable))
     
     ## define appropriately shaped udata frame for vapply
     u <- as.matrix(u)
-    if (ncol(u) == 1) 
+    if (ncol(u) == 1)
         u <- matrix(u, 1L, nrow(u))
     
     ## adjust for flipping option of kdevine package
@@ -154,7 +149,7 @@ dkdecop <- function(u, obj, stable = FALSE) {
     }
     
     ## stabilize output
-    if (stable) 
+    if (stable)
         out <- pmin(out, 10^(1 + d/2))
     
     ## return results
@@ -163,9 +158,12 @@ dkdecop <- function(u, obj, stable = FALSE) {
 
 ##### evaluate h-function of kdecopula object
 hkdecop <- function(u, obj, cond.var) {
+    stopifnot(all(u > 0) & all(u < 1))
+    stopifnot(inherits(obj, "kdecopula"))
+    stopifnot(all(cond.var %in% c(1, 2)))
     ## define appropriately shaped u matrix
     u <- as.matrix(u)
-    if(ncol(u) == 1) 
+    if(ncol(u) == 1)
         u <- matrix(u, 1L, nrow(u))
     # adjust for flipping option of kdevine package
     if(!is.null(obj$flip)) {
@@ -190,8 +188,8 @@ hkdecop <- function(u, obj, cond.var) {
         tmplst <- split(rep(seq(-1, 2, 1), d), ceiling(seq.int(4*d)/4))
         helpind <- as.matrix(do.call(expand.grid, tmplst))
         tmplst <- lapply(1:d,
-                         prep_hfunc, 
-                         cond.var = cond.var, 
+                         prep_hfunc,
+                         cond.var = cond.var,
                          grid = obj$grid,
                          d = d)
         helpgrid <- as.matrix(do.call(expand.grid, tmplst))
@@ -206,7 +204,7 @@ hkdecop <- function(u, obj, cond.var) {
                           helpgrid,
                           helpind))
     }
-}    
+}
 
 ## function for preparing the list for constructing the helpgrid in hkdecop
 prep_hfunc <- function(i, cond.var, grid, d) {
@@ -219,9 +217,11 @@ prep_hfunc <- function(i, cond.var, grid, d) {
 
 ##### evaluate cdf of kdecopula object
 pkdecop <- function(u, obj) {
+    stopifnot(all(u > 0 & u < 1))
+    stopifnot(inherits(obj, "kdecopula"))
     ## define appropriately shaped u matrix
     u <- as.matrix(u)
-    if(ncol(u) == 1) 
+    if(ncol(u) == 1)
         u <- matrix(u, 1L, nrow(u))
     # adjust for flipping option of kdevine package
     if(!is.null(obj$flip)) {
@@ -247,18 +247,28 @@ pkdecop <- function(u, obj) {
              obj$grid,
              helpgrid,
              helpind)
-}  
+}
 
 ##### simulate from kdecopula object
-rkdecop <- function(n, obj) {
-    ## simulate independent uniform random variables
-    W <- cbind(runif(n), runif(n))
+rkdecop <- function(n, obj, quasi = FALSE) {
+    n <- round(n)
+    stopifnot(inherits(obj, "kdecopula"))
+    stopifnot(is.logical(quasi))
+    
+    if (!quasi) {
+        # simulate independent uniform random variables
+        W <- cbind(runif(n), runif(n))
+    } else {
+        # generate quasi random numbers
+        library(qrng)
+        w <- ghalton(n, d = 2)
+    }
     
     # if independence copula is specified, return W
     if("indep.copula" %in% class(obj))
         return(W)
     
-    ## invert h-function otherwise
+    # invert h-function otherwise
     U2 <- inv_hfunc(W,
                     1L,
                     obj$estimate,
@@ -271,12 +281,37 @@ rkdecop <- function(n, obj) {
 }
 
 
+##### inverse h-function
+hinvkdecop <- function(u, obj, cond.var) {
+    stopifnot(all(u > 0 & u < 1))
+    stopifnot(inherits(obj, "kdecopula"))
+    stopifnot(all(cond.var %in% c(1, 2)))
+    ## simulate independent uniform random variables
+    W <- u
+    
+    # if independence copula is specified, return W
+    if("indep.copula" %in% class(obj))
+        return(W)
+    
+    ## invert h-function otherwise
+    U2 <- inv_hfunc(W,
+                    cond.var,
+                    obj$estimate,
+                    obj$grid)
+    
+    ## return results
+    out <- cbind(W[, 1], U2)
+    colnames(out) <- NULL
+    out
+}
+
+
 
 ## plot kdecopula object
-plot.kdecopula <- function(x, type = "contour", margins, size, ...) {  
+plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
     if (length(dim(x$estimate)) > 2)
         stop("Plotting is only available for 2-dimensional densities.")
-
+    
     ## partial matching and sanity check for type
     stopifnot(class(type) == "character")
     tpnms <- c("contour", "surface")
@@ -293,7 +328,7 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
         stopifnot(class(margins) == "character")
         mgnms <- c("norm", "unif")
         margins <- mgnms[pmatch(margins, mgnms)]
-    } 
+    }
     
     ## choose size if missing and sanity check
     if (missing(size))
@@ -345,13 +380,13 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
         levels <- c(0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5)
         xlim <- ylim <- c(-3, 3)
         at <- seq(0, 1, l = 100)
-    } 
+    }
     
-    if (type == "contour") {        
+    if (type == "contour") {
         # set default parameters
-        pars <- list(x = points, 
+        pars <- list(x = points,
                      y = points,
-                     z = cop * adj, 
+                     z = cop * adj,
                      levels = levels,
                      xlim = xlim,
                      ylim = ylim,
@@ -374,7 +409,7 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
         # define colors
         TUMblue   <- rgb(0, 103/255, 198/255)
         TUMgreen  <- rgb(162/255, 173/255, 0)
-        TUMorange <- rgb(227/255, 114/255, 37/255) 
+        TUMorange <- rgb(227/255, 114/255, 37/255)
         
         # set default parameters
         pars <- list(x = c ~ u * v,
