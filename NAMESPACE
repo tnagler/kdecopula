@@ -2,6 +2,7 @@ useDynLib(kdecopula)
 import(lattice,
        cubature,
        locfit,
+       qrng,
        Rcpp,
        VineCopula)
 importFrom("graphics", "contour")

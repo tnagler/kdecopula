@@ -8,5 +8,5 @@ Maintainer: Thomas Nagler <thomas.nagler@tum.de>
 Description: Provides fast implementations of kernel smoothing techniques for bivariate copula densities, in particular density estimation and resampling.
 License: GPL-3
 Depends: R (>= 3.0.0)
-Imports: lattice, cubature, locfit, Rcpp (>= 0.11.2), VineCopula (>= 1.5), graphics, grDevices, stats, utils
+Imports: lattice, cubature, locfit, qrng, Rcpp (>= 0.11.2), VineCopula (>= 1.5), graphics, grDevices, stats, utils
 LinkingTo: Rcpp, RcppArmadillo
