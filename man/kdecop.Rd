@@ -15,7 +15,7 @@ Based on samples from a bivariate copula, the copula density is estimated. The u
 kdecop(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = FALSE) 
 dkdecop(u, obj, stable = FALSE) 
 pkdecop(u, obj)
-rkdecop(n, obj)
+rkdecop(n, obj, quasi = FALSE)
 }
 \arguments{
   \item{udata}{\code{nx2} matrix of copula data.}
@@ -41,7 +41,8 @@ rkdecop(n, obj)
   \item{u}{\code{mx2} matrix of evaluation points.}
   \item{obj}{\code{kdecop} object.}
   \item{stable}{logical; option for stabilizing the estimator: the estimated density is cut off at \eqn{50}.}
-  \item{n}{number of observations.}
+  \item{n}{integer; number of observations.}
+  \item{quasi}{logical; the default (\code{FALSE}) returns pseudo-random numbers, use \code{TRUE} for quasi-random numbers (generalized Halton, see \code{\link[qrng:ghalton]{ghalton}}).}
 }
 
 \details{
@@ -68,6 +69,8 @@ for nonparametric kernel estimation of the copula density. arXiv:1404.4414
 [stat.ME]. \cr
 \cr
 Nagler, T. (2014). "Kernel Methods for Vine Copula Estimation", Master's Thesis, Technische Universitaet Muenchen, \url{https://mediatum.ub.tum.de/node?id=1231221} \cr
+\cr
+Cambou, T., Hofert, M., Lemieux, C. (2015). "A primer on quasi-random numbers for copula models", arXiv:1508.03483
 }
 
 \author{
