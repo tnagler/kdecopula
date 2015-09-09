@@ -1,11 +1,12 @@
 # kdecopula
+[![Build Status](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula) [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/web/packages/kdecopula/index.html) 
 
 This package provides fast implementations of kernel estimators for the copula density. Due to its several plotting options it is particularly useful for the exploratory analysis of dependece structures. It can be further used for accurate estimation of unusually shaped copula densities and resampling.
 
 
 To install:
 
-* the stable release on CRAN: `install.pacakges("kdecopula")` [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/web/packages/kdecopula/index.html) 
+* the stable release on CRAN: `install.pacakges("kdecopula")` 
 * the latest development version: `devtools::install_github("tnagler/kdecopula")` 
-[![Build Status](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula)
+
 
