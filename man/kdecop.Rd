@@ -79,7 +79,8 @@ Thomas Nagler
 
 \seealso{
 \code{\link[kdecopula:kdecopula-package]{kdecopula-package}}, 
-\code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}
+\code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
+\code{\link[qrng:ghalton]{ghalton}}
 }
 
 \examples{
