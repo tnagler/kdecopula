@@ -216,27 +216,27 @@ eval_func <- function(method) {
 my_locfit <- function(zdata, B, alpha, deg) {
     ## construct grid (first u level, then transform to z level with B)
     d <- ncol(zdata)
-    m <- round(100/d)
-    tmplst <- split(rep(seq.int(m)/(m+1), d), ceiling(seq.int(m*d)/m))
-    gr   <- as.matrix(do.call(expand.grid, tmplst))
-    grQR <- qnorm(gr) %*% B
+#     m <- round(100/d)
+#     tmplst <- split(rep(seq.int(m)/(m+1), d), ceiling(seq.int(m*d)/m))
+#     gr   <- as.matrix(do.call(expand.grid, tmplst))
+#     grQR <- qnorm(gr) %*% B
     
     ## transform data
     qrs  <- zdata %*% B
     
     ## fit model
-    lims <- apply(grQR, 2L, range) * 1.8
+#     lims <- apply(grQR, 2L, range) * 1.8
     cl.lst <- split(as.vector(qrs), ceiling(seq.int(nrow(qrs)*d)/nrow(qrs)))
     cl.lst$nn <- alpha
     cl.lst$deg <- deg
     lf.lst <- list(~do.call(lp, cl.lst),
                    maxk = 1000,
                    kern = "gauss")
-    if (d == 2) {
-        lf.lst$ev <- lfgrid(mg = m, 
-                            ll = lims[1L, ], 
-                            ur = lims[2L, ]) 
-    }
+#     if (d == 2) {
+#         lf.lst$ev <- rbox(cut = 0.5,
+#                           ll = lims[1L, ], 
+#                           ur = lims[2L, ]) 
+#     }
     suppressWarnings(do.call(locfit, lf.lst))
 }
 
