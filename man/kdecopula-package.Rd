@@ -11,8 +11,8 @@ This package provides fast implementations of kernel estimators for the copula d
 \tabular{ll}{
 Package: \tab kdecopula\cr
 Type: \tab Package\cr
-Version: \tab 0.0.4\cr
-Date: \tab 2015-08-14\cr
+Version: \tab 0.1.0\cr
+Date: \tab 2015-09-10\cr
 License: \tab GPL-3
 }
 The function \code{\link{kdecop}} can be used to estimate a copula density with a number of popular kernel estimators. The density estimate can be evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot options are provided by
