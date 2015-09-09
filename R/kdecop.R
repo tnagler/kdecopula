@@ -260,7 +260,6 @@ rkdecop <- function(n, obj, quasi = FALSE) {
         W <- cbind(runif(n), runif(n))
     } else {
         # generate quasi random numbers
-        requireNamespace(qrng)
         w <- ghalton(n, d = 2)
     }
     
