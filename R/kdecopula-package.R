@@ -33,7 +33,7 @@
 #' \cr \cr 
 #' Nagler, T. (2014).
 #' Kernel Methods for Vine Copula Estimation.
-#' Master's Thesis, Technische Universit{\"a}t M{\"u}nchen,
+#' Master's Thesis, Technische Universitaet Muenchen,
 #' \url{https://mediatum.ub.tum.de/node?id=1231221}
 #' 
 #' @keywords package

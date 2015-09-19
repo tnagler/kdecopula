@@ -134,7 +134,7 @@ A primer on quasi-random numbers for copula models,
 arXiv:1508.03483 [stat.CO]
 }
 \seealso{
-\code{\link[kdecopula:kdecopula-package]{kdecopula-package}},
+\code{\link[kdecopula:kdecopula]{kdecopula}},
 \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
 \code{\link[qrng:ghalton]{ghalton}}
 }
