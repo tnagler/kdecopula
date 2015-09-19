@@ -1,3 +1,91 @@
+#' Bivariate kernel copula density estimation
+#' 
+#' Based on samples from a bivariate copula, the copula density is estimated.
+#' The user can choose between different methods. If no bandwidth is provided
+#' by the user, it will be set by a method-specific automatic selection
+#' procedure.
+#' 
+#' Details on the estimation methods and bandwidth selection can be found in
+#' Geenens et al. (2014) for methods \code{TLL1/2} and Nagler (2014) for other
+#' methods. We use a Gaussian product kernel function for all methods except
+#' the beta kernel estimator.\cr \cr
+#' 
+#' Kernel estimates are usually no proper copula densities. In particular, the
+#' estimated marginal densities are not uniform. We mitigate this issue bei
+#' implementing a renormalization procedure. The number of iterations of the
+#' renormalization algorithm can be specified with the \code{renorm.iter}
+#' argument. Typically, a very small number of iterations is sufficient.
+#' 
+#' @aliases kdecop dkdecop pkdecop rkdecop
+#' @param udata \code{nx2} matrix of copula data.
+#' @param bw bandwidth specification; if missing, \code{bw} is selected
+#' automatically; otherwise, a positive real number for methods \code{"MR"} and
+#' \code{"beta"}, a \eqn{2x2} matrix for method \code{"T"}, or a a list \code{B
+#' = <your.B>, alpha = <your.alpha>} containing the \eqn{2x2} rotation matrix
+#' and the nearest-neighbor fraction alpha.
+#' @param mult bandwidth multiplier, has to be positive; the bandwidth used for
+#' estimation is \code{bw*mult}.
+#' @param method \code{"MR"}: mirror-reflection estimator, \cr \code{"beta"}:
+#' beta kernel estimator, \cr \code{"T"}: transformation estimator with
+#' standard bivariate kernel estimation, \cr \code{"TLL1"}: transformation
+#' estimator with log-linear local likelihood estimation and nearest-neighbor
+#' bandwidths, \cr \code{"TLL2"}: transformation estimator with log-quadradtic
+#' local likelihood estimation and nearest-neighbor bandwidths.
+#' @param knots integer; number of knots in each dimension for the spline
+#' approximation; defaults to \code{50}.
+#' @param renorm.iter integer; number of iterations for the renormalization
+#' procedure (see \emph{Details}).
+#' @param info logical; if \code{TRUE}, additional information about the
+#' estimate will be gathered (see \emph{Value}).
+#' @param u \code{mx2} matrix of evaluation points.
+#' @param obj \code{kdecop} object.
+#' @return The function \code{\link[kdecopula:kdecop]{kdecop}} returns an
+#' object of class \code{kdecopula} that contains all information necessary for
+#' evaluation of the estimator. If no bandwidth was provided in the function
+#' call, the automatically selected value can be found in the variable
+#' \code{object$bw}. If \code{info=TRUE}, also the following will be available
+#' under \code{object$info}: \item{likvalues}{Estimator evaluated in sample
+#' points} \item{loglik}{Log likelihood} \item{effp}{Effective number of
+#' parameters} \item{AIC}{Akaike information criterion}
+#' \item{cAIC}{Bias-corrected version of Akaike information criterion}
+#' \item{BIC}{Bayesian information criterion.} \cr The density estimate can be
+#' evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}};
+#' the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore,
+#' synthetic data can be simulated with
+#' \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot options are
+#' provided by \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.
+#' @author Thomas Nagler
+#' @seealso \code{\link[kdecopula:kdecopula-package]{kdecopula-package}},
+#' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
+#' \code{\link[qrng:ghalton]{ghalton}}
+#' @references Geenens, G., Charpentier, A., and Paindaveine, D. (2014). Probit
+#' transformation for nonparametric kernel estimation of the copula density.
+#' arXiv:1404.4414 [stat.ME]. \cr \cr Nagler, T. (2014). "Kernel Methods for
+#' Vine Copula Estimation", Master's Thesis, Technische Universitaet Muenchen,
+#' \url{https://mediatum.ub.tum.de/node?id=1231221} \cr \cr Cambou, T., Hofert,
+#' M., Lemieux, C. (2015). "A primer on quasi-random numbers for copula
+#' models", arXiv:1508.03483
+#' @keywords Copula density estimation
+#' @examples
+#' 
+#' ## load data and transform with empirical cdf
+#' data(wdbc)
+#' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
+#' 
+#' ## estimation of copula density of variables 5 and 6
+#' dens.est <- kdecop(udat[, 5:6])
+#' plot(dens.est) 
+#' 
+#' ## evaluate density estimate at (u1,u2)=(0.123,0.321)
+#' dkdecop(c(0.123, 0.321), dens.est) 
+#' 
+#' ## evaluate cdf estimate at (u1,u2)=(0.123,0.321)
+#' pkdecop(c(0.123, 0.321), dens.est) 
+#' 
+#' ## simulate 500 samples from density estimate
+#' rkdecop(500, dens.est)
+#' 
+#' @export kdecop
 kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = FALSE) {
     udata <- as.matrix(udata)
     n <- nrow(udata)
@@ -107,334 +195,4 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     
     ## return results
     res
-}
-
-##### evaluate density of kdecopula object
-dkdecop <- function(u, obj, stable = FALSE) {
-    stopifnot(is.numeric(u))
-    stopifnot(all(u > 0 & u < 1))
-    stopifnot(inherits(obj, "kdecopula"))
-    stopifnot(is.logical(stable))
-    
-    ## define appropriately shaped udata frame for vapply
-    u <- as.matrix(u)
-    if (ncol(u) == 1)
-        u <- matrix(u, 1L, nrow(u))
-    
-    ## adjust for flipping option of kdevine package
-    d <- ncol(u)
-    if (!is.null(obj$flip))
-        u <- matrix(u[, 2:1], nrow(u), d)
-    
-    
-    ## if independence copula is specified return 1
-    if ("indep.copula" %in% class(obj))
-        return(rep(1, nrow(u)))
-    
-    ## evaluate density  (use faster algorithm for d = 2)
-    u <- pmin(pmax(u, 1e-3), 1 - 1e-3)
-    if (d == 2) {
-        out <- interp_2d(u,
-                         obj$estimate,
-                         obj$grid)
-    } else {
-        # define help indicators
-        tmplst <- split(rep(seq(-1, 2, 1), d), ceiling(seq.int(4*d)/4))
-        helpind <- as.matrix(do.call(expand.grid, tmplst))
-        
-        out <- interp(u,
-                      obj$estimate,
-                      obj$grid,
-                      helpind)
-    }
-    
-    ## stabilize output
-    if (stable)
-        out <- pmin(out, 10^(1 + d/2))
-    
-    ## return results
-    out
-}
-
-##### evaluate h-function of kdecopula object
-hkdecop <- function(u, obj, cond.var) {
-    stopifnot(all(u > 0) & all(u < 1))
-    stopifnot(inherits(obj, "kdecopula"))
-    stopifnot(all(cond.var %in% c(1, 2)))
-    ## define appropriately shaped u matrix
-    u <- as.matrix(u)
-    if(ncol(u) == 1)
-        u <- matrix(u, 1L, nrow(u))
-    # adjust for flipping option of kdevine package
-    if(!is.null(obj$flip)) {
-        u <- matrix(u[, 2:1], nrow(u))
-        cond.var <- ifelse(cond.var == 1, 2, 1)
-    }
-    d <- ncol(u)
-    
-    ## if independence copula is specified, return the conditioned variable
-    if ("indep.copula" %in% class(obj))
-        return(u[, -cond.var])
-    
-    ## evaluate h-function otherwise
-    if (d == 2) {
-        # faster algorithm for d = 2
-        return(eval_hfunc_2d(u,
-                             as.integer(cond.var),
-                             obj$estimate,
-                             obj$grid))
-    } else {
-        # define help objects
-        tmplst <- split(rep(seq(-1, 2, 1), d), ceiling(seq.int(4*d)/4))
-        helpind <- as.matrix(do.call(expand.grid, tmplst))
-        tmplst <- lapply(1:d,
-                         prep_hfunc,
-                         cond.var = cond.var,
-                         grid = obj$grid,
-                         d = d)
-        helpgrid <- as.matrix(do.call(expand.grid, tmplst))
-        uncond.var <- seq.int(d)[-cond.var]
-        
-        # call routine
-        return(eval_hfunc(u,
-                          as.integer(cond.var),
-                          as.integer(uncond.var),
-                          obj$estimate,
-                          obj$grid,
-                          helpgrid,
-                          helpind))
-    }
-}
-
-## function for preparing the list for constructing the helpgrid in hkdecop
-prep_hfunc <- function(i, cond.var, grid, d) {
-    if (i %in% cond.var) {
-        return(0)
-    } else {
-        return(grid)
-    }
-}
-
-##### evaluate cdf of kdecopula object
-pkdecop <- function(u, obj) {
-    stopifnot(all(u > 0 & u < 1))
-    stopifnot(inherits(obj, "kdecopula"))
-    ## define appropriately shaped u matrix
-    u <- as.matrix(u)
-    if(ncol(u) == 1)
-        u <- matrix(u, 1L, nrow(u))
-    # adjust for flipping option of kdevine package
-    if(!is.null(obj$flip)) {
-        u <- matrix(u[, 2:1], nrow(u))
-        cond.var <- ifelse(cond.var == 1, 2, 1)
-    }
-    d <- ncol(u)
-    
-    ## if independence copula is specified, return prod(u) directly
-    if ("indep.copula" %in% class(obj))
-        return(apply(u, 1, prod))
-    
-    ## define help objects
-    tmplst <- split(rep(seq(-1, 2, 1), d), ceiling(seq.int(4*d)/4))
-    helpind <- as.matrix(do.call(expand.grid, tmplst))
-    m <- length(obj$grid)
-    tmplst <- split(rep(obj$grid, d), ceiling(seq.int(m*d)/m))
-    helpgrid <- as.matrix(do.call(expand.grid, tmplst))
-    
-    ## evaluate cdf
-    eval_cdf(u,
-             obj$estimate,
-             obj$grid,
-             helpgrid,
-             helpind)
-}
-
-##### simulate from kdecopula object
-rkdecop <- function(n, obj, quasi = FALSE) {
-    n <- round(n)
-    stopifnot(inherits(obj, "kdecopula"))
-    stopifnot(is.logical(quasi))
-    
-    if (!quasi) {
-        # simulate independent uniform random variables
-        W <- cbind(runif(n), runif(n))
-    } else {
-        # generate quasi random numbers
-        w <- ghalton(n, d = 2)
-    }
-    
-    # if independence copula is specified, return W
-    if("indep.copula" %in% class(obj))
-        return(W)
-    
-    # invert h-function otherwise
-    U2 <- inv_hfunc(W,
-                    1L,
-                    obj$estimate,
-                    obj$grid)
-    
-    ## return results
-    out <- cbind(W[, 1], U2)
-    colnames(out) <- NULL
-    out
-}
-
-
-##### inverse h-function
-hinvkdecop <- function(u, obj, cond.var) {
-    stopifnot(all(u > 0 & u < 1))
-    stopifnot(inherits(obj, "kdecopula"))
-    stopifnot(all(cond.var %in% c(1, 2)))
-    ## simulate independent uniform random variables
-    W <- u
-    
-    # if independence copula is specified, return W
-    if("indep.copula" %in% class(obj))
-        return(W)
-    
-    ## invert h-function otherwise
-    U2 <- inv_hfunc(W,
-                    cond.var,
-                    obj$estimate,
-                    obj$grid)
-    
-    ## return results
-    out <- cbind(W[, 1], U2)
-    colnames(out) <- NULL
-    out
-}
-
-
-
-## plot kdecopula object
-plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
-    if (length(dim(x$estimate)) > 2)
-        stop("Plotting is only available for 2-dimensional densities.")
-    
-    ## partial matching and sanity check for type
-    stopifnot(class(type) == "character")
-    tpnms <- c("contour", "surface")
-    type <- tpnms[pmatch(type, tpnms)]
-    if (is.na(type))
-        stop("type not implemented")
-    
-    ## choose margins if missing, else partial matching and sanity check
-    if (missing(margins)) {
-        margins <- switch(type,
-                          "contour" = "norm",
-                          "surface" = "unif")
-    } else {
-        stopifnot(class(margins) == "character")
-        mgnms <- c("norm", "unif")
-        margins <- mgnms[pmatch(margins, mgnms)]
-    }
-    
-    ## choose size if missing and sanity check
-    if (missing(size))
-        size <- switch(type,
-                       "contour" = 100L,
-                       "surface" = 25L)
-    stopifnot(is.numeric(size))
-    
-    
-    ## construct grid for evaluation of the copula density
-    size <- round(size)
-    if (size < 3) {
-        warning("size too small, set to 5")
-        size <- 5
-    }
-    if (!(margins %in% c("unif", "norm")))
-        stop("'margins' has to be one of 'unif' or 'norm'")
-    if (is.null(list(...)$xlim) & is.null(list(...)$ylim)) {
-        xylim <- switch(margins,
-                        "unif"  = c(0, 1),
-                        "norm"  = c(-3, 3))
-    } else {
-        xylim <- range(c(list(...)$xlim, list(...)$ylim))
-    }
-    sq <- seq(xylim[1L], xylim[2L], len = size)
-    points <- switch(margins,
-                     "unif"  = 1:size/(size + 1),
-                     "norm"  = pnorm(sq))
-    g <- as.matrix(expand.grid(points, points))
-    
-    ## evaluate on grid
-    vals <- dkdecop(g, x)
-    cop <- matrix(vals, size, size)
-    
-    ## prepare for plotting with selected margins
-    if (margins == "unif") {
-        points <- g[1L:size, 1L]
-        adj <- 1
-        gu <- g[, 1L]
-        gv <- g[, 2L]
-        levels <- c(0.1, 0.5, 1, 3, 5, 10, 20)
-        xlim <- ylim <- c(0, 1)
-        at <- c(seq(0, 6, by = 0.05), seq(7, 100, by = 1))
-    } else if (margins == "norm") {
-        points <- qnorm(g[1L:size, 1L])
-        adj <- tcrossprod(dnorm(points))
-        gu <- qnorm(g[, 1L])
-        gv <- qnorm(g[, 2L])
-        levels <- c(0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5)
-        xlim <- ylim <- c(-3, 3)
-        at <- seq(0, 1, l = 100)
-    }
-    
-    if (type == "contour") {
-        # set default parameters
-        pars <- list(x = points,
-                     y = points,
-                     z = cop * adj,
-                     levels = levels,
-                     xlim = xlim,
-                     ylim = ylim,
-                     xlab = switch(margins,
-                                   "unif" = expression(u[1]),
-                                   "norm" = expression(z[1])),
-                     ylab = switch(margins,
-                                   "unif" = expression(u[2]),
-                                   "norm" = expression(z[2])))
-        
-        # call contour with final parameters
-        do.call(contour, modifyList(pars, list(...)))
-        
-    } else if (type == "heat") {
-        stop("Not implemented yet")
-    } else if (type == "surface") {
-        # list with coordinates
-        lst <- list(u = gu, v = gv, c = as.vector(cop) * as.vector(adj))
-        
-        # define colors
-        TUMblue   <- rgb(0, 103/255, 198/255)
-        TUMgreen  <- rgb(162/255, 173/255, 0)
-        TUMorange <- rgb(227/255, 114/255, 37/255)
-        
-        # set default parameters
-        pars <- list(x = c ~ u * v,
-                     data = lst,
-                     scales = list(arrows = FALSE),
-                     drape = TRUE, colorkey = FALSE,
-                     screen = list(z = 25, x = -55),
-                     shade = FALSE,
-                     aspect = c(1, 1),
-                     light.source = c(10,0,10),
-                     zoom = 0.85,
-                     par.settings = list(axis.line = list(col = "transparent")),
-                     at = at,
-                     col.regions=
-                         c(colorRampPalette(
-                             c(TUMblue, TUMgreen, TUMorange))(121),
-                           rep(TUMorange, 300)),
-                     xlab = switch(margins,
-                                   "unif" = expression(u[1]),
-                                   "norm" = expression(z[1])),
-                     ylab = switch(margins,
-                                   "unif" = expression(u[2]),
-                                   "norm" = expression(z[2])),
-                     zlab = "density")
-        
-        # call wireframe with final parameters
-        do.call(wireframe, modifyList(pars, list(...)))
-    }
 }
