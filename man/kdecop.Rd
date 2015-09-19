@@ -120,13 +120,18 @@ rkdecop(500, dens.est)
 Thomas Nagler
 }
 \references{
-Geenens, G., Charpentier, A., and Paindaveine, D. (2014). Probit
-transformation for nonparametric kernel estimation of the copula density.
-arXiv:1404.4414 [stat.ME]. \cr \cr Nagler, T. (2014). "Kernel Methods for
-Vine Copula Estimation", Master's Thesis, Technische Universitaet Muenchen,
-\url{https://mediatum.ub.tum.de/node?id=1231221} \cr \cr Cambou, T., Hofert,
-M., Lemieux, C. (2015). "A primer on quasi-random numbers for copula
-models", arXiv:1508.03483
+Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+Probit transformation for nonparametric kernel estimation of the copula density.
+arXiv:1404.4414 [stat.ME].
+\cr \cr
+Nagler, T. (2014).
+Kernel Methods for Vine Copula Estimation.
+Master's Thesis, Technische Universitaet Muenchen,
+\url{https://mediatum.ub.tum.de/node?id=1231221}
+\cr \cr
+Cambou, T., Hofert, M., Lemieux, C. (2015).
+A primer on quasi-random numbers for copula models,
+arXiv:1508.03483 [stat.CO]
 }
 \seealso{
 \code{\link[kdecopula:kdecopula-package]{kdecopula-package}},

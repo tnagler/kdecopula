@@ -6,30 +6,38 @@
 #' further used for accurate estimation of unusually shaped copula densities
 #' and resampling.
 #' 
-#' \tabular{ll}{ Package: \tab kdecopula\cr Type: \tab Package\cr Version: \tab
-#' 0.2.0\cr Date: \tab 2015-09-10\cr License: \tab GPL-3 } The function
-#' \code{\link{kdecop}} can be used to estimate a copula density with a number
-#' of popular kernel estimators. The density estimate can be evaluated on
-#' arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with
-#' \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be
-#' simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot
-#' options are provided by
+#' The function \code{\link{kdecop}} can be used to estimate a copula density 
+#' with a number of popular kernel estimators. The density estimate can be
+#' evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}}; 
+#' the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic 
+#' data can be simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and
+#' several plot options are provided by 
 #' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.
 #' 
-#' @name kdecopula-package
+#' @name kdecopula
 #' @docType package
 #' @author Thomas Nagler
-#' @references Gijbels, I. and Mielniczuk, J. (1990). Estimating the density of
-#' a copula function. Communications in Statistics - Theory and Methods,
-#' 19(2):445-464. \cr \cr Charpentier, A., Fermanian, J.-D., and Scaillet, O.
-#' (2006). The estimation of copulas: Theory and practice. In Rank, J., editor,
-#' Copulas: From theory to application in finance. Risk Books. \cr \cr Geenens,
-#' G., Charpentier, A., and Paindaveine, D. (2014). Probit transformation for
-#' nonparametric kernel estimation of the copula density. arXiv:1404.4414
-#' [stat.ME]. \cr \cr Nagler, T. (2014). "Kernel Methods for Vine Copula
-#' Estimation", Master's Thesis, Technische Universitaet Muenchen,
+#' 
+#' @references
+#' Gijbels, I. and Mielniczuk, J. (1990).
+#' Estimating the density of a copula function.
+#' Communications in Statistics - Theory and Methods, 19(2):445-464. 
+#' \cr \cr 
+#' Charpentier, A., Fermanian, J.-D., and Scaillet, O. (2006).
+#' The estimation of copulas: Theory and practice. 
+#' In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
+#' \cr \cr
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2014). 
+#' Probit transformation for nonparametric kernel estimation of the copula density.
+#' arXiv:1404.4414 [stat.ME]. 
+#' \cr \cr 
+#' Nagler, T. (2014).
+#' Kernel Methods for Vine Copula Estimation.
+#' Master's Thesis, Technische Universit{\"a}t M{\"u}nchen,
 #' \url{https://mediatum.ub.tum.de/node?id=1231221}
+#' 
 #' @keywords package
+#' 
 #' @examples
 #' 
 #' ## load data and transform with empirical cdf
@@ -50,8 +58,6 @@
 #' rkdecop(500, dens.est)
 #' 
 NULL
-
-
 
 
 #' Wisconsin Diagnostic Breast Cancer (WDBC)
@@ -81,6 +87,8 @@ NULL
 #' 
 #' @name wdbc
 #' @docType data
+#' 
+#' 
 #' @format \code{wdbc} is a \code{data.frame} with 31 columns. The first column
 #' indicates wether the sample is classified as benign (\code{B}) or malignant
 #' (\code{M}). The remaining columns contain measurements for 30 features.
@@ -98,12 +106,18 @@ NULL
 #' K. P. Bennett & O. L. Mangasarian: "Robust linear programming discrimination
 #' of two linearly inseparable sets",\cr Optimization Methods and Software 1,
 #' 1992, 23-34 (Gordon & Breach Science Publishers).
+#' 
+#' 
 #' @source
 #' \url{https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)}
-#' \cr \cr Bache, K. & Lichman, M. (2013). UCI Machine Learning Repository.
+#' \cr \cr 
+#' Bache, K. & Lichman, M. (2013).
+#' UCI Machine Learning Repository.
 #' Irvine, CA: University of California, School of Information and Computer
 #' Science.
+#' 
 #' @keywords datasets
+#' 
 #' @examples
 #' 
 #' data(wdbc)

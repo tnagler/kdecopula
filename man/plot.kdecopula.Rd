@@ -49,8 +49,5 @@ Thomas Nagler
 \code{\link[graphics:contour]{contour}},
 \code{\link[lattice:wireframe]{wireframe}}
 }
-\keyword{Copula}
-\keyword{density}
-\keyword{estimation}
 \keyword{plot}
 

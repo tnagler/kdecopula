@@ -1,7 +1,3 @@
-
-## plot kdecopula object
-
-
 #' Plotting \code{kdecopula} objects
 #' 
 #' Produces contour or perspective plots for a \code{kdecopula} object.
@@ -20,11 +16,16 @@
 #' "surface"}.
 #' @param \dots optional arguments passed to \code{\link{contour}} or
 #' \code{\link{wireframe}}.
+#' 
+#' 
 #' @author Thomas Nagler
+#' 
 #' @seealso \code{\link[kdecopula:kdecop]{kdecop}},
 #' \code{\link[graphics:contour]{contour}},
 #' \code{\link[lattice:wireframe]{wireframe}}
-#' @keywords plot Copula density estimation
+#' 
+#' @keywords plot
+#' 
 #' @examples
 #' 
 #' ## load data and transform with empirical cdf

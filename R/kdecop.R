@@ -17,6 +17,7 @@
 #' argument. Typically, a very small number of iterations is sufficient.
 #' 
 #' @aliases kdecop dkdecop pkdecop rkdecop
+#' 
 #' @param udata \code{nx2} matrix of copula data.
 #' @param bw bandwidth specification; if missing, \code{bw} is selected
 #' automatically; otherwise, a positive real number for methods \code{"MR"} and
@@ -39,6 +40,8 @@
 #' estimate will be gathered (see \emph{Value}).
 #' @param u \code{mx2} matrix of evaluation points.
 #' @param obj \code{kdecop} object.
+#' 
+#' 
 #' @return The function \code{\link[kdecopula:kdecop]{kdecop}} returns an
 #' object of class \code{kdecopula} that contains all information necessary for
 #' evaluation of the estimator. If no bandwidth was provided in the function
@@ -54,18 +57,30 @@
 #' synthetic data can be simulated with
 #' \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot options are
 #' provided by \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.
+#' 
+#' 
 #' @author Thomas Nagler
+#' 
 #' @seealso \code{\link[kdecopula:kdecopula-package]{kdecopula-package}},
 #' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
 #' \code{\link[qrng:ghalton]{ghalton}}
-#' @references Geenens, G., Charpentier, A., and Paindaveine, D. (2014). Probit
-#' transformation for nonparametric kernel estimation of the copula density.
-#' arXiv:1404.4414 [stat.ME]. \cr \cr Nagler, T. (2014). "Kernel Methods for
-#' Vine Copula Estimation", Master's Thesis, Technische Universitaet Muenchen,
-#' \url{https://mediatum.ub.tum.de/node?id=1231221} \cr \cr Cambou, T., Hofert,
-#' M., Lemieux, C. (2015). "A primer on quasi-random numbers for copula
-#' models", arXiv:1508.03483
+#' 
+#' @references 
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+#' Probit transformation for nonparametric kernel estimation of the copula density.
+#' arXiv:1404.4414 [stat.ME]. 
+#' \cr \cr 
+#' Nagler, T. (2014). 
+#' Kernel Methods for Vine Copula Estimation.
+#' Master's Thesis, Technische Universitaet Muenchen,
+#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
+#' \cr \cr 
+#' Cambou, T., Hofert, M., Lemieux, C. (2015).
+#' A primer on quasi-random numbers for copula models, 
+#' arXiv:1508.03483 [stat.CO]
+#' 
 #' @keywords Copula density estimation
+#' 
 #' @examples
 #' 
 #' ## load data and transform with empirical cdf
