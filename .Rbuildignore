@@ -6,3 +6,4 @@
 ^NEWS\.md$
 ^README-.*\.png$
 ^\.travis\.yml$
+^appveyor\.yml$
