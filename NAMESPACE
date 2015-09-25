@@ -16,3 +16,5 @@ export(kdecop,
        rkdecop)
 S3method(plot, kdecopula)
 S3method(contour, kdecopula)
+S3method(print, kdecopula)
+S3method(summary, kdecopula)
