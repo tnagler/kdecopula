@@ -3,7 +3,6 @@
 ^cran-comments\.md$
 ^.*\.Rprofile$
 ^README\.Rmd$
-^NEWS\.md$
 ^README-.*\.png$
 ^.*\.html$
 ^\.travis\.yml$
