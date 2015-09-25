@@ -10,7 +10,7 @@
 dkdecop(u, obj, stable = FALSE)
 
 kdecop(udata, bw, mult = 1, method = "TLL2", knots = NA,
-  renorm.iter = 3L, info = FALSE)
+  renorm.iter = 3L, info = TRUE)
 
 pkdecop(u, obj)
 
@@ -121,7 +121,8 @@ Thomas Nagler
 }
 \references{
 Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
-Probit transformation for nonparametric kernel estimation of the copula density.
+Probit transformation for nonparametric kernel estimation of the copula
+density.
 arXiv:1404.4414 [stat.ME].
 \cr \cr
 Nagler, T. (2014).
