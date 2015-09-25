@@ -3,12 +3,13 @@
 #' Based on samples from a bivariate copula, the copula density is estimated.
 #' The user can choose between different methods. If no bandwidth is provided
 #' by the user, it will be set by a method-specific automatic selection
-#' procedure.
+#' procedure. The related (d/p/r)kdecop functions evaluate the density and cdf 
+#' or simulate synthetic data, respectively.
 #' 
 #' Details on the estimation methods and bandwidth selection can be found in
 #' Geenens et al. (2014) for methods \code{TLL1/2} and Nagler (2014) for other
 #' methods. We use a Gaussian product kernel function for all methods except
-#' the beta kernel estimator.\cr \cr
+#' the beta kernel estimator.\cr 
 #' 
 #' Kernel estimates are usually no proper copula densities. In particular, the
 #' estimated marginal densities are not uniform. We mitigate this issue bei

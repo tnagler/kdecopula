@@ -1,5 +1,3 @@
-#' Evaluate cdf of a kdecopula object
-#' 
 #' @rdname kdecop
 #' 
 pkdecop <- function(u, obj) {

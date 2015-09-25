@@ -1,5 +1,3 @@
-#' Simulate data from a kdecopula object
-#' 
 #' @param n integer; number of observations.
 #' @param quasi logical; the default (\code{FALSE}) returns pseudo-random
 #' numbers, use \code{TRUE} for quasi-random numbers (generalized Halton, see
