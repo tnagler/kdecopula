@@ -1,8 +1,13 @@
 kdecopula 0.2.0
 -------------------------------
+
 NEW FEATURES
 
   * New methods for class `kdecopula`: `print`, `summary`, `contour`.
+  
+  * `kdecop`: Default for `info` argument is now `TRUE`.
+  
+  * Updated documentation.
 
 BUG FIXES
 
