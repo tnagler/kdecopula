@@ -3,7 +3,6 @@
 ^cran-comments\.md$
 ^.*\.Rprofile$
 ^README\.Rmd$
-^README-.*\.png$
 ^.*\.html$
 ^\.travis\.yml$
 ^appveyor\.yml$
