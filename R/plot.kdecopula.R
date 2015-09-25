@@ -1,8 +1,8 @@
 #' Plotting \code{kdecopula} objects
 #' 
-#' Produces contour or perspective plots for a \code{kdecopula} object.
+#' Produces perspective or contour plots for a \code{kdecopula} object.
 #' 
-#' 
+#' @aliases plot.kdecopula contour.kdecopula
 #' @param x \code{kdecopula} object.
 #' @param type plot type; either \code{"contour"} or \code{"surface"} (partial
 #' matching is activated) for a contour or perspective/surface plot
@@ -36,12 +36,12 @@
 #' obj <- kdecop(udat[, 5:6])
 #' 
 #' ## plots
-#' plot(obj)  # (marginal normal) contour plot
-#' plot(obj, margins = "unif")  # contour plot of actual copula density
-#' plot(obj, type = "surf")  # surface plot of actual copula density 
+#' plot(obj)  # surface plot of copula density 
+#' contour(obj)  # contour plot with standard normal margins
+#' contour(obj, margins = "unif")  # contour plot of copula density
 #' 
 #' 
-plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
+plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
     if (length(dim(x$estimate)) > 2)
         stop("Plotting is only available for 2-dimensional densities.")
     
@@ -61,7 +61,7 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
         stopifnot(class(margins) == "character")
         mgnms <- c("norm", "unif")
         margins <- mgnms[pmatch(margins, mgnms)]
-    }
+    } 
     
     ## choose size if missing and sanity check
     if (missing(size))
@@ -69,10 +69,9 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
                        "contour" = 100L,
                        "surface" = 25L)
     stopifnot(is.numeric(size))
-    
+    size <- round(size)
     
     ## construct grid for evaluation of the copula density
-    size <- round(size)
     if (size < 3) {
         warning("size too small, set to 5")
         size <- 5
@@ -81,45 +80,47 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
         stop("'margins' has to be one of 'unif' or 'norm'")
     if (is.null(list(...)$xlim) & is.null(list(...)$ylim)) {
         xylim <- switch(margins,
-                        "unif"  = c(0, 1),
+                        "unif"  = c(1e-1, 1 - 1e-1),
                         "norm"  = c(-3, 3))
     } else {
         xylim <- range(c(list(...)$xlim, list(...)$ylim))
     }
-    sq <- seq(xylim[1L], xylim[2L], len = size)
-    points <- switch(margins,
-                     "unif"  = 1:size/(size + 1),
-                     "norm"  = pnorm(sq))
-    g <- as.matrix(expand.grid(points, points))
+    
+    ## prepare for plotting with selected margins
+    if (margins == "unif") {
+        points <- switch(type,
+                         "contour"  = seq(1e-5, 1 - 1e-5, length.out = size),
+                         "surface"  = 1:size / (size + 1))
+        g <- as.matrix(expand.grid(points, points))
+        points <- g[1L:size, 1L]
+        adj <- 1
+        gu <- g[, 1L]
+        gv <- g[, 2L]
+        levels <- c(0.2, 0.6, 1, 1.5, 2, 3, 5, 10, 20)
+        xlim <- ylim <- c(0, 1)
+        at <- c(seq(0, 6, length.out = 50), seq(7, 100, length.out = 50))
+    } else if (margins == "norm") {
+        points <- pnorm(seq(xylim[1L], xylim[2L], length.out = size))
+        g <- as.matrix(expand.grid(points, points))
+        points <- qnorm(g[1L:size, 1L])
+        adj <- tcrossprod(dnorm(points))
+        levels <- c(0.01, 0.025, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5)
+        gu <- qnorm(g[, 1L])
+        gv <- qnorm(g[, 2L])
+        xlim <- ylim <- c(-3, 3)
+        at <- c(seq(0, 0.3, length.out = 50), seq(0.3, 100, length.out = 50))
+    } 
     
     ## evaluate on grid
     vals <- dkdecop(g, x)
     cop <- matrix(vals, size, size)
     
-    ## prepare for plotting with selected margins
-    if (margins == "unif") {
-        points <- g[1L:size, 1L]
-        adj <- 1
-        gu <- g[, 1L]
-        gv <- g[, 2L]
-        levels <- c(0.1, 0.5, 1, 3, 5, 10, 20)
-        xlim <- ylim <- c(0, 1)
-        at <- c(seq(0, 6, by = 0.05), seq(7, 100, by = 1))
-    } else if (margins == "norm") {
-        points <- qnorm(g[1L:size, 1L])
-        adj <- tcrossprod(dnorm(points))
-        gu <- qnorm(g[, 1L])
-        gv <- qnorm(g[, 2L])
-        levels <- c(0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5)
-        xlim <- ylim <- c(-3, 3)
-        at <- seq(0, 1, l = 100)
-    }
-    
-    if (type == "contour") {
+    ## actual plotting
+    if (type == "contour") {        
         # set default parameters
-        pars <- list(x = points,
+        pars <- list(x = points, 
                      y = points,
-                     z = cop * adj,
+                     z = cop * adj, 
                      levels = levels,
                      xlim = xlim,
                      ylim = ylim,
@@ -142,7 +143,7 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
         # define colors
         TUMblue   <- rgb(0, 103/255, 198/255)
         TUMgreen  <- rgb(162/255, 173/255, 0)
-        TUMorange <- rgb(227/255, 114/255, 37/255)
+        TUMorange <- rgb(227/255, 114/255, 37/255) 
         
         # set default parameters
         pars <- list(x = c ~ u * v,
@@ -157,18 +158,32 @@ plot.kdecopula <- function(x, type = "contour", margins, size, ...) {
                      par.settings = list(axis.line = list(col = "transparent")),
                      at = at,
                      col.regions=
-                         c(colorRampPalette(
-                             c(TUMblue, TUMgreen, TUMorange))(121),
-                           rep(TUMorange, 300)),
+                         c(colorRampPalette(c(tint(TUMblue, 0.5), "white"))(50),
+                           rep("white", 50)),
                      xlab = switch(margins,
                                    "unif" = expression(u[1]),
                                    "norm" = expression(z[1])),
                      ylab = switch(margins,
                                    "unif" = expression(u[2]),
                                    "norm" = expression(z[2])),
-                     zlab = "density")
+                     zlab = "density",
+                     zlim = switch(margins,
+                                   "unif" = c(0, max(3, 1.1*max(lst$c))),
+                                   "norm" = c(0, max(0.4, 1.1*max(lst$c)))))
         
         # call wireframe with final parameters
         do.call(wireframe, modifyList(pars, list(...)))
     }
 }
+
+#' @rdname plot.kdecopula
+contour.kdecopula <- function(x, margins = "norm", size = 100L, ...) {
+    plot(x, type = "contour", margins = margins, size = size, ...)
+}
+
+tint <- function(x, fac, alpha = 1) {
+    x <- c(col2rgb(x))
+    x <- (x + (255 - x) * fac) / 255
+    rgb(x[1], x[2], x[3], alpha)
+}
+
