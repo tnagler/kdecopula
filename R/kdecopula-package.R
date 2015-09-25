@@ -3,7 +3,7 @@
 #' This package provides fast implementations of kernel estimators for the
 #' copula density. Due to its several plotting options it is particularly
 #' useful for the exploratory analysis of dependece structures. It can be
-#' further used for accurate estimation of unusually shaped copula densities
+#' further used for flexible nonparametric estimation of copula densities
 #' and resampling.
 #' 
 #' The function \code{\link{kdecop}} can be used to estimate a copula density 
