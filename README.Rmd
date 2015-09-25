@@ -57,8 +57,10 @@ The package provides the following functions:
   
   * `rkdecop`: Simulates synthetic data from a `kdecopula` object.
   
-  * `plot.kdecopula`, `contour.kdecopula`: Surface and contour plots of the 
-    density estimate.
+  * Methods for calss `kdecopula`: 
+    * `plot`, `contour`: Surface and contour plots of the 
+    * `print`, `summary`: Displays further information about the density 
+      estimate.
     
 Look up the package documentation for more details on arguments and options, 
 
@@ -92,14 +94,14 @@ a number of options for the smoothing parameterization, estimation method and
 evaluation grid, but it is only required to provide a data-matrix.
 
 ```{r}
-kde.fit <- kdecop(u, info = TRUE)
-kde.fit$info
+kde.fit <- kdecop(u)
+kde.fit
+summary(kde.fit)
 ```
 
-The additional option `info = TRUE` provides extra information like *AIC* or
-*effective number of parameters*; default is `FALSE`. The output of the function
-is an object of class `kdecopula` that contains all information collected during
-the process. 
+The output of the function `kdecop` is an object of class `kdecopula` that 
+contains all information collected during the estimation process and summary
+statistics such as *AIC* or the *effective number of parameters*. 
 
 #### Working with a `kdecopula` object
 
