@@ -69,14 +69,16 @@ Look up the package documentation for more details on arguments and options,
 
 ## kdecopula in action
 
+```{r, echo=FALSE}
+library(kdecopula)
+set.seed(55)
+```
+
 In this document, we demonstrate the main capabilities of the `kdecopula` 
 package. All user-level functions will be introduced and demonstrated on 
 simulated data.
-```{r}
-library(kdecopula)
-```
 
-First we simulate data from a Clayton copula via `BiCopSim` from the 
+Let's simulate data from a Clayton copula via `BiCopSim` from the 
 `VineCopula` package.
 
 ```{r fig.width=4, fig.height=4}
@@ -95,7 +97,6 @@ evaluation grid, but it is only required to provide a data-matrix.
 
 ```{r}
 kde.fit <- kdecop(u)
-kde.fit
 summary(kde.fit)
 ```
 

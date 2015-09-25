@@ -50,11 +50,7 @@ kdecopula in action
 
 In this document, we demonstrate the main capabilities of the `kdecopula` package. All user-level functions will be introduced and demonstrated on simulated data.
 
-``` r
-library(kdecopula)
-```
-
-First we simulate data from a Clayton copula via `BiCopSim` from the `VineCopula` package.
+Let's simulate data from a Clayton copula via `BiCopSim` from the `VineCopula` package.
 
 ``` r
 library(VineCopula)
@@ -71,23 +67,16 @@ We start by estimating the copula density with the `kdecop` function. There is a
 
 ``` r
 kde.fit <- kdecop(u)
-kde.fit
-#> Kernel copula density estimate (class 'kdecopula') 
-#> -------------------------------------------------- 
-#> Observations: 500 
-#> Method:       TLL2 
-#> Bandwidth:    alpha = 0.36
-#>               B = matrix(c(0.71, 0.71, -0.84, 0.84), 2, 2)
 summary(kde.fit)
 #> Kernel copula density estimate (class 'kdecopula') 
 #> -------------------------------------------------- 
 #> Observations: 500 
 #> Method:       TLL2 
-#> Bandwidth:    alpha = 0.3557167
-#>               B = matrix(c(0.71, 0.71, -0.84, 0.84), 2, 2)
+#> Bandwidth:    alpha = 0.5558749
+#>               B = matrix(c(0.69, 0.72, -0.5, 0.48), 2, 2)
 #> -------------------------------------------------- 
-#> logLik: 315.45    AIC: -596.57    cAIC: -595.28    BIC: -524.24 
-#> Effective number of parameters: 17.16
+#> logLik: 294.84    AIC: -563.57    cAIC: -562.82    BIC: -508.56 
+#> Effective number of parameters: 13.05
 ```
 
 The output of the function `kdecop` is an object of class `kdecopula` that contains all information collected during the estimation process and summary statistics such as *AIC* or the *effective number of parameters*.
@@ -98,9 +87,9 @@ The density and *cdf* can be computed easily:
 
 ``` r
 dkdecop(c(0.1, 0.2), kde.fit)
-#> [1] 2.329748
+#> [1] 2.384852
 pkdecop(c(0.1, 0.2), kde.fit)
-#> [1] 0.09447898
+#> [1] 0.09245737
 ```
 
 Furthermore, we can simulate synthetic data from the estimated density:
