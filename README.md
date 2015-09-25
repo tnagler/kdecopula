@@ -13,13 +13,13 @@ You can install:
 -   the stable release on CRAN:
 
     ``` r
-    install.pacakges("VineCopula")
+    install.pacakges("kdecopula")
     ```
 
 -   the latest development version:
 
     ``` r
-    devtools::install_github("tnagler/VineCopula")
+    devtools::install_github("tnagler/kdecopula")
     ```
 
 ------------------------------------------------------------------------
