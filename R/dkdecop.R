@@ -1,4 +1,3 @@
-
 #' Evaluate the density of a kdecopula object
 #' 
 #' @param stable logical; option for stabilizing the estimator: the estimated

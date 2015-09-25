@@ -68,7 +68,8 @@
 #' 
 #' @references 
 #' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
-#' Probit transformation for nonparametric kernel estimation of the copula density.
+#' Probit transformation for nonparametric kernel estimation of the copula
+#' density.
 #' arXiv:1404.4414 [stat.ME]. 
 #' \cr \cr 
 #' Nagler, T. (2014). 
@@ -101,7 +102,7 @@
 #' ## simulate 500 samples from density estimate
 #' rkdecop(500, dens.est)
 #' 
-kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = FALSE) {
+kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
     n <- nrow(udata)
     d <- ncol(udata)
@@ -109,8 +110,8 @@ kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter
     ## sanity checks
     if (n < 2)
         stop("Number of observations has to be at least 2.")
-    if (ncol(udata) < 2)
-        stop("Dimension has to be at least 2.")
+    if (d != 2)
+        stop("Dimension has to be 2.")
     if (any(udata > 1) | any(udata < 0))
         stop("'udata' have to be in the interval [0,1].")
     if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2")))
