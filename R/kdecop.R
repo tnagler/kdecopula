@@ -101,7 +101,6 @@
 #' ## simulate 500 samples from density estimate
 #' rkdecop(500, dens.est)
 #' 
-#' @export kdecop
 kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = FALSE) {
     udata <- as.matrix(udata)
     n <- nrow(udata)
@@ -201,14 +200,14 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         BIC  <- - 2 * loglik + log(n) * effp
         
         ## store results
-        res <- append(res, list(info = list(likvalues = likvalues,
-                                            loglik    = loglik,
-                                            effp      = effp ,
-                                            AIC       = AIC,
-                                            cAIC      = cAIC,
-                                            BIC       = BIC)))
+        res$info <- list(likvalues = likvalues,
+                         loglik    = loglik,
+                         effp      = effp ,
+                         AIC       = AIC,
+                         cAIC      = cAIC,
+                         BIC       = BIC)
     }
     
-    ## return results
+    ## return results as kdecopula object
     res
 }
