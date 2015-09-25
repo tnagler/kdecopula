@@ -2,6 +2,8 @@
 #' 
 #' Produces perspective or contour plots for a \code{kdecopula} object.
 #' 
+#' @method plot kdecopula
+#'  
 #' @aliases plot.kdecopula contour.kdecopula
 #' @param x \code{kdecopula} object.
 #' @param type plot type; either \code{"contour"} or \code{"surface"} (partial
@@ -176,6 +178,7 @@ plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
     }
 }
 
+#' @method contour kdecopula
 #' @rdname plot.kdecopula
 contour.kdecopula <- function(x, margins = "norm", size = 100L, ...) {
     plot(x, type = "contour", margins = margins, size = size, ...)
