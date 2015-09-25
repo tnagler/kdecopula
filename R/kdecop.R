@@ -16,9 +16,7 @@
 #' implementing a renormalization procedure. The number of iterations of the
 #' renormalization algorithm can be specified with the \code{renorm.iter}
 #' argument. Typically, a very small number of iterations is sufficient.
-#' 
-#' @aliases kdecop dkdecop pkdecop rkdecop
-#' 
+#'  
 #' @param udata \code{nx2} matrix of copula data.
 #' @param bw bandwidth specification; if missing, \code{bw} is selected
 #' automatically; otherwise, a positive real number for methods \code{"MR"} and
@@ -39,8 +37,6 @@
 #' procedure (see \emph{Details}).
 #' @param info logical; if \code{TRUE}, additional information about the
 #' estimate will be gathered (see \emph{Value}).
-#' @param u \code{mx2} matrix of evaluation points.
-#' @param obj \code{kdecop} object.
 #' 
 #' 
 #' @return The function \code{\link[kdecopula:kdecop]{kdecop}} returns an
@@ -65,7 +61,9 @@
 #' @seealso 
 #' \code{\link[kdecopula:kdecopula]{kdecopula}},
 #' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
-#' \code{\link[qrng:ghalton]{ghalton}}
+#' \code{\link[kdecopula:dkdecop]{dkdecop}},
+#' \code{\link[kdecopula:pkdecop]{pkdecop}},
+#' \code{\link[kdecopula:rkdecop]{rkdecop}}
 #' 
 #' @references 
 #' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
@@ -77,12 +75,7 @@
 #' Kernel Methods for Vine Copula Estimation.
 #' Master's Thesis, Technische Universitaet Muenchen,
 #' \url{https://mediatum.ub.tum.de/node?id=1231221} 
-#' \cr \cr 
-#' Cambou, T., Hofert, M., Lemieux, C. (2015).
-#' A primer on quasi-random numbers for copula models, 
-#' arXiv:1508.03483 [stat.CO]
 #' 
-#' @keywords Copula density estimation
 #' 
 #' @examples
 #' 
