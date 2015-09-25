@@ -62,7 +62,8 @@ The package provides the following functions:
     * `print`, `summary`: Displays further information about the density 
       estimate.
     
-Look up the package documentation for more details on arguments and options, 
+Please look up the package documentation for more details on arguments and
+options. 
 
 
 ----------------------------------------------------------------
@@ -71,7 +72,7 @@ Look up the package documentation for more details on arguments and options,
 
 ```{r, echo=FALSE}
 library(kdecopula)
-set.seed(55)
+set.seed(12345)
 ```
 
 In this document, we demonstrate the main capabilities of the `kdecopula` 

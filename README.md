@@ -41,7 +41,7 @@ The package provides the following functions:
     -   `plot`, `contour`: Surface and contour plots of the
     -   `print`, `summary`: Displays further information about the density estimate.
 
-Look up the package documentation for more details on arguments and options,
+Please look up the package documentation for more details on arguments and options.
 
 ------------------------------------------------------------------------
 
@@ -72,11 +72,11 @@ summary(kde.fit)
 #> -------------------------------------------------- 
 #> Observations: 500 
 #> Method:       TLL2 
-#> Bandwidth:    alpha = 0.5558749
-#>               B = matrix(c(0.69, 0.72, -0.5, 0.48), 2, 2)
+#> Bandwidth:    alpha = 0.5558049
+#>               B = matrix(c(0.72, 0.69, -0.49, 0.51), 2, 2)
 #> -------------------------------------------------- 
-#> logLik: 294.84    AIC: -563.57    cAIC: -562.82    BIC: -508.56 
-#> Effective number of parameters: 13.05
+#> logLik: 301.93    AIC: -579.9    cAIC: -579.26    BIC: -529.4 
+#> Effective number of parameters: 11.98
 ```
 
 The output of the function `kdecop` is an object of class `kdecopula` that contains all information collected during the estimation process and summary statistics such as *AIC* or the *effective number of parameters*.
@@ -87,9 +87,9 @@ The density and *cdf* can be computed easily:
 
 ``` r
 dkdecop(c(0.1, 0.2), kde.fit)
-#> [1] 2.384852
+#> [1] 2.378147
 pkdecop(c(0.1, 0.2), kde.fit)
-#> [1] 0.09245737
+#> [1] 0.09253681
 ```
 
 Furthermore, we can simulate synthetic data from the estimated density:
