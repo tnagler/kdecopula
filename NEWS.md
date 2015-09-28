@@ -1,3 +1,22 @@
+kdecopula 0.3.0
+-------------------------------
+
+NEW FEATURES
+
+  * New methods for class `kdecopula`: `logLik`, `AIC`, `BIC`
+  
+  * Full summary (logLik, AIC, BIC, effp) even when `info = FALSE`.
+  
+
+BUG FIXES
+
+  * Fixed type in install instructions.
+  
+  * Fixed bug in summary (`method = "T"`).
+
+  * Improve formatting in summary.
+
+
 kdecopula 0.2.0
 -------------------------------
 
