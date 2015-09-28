@@ -45,3 +45,32 @@ summary.kdecopula <- function(object, ...) {
         cat("Effective number of parameters:", round(object$info$effp, 2))
     }
 }
+
+
+logLik.kdecopula <- function(object, ...) {
+    if (!is.null(object$info)) {
+        ## access info slot if available
+        out <- object$info$loglik
+        effp   <- object$info$effp
+    } else {
+        ## calculate log likelihood and effp from data
+        likvalues <- dkdecop(object$udata, object)
+        out <- sum(log(likvalues))
+        effp <- eff_num_par(object$udata,
+                            likvalues,
+                            object$bw, 
+                            object$method,
+                            object$lfit)
+        # for TLL effp is stored already
+        if (object$method %in% c("TLL1", "TLL2"))
+            effp <- object$effp
+    }
+
+    ## add attributes
+    attr(out, "nobs") <- nrow(object$udata)
+    attr(out, "df") <- effp
+    
+    ## return object with class "logLik"
+    class(out) <- "logLik"
+    out
+}
