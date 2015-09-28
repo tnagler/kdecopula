@@ -92,7 +92,7 @@ plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
     if (margins == "unif") {
         points <- switch(type,
                          "contour"  = seq(1e-5, 1 - 1e-5, length.out = size),
-                         "surface"  = 1:size / (size + 1))
+                         "surface"  = seq(2.5e-2, 1 - 2.5e-2, length.out = size))
         g <- as.matrix(expand.grid(points, points))
         points <- g[1L:size, 1L]
         adj <- 1
