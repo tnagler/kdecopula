@@ -4,15 +4,15 @@ print.kdecopula <- function(x, ...) {
     cat("Observations:", nrow(x$udata), "\n")
     cat("Method:      ", x$method, "\n")
     if (x$method %in% c("MR", "beta")) {
-        cat("Bandwidth: ", round(x$bw,3), "\n")
+        cat("Bandwidth:   ", round(x$bw,3), "\n")
     } else if (x$method %in% c("TLL1", "TLL2")) {
-        cat("Bandwidth:   ",
-            " alpha = ", round(x$bw$alpha, 2), "\n              ",
+        cat("Bandwidth:    ",
+            "alpha = ", round(x$bw$alpha, 2), "\n              ",
             "B = matrix(c(", paste(round(x$bw$B, 2), collapse = ", "), "), 2, 2)\n",
             sep = "")
     } else if (x$method %in% c("T")) {
-        cat("Bandwidth:   ",
-            "B = matrix(c(", paste(round(x$bw$B, 2), collapse = ", "), "), 2, 2)\n",
+        cat("Bandwidth:    ",
+            "B = matrix(c(", paste(round(x$bw, 2), collapse = ", "), "), 2, 2)\n",
             sep = "")
     } 
 }
@@ -25,8 +25,8 @@ summary.kdecopula <- function(object, ...) {
     if (object$method %in% c("MR", "beta")) {
         cat("Bandwidth:   ", round(object$bw,3), "\n")
     } else if (object$method %in% c("TLL1", "TLL2")) {
-        cat("Bandwidth:   ",
-            " alpha = ", object$bw$alpha, "\n              ",
+        cat("Bandwidth:    ",
+            "alpha = ", object$bw$alpha, "\n              ",
             "B = matrix(c(", paste(round(object$bw$B, 2), collapse = ", "), "), 2, 2)\n",
             sep = "")
     } else if (object$method %in% c("T")) {
