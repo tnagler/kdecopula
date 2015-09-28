@@ -183,6 +183,11 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                 method   = method)
     class(res) <- "kdecopula"
     
+    ## add effp for TLL
+    if (method %in% c("TLL1", "TLL2"))
+        res$effp <- eff_num_par(udata, likvalues, bw, method, lfit)
+    
+    ## add further information if asked for
     if (info) {
         # likelihood
         likvalues <- dkdecop(udata, res)
@@ -201,6 +206,10 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                          AIC       = AIC,
                          cAIC      = cAIC,
                          BIC       = BIC)
+        
+        ## remove effp for TLL
+        if (method %in% c("TLL1", "TLL2"))
+            res$effp <- NULL
     }
     
     ## return results as kdecopula object
