@@ -186,7 +186,7 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
     } 
     if (method == "T") {
         scale <- dnorm(qnorm(udata)[, 1]) * dnorm(qnorm(udata)[, 2])
-        effp  <- mean(kern_gauss_2d(0, 0)/scale/det(b)/likvalues)
+        effp  <- mean((kern_gauss_2d(0, 0) / (scale * det(b))) / likvalues)
     } 
     if(method %in% c("TLL1", "TLL2"))
         effp <- lfit$dp[["df2"]]

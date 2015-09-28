@@ -1,27 +1,15 @@
 print.kdecopula <- function(x, ...) {
-    cat("Kernel copula density estimate (class 'kdecopula') \n")
-    cat("-------------------------------------------------- \n")
-    cat("Observations:", nrow(x$udata), "\n")
-    cat("Method:      ", x$method, "\n")
-    if (x$method %in% c("MR", "beta")) {
-        cat("Bandwidth:   ", round(x$bw,3), "\n")
-    } else if (x$method %in% c("TLL1", "TLL2")) {
-        cat("Bandwidth:    ",
-            "alpha = ", round(x$bw$alpha, 2), "\n              ",
-            "B = matrix(c(", paste(round(x$bw$B, 2), collapse = ", "), "), 2, 2)\n",
-            sep = "")
-    } else if (x$method %in% c("T")) {
-        cat("Bandwidth:    ",
-            "B = matrix(c(", paste(round(x$bw, 2), collapse = ", "), "), 2, 2)\n",
-            sep = "")
-    } 
+    cat("Kernel copula density estimate for data: ")
+    print(x$dataname, quote = TRUE)
 }
 
 summary.kdecopula <- function(object, ...) {
-    cat("Kernel copula density estimate (class 'kdecopula') \n")
-    cat("-------------------------------------------------- \n")
-    cat("Observations:", nrow(object$udata), "\n")
-    cat("Method:      ", object$method, "\n")
+    cat("Kernel copula density estimate\n")
+    cat("------------------------------\n")
+    cat("Data:         ")
+    print(object$uname, quote = TRUE)
+    cat("Observations:", nrow(object$dataname), "\n")
+    cat("Method:      ", expand_method(object$method), "\n")
     if (object$method %in% c("MR", "beta")) {
         cat("Bandwidth:   ", round(object$bw,3), "\n")
     } else if (object$method %in% c("TLL1", "TLL2")) {
@@ -34,7 +22,7 @@ summary.kdecopula <- function(object, ...) {
             "matrix(c(", paste(round(object$bw, 2), collapse = ", "), "), 2, 2)\n",
             sep = "")
     } 
-    cat("-------------------------------------------------- \n")
+    cat("---\n")
     if (is.null(object$info)) {
         cat("No further information provided. Use kdecop(..., 'info = TRUE'), for more.")
     } else {
@@ -65,7 +53,7 @@ logLik.kdecopula <- function(object, ...) {
         if (object$method %in% c("TLL1", "TLL2"))
             effp <- object$effp
     }
-
+    
     ## add attributes
     attr(out, "nobs") <- nrow(object$udata)
     attr(out, "df") <- effp
@@ -73,4 +61,13 @@ logLik.kdecopula <- function(object, ...) {
     ## return object with class "logLik"
     class(out) <- "logLik"
     out
+}
+
+expand_method <- function(method) {
+    switch(method,
+           "TLL1" = "Transformation local likelihood, log-linear ('TLL1')",
+           "TLL2" = "Transformation local likelihood, log-quadratic ('TLL2')",
+           "T"    = "Transformation estimator ('T')",
+           "MR"   = "Mirror-reflection ('MR')",
+           "beta" = "Beta kernels ('beta')")
 }
