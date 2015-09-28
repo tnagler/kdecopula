@@ -171,8 +171,8 @@ plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
                      col.regions=
                          c(colorRampPalette(c(tint(TUMblue, 0.5), "white"))(50),
                            rep("white", 50)),
-                     xlab = xlab,
-                     ylab = ylab,
+                     xlab = list(xlab, rot = 20),
+                     ylab = list(ylab, rot = 30-90),
                      zlab = "",
                      zlim = switch(margins,
                                    "unif" = c(0, max(3, 1.1*max(lst$c))),
