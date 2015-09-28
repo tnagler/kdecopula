@@ -1,21 +1,28 @@
 print.kdecopula <- function(x, ...) {
     cat("Kernel copula density estimate for data: ")
     print(x$dataname, quote = TRUE)
+    invisible(x)
 }
 
 summary.kdecopula <- function(object, ...) {
     cat("Kernel copula density estimate\n")
     cat("------------------------------\n")
     cat("Data:         ")
-    print(object$uname, quote = TRUE)
-    cat("Observations:", nrow(object$dataname), "\n")
-    cat("Method:      ", expand_method(object$method), "\n")
+    print(object$dataname, quote = TRUE)
+    cat("Observations:",
+        nrow(object$udata), "\n")
+    cat("Method:      ",
+        expand_method(object$method), "\n")
     if (object$method %in% c("MR", "beta")) {
-        cat("Bandwidth:   ", round(object$bw,3), "\n")
+        cat("Bandwidth:   ",
+            round(object$bw,3), "\n")
     } else if (object$method %in% c("TLL1", "TLL2")) {
         cat("Bandwidth:    ",
-            "alpha = ", object$bw$alpha, "\n              ",
-            "B = matrix(c(", paste(round(object$bw$B, 2), collapse = ", "), "), 2, 2)\n",
+            "alpha = ",
+            object$bw$alpha, "\n              ",
+            "B = matrix(c(",
+            paste(round(object$bw$B, 2), collapse = ", "),
+            "), 2, 2)\n",
             sep = "")
     } else if (object$method %in% c("T")) {
         cat("Bandwidth:    ",
@@ -23,15 +30,34 @@ summary.kdecopula <- function(object, ...) {
             sep = "")
     } 
     cat("---\n")
-    if (is.null(object$info)) {
-        cat("No further information provided. Use kdecop(..., 'info = TRUE'), for more.")
-    } else {
-        cat("logLik:", round(object$info$loglik, 2), "   ")
-        cat("AIC:", round(object$info$AIC, 2), "   ")
-        cat("cAIC:", round(object$info$cAIC, 2), "   ")
-        cat("BIC:", round(object$info$BIC, 2), "\n")
-        cat("Effective number of parameters:", round(object$info$effp, 2))
-    }
+    
+    ## fit statistics 
+    # calculate
+    effp <- attr(logLik(object), "df")
+    loglik <- logLik(object)
+    AIC  <- AIC(object)
+    cAIC <- AIC + (2 * effp * (effp + 1)) / (nrow(object$udata) - effp - 1)
+    BIC  <- BIC(object)
+    # store in object if not available
+    if (is.null(object$info))  object$info <- list(loglik = as.numeric(loglik),
+                                                   effp   = effp ,
+                                                   AIC    = AIC,
+                                                   cAIC   = cAIC,
+                                                   BIC    = BIC)
+    # print 
+    cat("logLik:", 
+        round(loglik, 2), "   ")
+    cat("AIC:", 
+        round(AIC, 2), "   ")
+    cat("cAIC:",
+        round(cAIC, 2), "   ")
+    cat("BIC:",
+        round(BIC, 2), "\n")
+    cat("Effective number of parameters:", 
+        round(effp, 2))
+    
+    ## return with fit statistics
+    invisible(object)
 }
 
 
