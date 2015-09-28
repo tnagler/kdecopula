@@ -61,6 +61,35 @@ summary.kdecopula <- function(object, ...) {
 }
 
 
+#' Log-Likelihood of a \code{kdecopula} object 
+#' 
+#' @method logLik kdecopula
+#' 
+#' @param object an object of class \code{kdecopula}.
+#' 
+#' @return Returns an object of class \code{\link[stats:logLik]{logLik}} containing the log-
+#' likelihood, number of observations and effective number of parameters ("df").
+#' 
+#' @author Thomas Nagler
+#' 
+#' @seealso 
+#' \code{\link[stats:logLik]{logLik}},
+#' \code{\link[stats:AIC]{AIC}},
+#' \code{\link[stats:BIC]{BIC}}
+#' 
+#' @examples
+#' ## load data and transform with empirical cdf
+#' data(wdbc)
+#' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
+#' 
+#' ## estimation of copula density of variables 5 and 6
+#' dens.est <- kdecop(udat[, 5:6])
+#' 
+#' ## compute fit statistics
+#' logLik(dens.est)
+#' AIC(dens.est)
+#' BIC(dens.est)
+#' 
 logLik.kdecopula <- function(object, ...) {
     if (!is.null(object$info)) {
         ## access info slot if available
