@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{an object of class \code{kdecopula}.}
+
+\item{...}{not used.}
 }
 \value{
 Returns an object of class \code{\link[stats:logLik]{logLik}} containing the log-

@@ -66,6 +66,7 @@ summary.kdecopula <- function(object, ...) {
 #' @method logLik kdecopula
 #' 
 #' @param object an object of class \code{kdecopula}.
+#' @param ... not used.
 #' 
 #' @return Returns an object of class \code{\link[stats:logLik]{logLik}} containing the log-
 #' likelihood, number of observations and effective number of parameters ("df").
