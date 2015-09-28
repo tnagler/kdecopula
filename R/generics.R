@@ -23,15 +23,15 @@ summary.kdecopula <- function(object, ...) {
     cat("Observations:", nrow(object$udata), "\n")
     cat("Method:      ", object$method, "\n")
     if (object$method %in% c("MR", "beta")) {
-        cat("Bandwidth: ", round(object$bw,3), "\n")
+        cat("Bandwidth:   ", round(object$bw,3), "\n")
     } else if (object$method %in% c("TLL1", "TLL2")) {
         cat("Bandwidth:   ",
             " alpha = ", object$bw$alpha, "\n              ",
             "B = matrix(c(", paste(round(object$bw$B, 2), collapse = ", "), "), 2, 2)\n",
             sep = "")
     } else if (object$method %in% c("T")) {
-        cat("Bandwidth:   ",
-            "B = matrix(c(", paste(round(object$bw$B, 2), collapse = ", "), "), 2, 2)\n",
+        cat("Bandwidth:    ",
+            "matrix(c(", paste(round(object$bw, 2), collapse = ", "), "), 2, 2)\n",
             sep = "")
     } 
     cat("-------------------------------------------------- \n")
