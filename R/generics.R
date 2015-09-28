@@ -1,14 +1,25 @@
 print.kdecopula <- function(x, ...) {
-    cat("Kernel copula density estimate for data: ")
-    print(x$dataname, quote = TRUE)
+    cat("Kernel copula density estimate")
+    ## add variable names if available
+    nms <- colnames(x$udata)
+    if (length(nms) == 2) {
+        cat(":", nms[1], "--", nms[2])
+    }
     invisible(x)
 }
 
 summary.kdecopula <- function(object, ...) {
     cat("Kernel copula density estimate\n")
     cat("------------------------------\n")
-    cat("Data:         ")
-    print(object$dataname, quote = TRUE)
+    
+    ## add variable names if available
+    nms <- colnames(object$udata)
+    if (length(nms) == 2) {
+        cat("Variables:   ", nms[1], "--", nms[2])
+    }
+    cat("\n")
+    
+    ## more details about the estimate
     cat("Observations:",
         nrow(object$udata), "\n")
     cat("Method:      ",

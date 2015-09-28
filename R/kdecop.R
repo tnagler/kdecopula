@@ -177,7 +177,6 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     
     ## store results
     res <- list(udata    = udata,
-                dataname = match.call()[[2]],
                 grid     = pnts,
                 estimate = vals,
                 bw       = bw,
