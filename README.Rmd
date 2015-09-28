@@ -1,16 +1,16 @@
 ---
 output:
-  md_document:
-    variant: markdown_github
+md_document:
+variant: markdown_github
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "inst/README-"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "inst/README-"
 )
 ```
 
@@ -30,15 +30,15 @@ nonparametric estimation of copula densities and resampling.
 
 You can install:
 
-  * the stable release on CRAN:
-    ``` r
-    install.pacakges("kdecopula")
-    ````
+* the stable release on CRAN:
+``` r
+install.pacakges("kdecopula")
+````
 
-  * the latest development version:
-    ``` r
-    devtools::install_github("tnagler/kdecopula")
-    ````
+* the latest development version:
+``` r
+devtools::install_github("tnagler/kdecopula")
+````
 
 
 ----------------------------------------------------------------
@@ -48,20 +48,24 @@ You can install:
 The package provides the following functions:
 
   * `kdecop`: Kernel estimation of a copula density. By default, estimation
-    method and bandwidth are selected automatically. Returns an object of class
-    `kdecopula`.
-    
+  method and bandwidth are selected automatically. Returns an object of class
+  `kdecopula`.
+  
   * `dkdecop`: Evaluates the density of a `kdecopula` object.
-
+  
   * `pkdecop`: Evaluates the distribution function of a `kdecopula` object.
   
   * `rkdecop`: Simulates synthetic data from a `kdecopula` object.
   
-  * Methods for calss `kdecopula`: 
-    * `plot`, `contour`: Surface and contour plots of the 
-    * `print`, `summary`: Displays further information about the density 
-      estimate.
+  * Methods for class `kdecopula`: 
+  
+    * `plot`, `contour`: Surface and contour plots of the density estimate. 
     
+    * `print`, `summary`: Displays further information about the density
+      estimate.    
+      
+    * `logLik`, `AIC`, `BIC`: Extracts fit statistics.
+
 Please look up the package documentation for more details on arguments and
 options. 
 
@@ -70,24 +74,28 @@ options.
 
 ## kdecopula in action
 
-```{r, echo=FALSE}
-library(kdecopula)
-set.seed(12345)
+```{r echo = FALSE}
+set.seed(1)
 ```
 
-In this document, we demonstrate the main capabilities of the `kdecopula` 
-package. All user-level functions will be introduced and demonstrated on 
-simulated data.
+Below, we demonstrate the main capabilities of the `kdecopula` 
+package. All user-level functions will be introduced with small examples. 
 
-Let's simulate data from a Clayton copula via `BiCopSim` from the 
-`VineCopula` package.
+Let's consider some variables of the *Wiscon diagnostic breast cancer* data 
+included in this package. The data are transformed to pseudo-observations of
+the copula by the empirical probability/rank transform:
+
 
 ```{r fig.width=4, fig.height=4}
-library(VineCopula)
-clay3 <- BiCop(family = 3, par = 3)
-u <- BiCopSim(500, clay3)
-plot(u)
+library(kdecopula)
+data(wdbc)  # load data
+u <- apply(wdbc[, c(2, 8)], 2, rank) / (nrow(wdbc) + 1)  # empirical PIT
+plot(u)  # scatter plot
 ```
+
+We see that the data are slightly asymmetric w.r.t. both diagonals. Common
+parametric copula models are usually not flexible enough to reflect this. Let's
+see how a kernel estimator does.
 
 
 #### Estimation of bivariate copula densities
@@ -97,27 +105,17 @@ a number of options for the smoothing parameterization, estimation method and
 evaluation grid, but it is only required to provide a data-matrix.
 
 ```{r}
-kde.fit <- kdecop(u)
+kde.fit <- kdecop(u)  # kernel estimation (bandwidth selected automatically)
 summary(kde.fit)
 ```
 
 The output of the function `kdecop` is an object of class `kdecopula` that 
 contains all information collected during the estimation process and summary
-statistics such as *AIC* or the *effective number of parameters*. 
-
-#### Working with a `kdecopula` object
-
-The density and *cdf* can be computed easily:
-
+statistics such as *AIC* or the *effective number of parameters/degrees of
+freedom*. These can also be accessed directly, e.g.
 ```{r}
-dkdecop(c(0.1, 0.2), kde.fit)
-pkdecop(c(0.1, 0.2), kde.fit)
-```
-
-Furthermore, we can simulate synthetic data from the estimated density:
-```{r fig.width=4, fig.height=4}
-unew <- rkdecop(500, kde.fit)
-plot(unew)
+logLik(kde.fit)
+AIC(kde.fit)
 ```
 
 #### Plotting bivariate copula densities
@@ -128,6 +126,7 @@ two possible types of plots: *contour* and *surface* (or perspective) plots.
 Additionally, the `margins` argument allows to choose between a plot of the 
 original copula density and a meta-copula density with standard normal margins 
 (default for `type = surface`).
+
 ```{r fig.width=4, fig.height=4}
 plot(kde.fit)
 ```
@@ -138,5 +137,54 @@ contour(kde.fit)
 contour(kde.fit, margins = "unif")
 ```
 
+You can also pass further arguments to the `...` argument to refine the
+aesthetics. The arguments are forwaded to  
+`lattice::wireframe` or `graphics::contour`, respectively.
+```{r fig.width=4, fig.height=4}
+plot(kde.fit, 
+     size = 15,  # reduce grid size
+     zlim = c(0, 10),  # z-axis limits
+     screen = list(x = -75, z = 45),  # rotate screen
+     xlab = list(quote(u[1]), rot =  25),  # labels have to be rotated as well
+     ylab = list(quote(u[2]), rot = -25))  
+```
+```{r fig.width=4, fig.height=4}
+contour(kde.fit, col = terrain.colors(30), levels = seq(0, 0.3, by = 0.01))
+```
+
+We see that the asymmetries observed in the data are adequately reflected by
+the estimated model.
+
+
+#### Working with a `kdecopula` object
+
+The density and *cdf* can be computed easily:
+
+```{r}
+dkdecop(c(0.1, 0.2), kde.fit)  # estimated copula density
+pkdecop(cbind(c(0.1, 0.9), c(0.1, 0.9)), kde.fit) # corresponding copula cdf
+```
+
+Furthermore, we can simulate synthetic data from the estimated density:
+```{r fig.width=4, fig.height=4}
+unew <- rkdecop(655, kde.fit)
+plot(unew)
+```
+
+## References
+
+Gijbels, I. and Mielniczuk, J. (1990). Estimating the density of a copula 
+function. *Communications in Statistics - Theory and Methods*, 19(2):445-464. 
+
+Charpentier, A., Fermanian, J.-D., and Scaillet, O. (2006). The estimation of 
+copulas: Theory and practice. In Rank, J., editor, Copulas: From theory to
+application in finance. Risk Books. 
+
+Geenens, G., Charpentier, A., and Paindaveine, D. (2014). Probit transformation
+for nonparametric kernel estimation of the copula density. 
+[*arXiv:1404.4414 (stat.ME)*](arxiv.org/abs/1404.4414).
+
+Nagler, T. (2014). Kernel Methods for Vine Copula Estimation. [*Master's Thesis,
+Technische Universität München*](https://mediatum.ub.tum.de/node?id=1231221)
 
 
