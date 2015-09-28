@@ -143,8 +143,8 @@ plot(kde.fit,
      size = 15,  # reduce grid size
      zlim = c(0, 10),  # z-axis limits
      screen = list(x = -75, z = 45),  # rotate screen
-     xlab = list(rot =  25),  # labels have to be rotated as well
-     ylab = list(rot = -25))  
+     xlab = list(rot = 25),  # labels can be rotated as well
+     ylab = list(label = "other label", rot = -25))  
 ```
 ```{r fig.width=4, fig.height=4}
 contour(kde.fit, col = terrain.colors(30), levels = seq(0, 0.3, by = 0.01))
