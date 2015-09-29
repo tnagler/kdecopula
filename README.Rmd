@@ -23,7 +23,7 @@ kdecopula
 
 This package provides fast implementations of kernel estimators for the copula 
 density. Due to its several plotting options it is particularly useful for the 
-exploratory analysis of dependece structures. It can be further used for flexible
+exploratory analysis of dependence structures. It can be further used for flexible
 nonparametric estimation of copula densities and resampling.
 
 You can install:
@@ -81,7 +81,7 @@ package. All user-level functions will be introduced with small examples.
 
 Let's consider some variables of the *Wiscon diagnostic breast cancer* data 
 included in this package. The data are transformed to pseudo-observations of
-the copula by the empirical probability/rank transform:
+the copula by the empirical probability integral/rank transform:
 
 
 ```{r fig.width=4, fig.height=4}
@@ -121,9 +121,9 @@ AIC(kde.fit)
 The most interesting part for most people is probably to make exploratory plots. 
 The class `kdecopula` has its own generic for plotting. In general, there are
 two possible types of plots: *contour* and *surface* (or perspective) plots. 
-Additionally, the `margins` argument allows to choose between a plot of the 
+Additionally, the `margins` argument allows to choose between plots of the 
 original copula density and a meta-copula density with standard normal margins 
-(default for `type = surface`).
+(default for `type = contour`).
 
 ```{r fig.width=4, fig.height=4}
 plot(kde.fit)
