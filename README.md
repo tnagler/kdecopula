@@ -5,7 +5,7 @@ kdecopula
 
 [![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula) [![Windows Build status](http://ci.appveyor.com/api/projects/status/github/tnagler/kdecopula?svg=true)](https://ci.appveyor.com/project/tnagler/kdecopula) [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/web/packages/kdecopula/index.html) [![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)](https://cran.r-project.org/web/packages/kdecopula/index.html)
 
-This package provides fast implementations of kernel estimators for the copula density. Due to its several plotting options it is particularly useful for the exploratory analysis of dependece structures. It can be further used for flexible nonparametric estimation of copula densities and resampling.
+This package provides fast implementations of kernel estimators for the copula density. Due to its several plotting options it is particularly useful for the exploratory analysis of dependence structures. It can be further used for flexible nonparametric estimation of copula densities and resampling.
 
 You can install:
 
@@ -53,7 +53,7 @@ kdecopula in action
 
 Below, we demonstrate the main capabilities of the `kdecopula` package. All user-level functions will be introduced with small examples.
 
-Let's consider some variables of the *Wiscon diagnostic breast cancer* data included in this package. The data are transformed to pseudo-observations of the copula by the empirical probability/rank transform:
+Let's consider some variables of the *Wiscon diagnostic breast cancer* data included in this package. The data are transformed to pseudo-observations of the copula by the empirical probability integral/rank transform:
 
 ``` r
 library(kdecopula)
@@ -96,7 +96,7 @@ AIC(kde.fit)
 
 #### Plotting bivariate copula densities
 
-The most interesting part for most people is probably to make exploratory plots. The class `kdecopula` has its own generic for plotting. In general, there are two possible types of plots: *contour* and *surface* (or perspective) plots. Additionally, the `margins` argument allows to choose between a plot of the original copula density and a meta-copula density with standard normal margins (default for `type = surface`).
+The most interesting part for most people is probably to make exploratory plots. The class `kdecopula` has its own generic for plotting. In general, there are two possible types of plots: *contour* and *surface* (or perspective) plots. Additionally, the `margins` argument allows to choose between plots of the original copula density and a meta-copula density with standard normal margins (default for `type = contour`).
 
 ``` r
 plot(kde.fit)
@@ -124,7 +124,7 @@ plot(kde.fit,
      size = 15,  # reduce grid size
      zlim = c(0, 10),  # z-axis limits
      screen = list(x = -75, z = 45),  # rotate screen
-     xlab = list(rot = 25),  # labels have to be rotated as well
+     xlab = list(rot = 25),  # labels can be rotated as well
      ylab = list(label = "other label", rot = -25))  
 ```
 
