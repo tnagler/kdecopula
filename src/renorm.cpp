@@ -22,8 +22,10 @@ NumericVector ren_subs(NumericVector vals, NumericVector grid, int d) {
         }
     }
     
-    for (int i = 0; i < N; ++i) 
-    out[i] = vals[i] / fmax(newvals[0], 1e-10);
+    for (int i = 0; i < N; ++i) {
+        out[i] = vals[i] / fmax(newvals[0], 1e-10);
+        out[i] = fmax(out[i], 1e-15);
+    }
     
     return out;
 }
