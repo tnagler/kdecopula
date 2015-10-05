@@ -119,7 +119,7 @@ NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid)
         i2 = std::min(j+2, m-1);
         tmpgrid = NumericVector::create(grid[i0], grid[j], grid[j+1], grid[i2]);
         out[n] = interp_on_grid(x(n, 1), y, tmpgrid);
-        out[n] = fmax(out[n], 1e-30);
+        out[n] = fmax(out[n], 1e-15);
     }
     
     return out;
@@ -204,6 +204,7 @@ NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, In
         
         
         out[n] = newvals[0];
+        out[n] = fmax(out[n], 1e-15);
     } 
     
     return out;
