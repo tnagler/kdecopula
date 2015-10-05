@@ -10,7 +10,7 @@ NEW FEATURES
 
 BUG FIXES
 
-  * Fixed type in install instructions.
+  * Fixed typo in install instructions.
   
   * Fixed bug in summary (`method = "T"`).
 
