@@ -108,7 +108,7 @@ kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter
         stop("Dimension has to be 2.")
     if (any(udata > 1) | any(udata < 0))
         stop("'udata' have to be in the interval [0,1].")
-    if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2")))
+    if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2", "TTPI", "TTCV")))
         stop("method not implemented")
     if (mult <= 0)
         stop("'mult' has to be a positive number.")
@@ -130,7 +130,9 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         if (any(c(diag(bw$B), bw$alpha) <= 0))
             stop("Bandwidths have to be positive.")
         bw$alpha <- mult * bw$alpha
-    } else if (method %in% c("T")) {
+    } else if (method %in% c("TTPI", "TTCV")) {
+        ## TODO: approrpiate check
+    } else if (method == "T") {
         B <- as.matrix(bw)
         if (nrow(B) == 1)
             bw <- diag(as.numeric(bw), d)
@@ -155,9 +157,8 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     
     ## construct grid with k knots in dimension d
     pnts <- pnorm(seq(-3.25, 3.25, l = knots))
-    # pnts <- 1:knots/(knots + 1)
     grid <- as.matrix(do.call(expand.grid,
-                              split(rep(pnts, d), ceiling(1:(knots*d)/knots))))
+                              split(rep(pnts, d), rep(c(1, 2), each = knots))))
     
     ## evaluate estimator on grid
     evalf <- eval_func(method)  # get evaluation function
@@ -165,7 +166,8 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                    bw = bw,
                    lfit = lfit,
                    method = method)
-    vals <- array(evalf(grid, obj=object), dim = rep(knots, d))
+    vals <- array(evalf(grid, obj = object), 
+                  dim = rep(knots, d))
     
     ## rescale copula density to have uniform margins
     if (renorm.iter > 0) {
@@ -192,12 +194,19 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         # likelihood
         likvalues <- dkdecop(udata, res)
         loglik <- sum(log(likvalues))
-        # effective number of parameters
-        effp <- eff_num_par(udata, likvalues, bw, method, lfit)
-        # information criteria
-        AIC  <- - 2 * loglik + 2 * effp
-        cAIC <- AIC + (2 * effp * (effp + 1)) / (n - effp - 1)
-        BIC  <- - 2 * loglik + log(n) * effp
+        
+        if (!(method %in% c("TT", "TTCV"))) {
+            # effective number of parameters
+            effp <- eff_num_par(udata, likvalues, bw, method, lfit)
+            # information criteria
+            AIC  <- - 2 * loglik + 2 * effp
+            cAIC <- AIC + (2 * effp * (effp + 1)) / (n - effp - 1)
+            BIC  <- - 2 * loglik + log(n) * effp
+        } else {
+            warning("Effective number of parameters not yet implemented for this method.
+Use 'info = FALSE' if you don't want to see this message.")
+            effp <- AIC <- cAIC <- BIC <- NULL
+        }
         
         ## store results
         res$info <- list(likvalues = likvalues,
