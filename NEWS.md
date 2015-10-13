@@ -1,3 +1,11 @@
+kdecopula 0.4.0
+-------------------------------
+
+NEW FEATURES
+
+  * New estimation method: tampered transformation estimator (method = "TT"). 
+    Thanks to Kuangyu Wen for sharing code!
+
 kdecopula 0.3.0
 -------------------------------
 
