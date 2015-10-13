@@ -5,32 +5,28 @@
 #' by the user, it will be set by a method-specific automatic selection
 #' procedure. The related (d/p/r)kdecop functions evaluate the density and cdf 
 #' or simulate synthetic data, respectively.
-#' 
-#' Details on the estimation methods and bandwidth selection can be found in
-#' Geenens et al. (2014) for methods \code{TLL1/2} and Nagler (2014) for other
-#' methods. We use a Gaussian product kernel function for all methods except
-#' the beta kernel estimator.\cr 
-#' 
-#' Kernel estimates are usually no proper copula densities. In particular, the
-#' estimated marginal densities are not uniform. We mitigate this issue bei
-#' implementing a renormalization procedure. The number of iterations of the
-#' renormalization algorithm can be specified with the \code{renorm.iter}
-#' argument. Typically, a very small number of iterations is sufficient.
-#'  
+#'   
 #' @param udata \code{nx2} matrix of copula data.
 #' @param bw bandwidth specification; if missing, \code{bw} is selected
-#' automatically; otherwise, a positive real number for methods \code{"MR"} and
-#' \code{"beta"}, a \eqn{2x2} matrix for method \code{"T"}, or a a list \code{B
-#' = <your.B>, alpha = <your.alpha>} containing the \eqn{2x2} rotation matrix
-#' and the nearest-neighbor fraction alpha.
+#' automatically; Otherwise, please provide (for the respective method) \cr
+#' \code{"MR", "beta"}: a positive real number, \cr
+#' \code{"T"}: a \eqn{2x2} matrix for method, \cr
+#' \code{"TLL1", "TLL2"}: a list with (named) entries \code{B} and \code{alpha}
+#' containing the \eqn{2x2} rotation matrix \code{B} and the nearest-neighbor 
+#' fraction \code{alpha}, \cr
+#' \code{"TT"}: a numeric vector of length four.
 #' @param mult bandwidth multiplier, has to be positive; the bandwidth used for
 #' estimation is \code{bw*mult}.
-#' @param method \code{"MR"}: mirror-reflection estimator, \cr \code{"beta"}:
-#' beta kernel estimator, \cr \code{"T"}: transformation estimator with
-#' standard bivariate kernel estimation, \cr \code{"TLL1"}: transformation
-#' estimator with log-linear local likelihood estimation and nearest-neighbor
-#' bandwidths, \cr \code{"TLL2"}: transformation estimator with log-quadradtic
-#' local likelihood estimation and nearest-neighbor bandwidths.
+#' @param method 
+#' \code{"MR"}: mirror-reflection estimator, \cr 
+#' \code{"beta"}: beta kernel estimator, \cr 
+#' \code{"T"}: transformation estimator with standard bivariate kernel 
+#' estimation, \cr 
+#' \code{"TLL1"}: transformation estimator with log-linear local likelihood
+#' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr 
+#' \code{"TLL2"}: transformation estimator with log-quadradtic local likelihood 
+#' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
+#' \code{"TT"}: tampered transformation estimator with plug-in bandwidths.
 #' @param knots integer; number of knots in each dimension for the spline
 #' approximation; defaults to \code{50}.
 #' @param renorm.iter integer; number of iterations for the renormalization
@@ -44,17 +40,33 @@
 #' evaluation of the estimator. If no bandwidth was provided in the function
 #' call, the automatically selected value can be found in the variable
 #' \code{object$bw}. If \code{info=TRUE}, also the following will be available
-#' under \code{object$info}: \item{likvalues}{Estimator evaluated in sample
-#' points} \item{loglik}{Log likelihood} \item{effp}{Effective number of
-#' parameters} \item{AIC}{Akaike information criterion}
+#' under \code{object$info}: 
+#' \item{likvalues}{Estimator evaluated in sample points} 
+#' \item{loglik}{Log likelihood} 
+#' \item{effp}{Effective number of parameters} 
+#' \item{AIC}{Akaike information criterion}
 #' \item{cAIC}{Bias-corrected version of Akaike information criterion}
-#' \item{BIC}{Bayesian information criterion.} \cr The density estimate can be
-#' evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}};
-#' the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore,
-#' synthetic data can be simulated with
-#' \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plot options are
-#' provided by \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.
+#' \item{BIC}{Bayesian information criterion.} \cr 
+#' The density estimate can be evaluated on arbitrary points with 
+#' \code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with 
+#' \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be
+#' simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plotting
+#' options are available with \code{\link[kdecopula:plot.kdecopula]{plot}}
+#' and \code{\link[kdecopula:contour.kdecopula]{contour}}.
 #' 
+#' @details Details on the estimation methods and bandwidth selection can be
+#' found in Geenens et al. (2014) for methods \code{TLL1/2} and Nagler (2014) 
+#' for other methods. We use a Gaussian product kernel function for all methods 
+#' except the beta kernel estimator.\cr 
+#' 
+#' Kernel estimates are usually no proper copula densities. In particular, the
+#' estimated marginal densities are not uniform. We mitigate this issue bei
+#' implementing a renormalization procedure. The number of iterations of the
+#' renormalization algorithm can be specified with the \code{renorm.iter}
+#' argument. Typically, a very small number of iterations is sufficient. \cr
+#' 
+#' The implementation of the tampered transformation estimator ("TT") was kindly
+#' provided by Kuangyu Wen. 
 #' 
 #' @author Thomas Nagler
 #' 
@@ -108,7 +120,7 @@ kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter
         stop("Dimension has to be 2.")
     if (any(udata > 1) | any(udata < 0))
         stop("'udata' have to be in the interval [0,1].")
-    if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2", "TTPI", "TTCV")))
+    if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2", "TT", "TTCV")))
         stop("method not implemented")
     if (mult <= 0)
         stop("'mult' has to be a positive number.")
@@ -130,8 +142,11 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         if (any(c(diag(bw$B), bw$alpha) <= 0))
             stop("Bandwidths have to be positive.")
         bw$alpha <- mult * bw$alpha
-    } else if (method %in% c("TTPI", "TTCV")) {
-        ## TODO: approrpiate check
+    } else if (method %in% c("TT", "TTCV")) {
+#         if (any(bw[c(1, 3:4)] < 0))
+#             stop("The first, third and fourth entries of bw have to be positive.")
+#         if (abs(bw[2] > 0.9999))
+#             stop("The correlation parameter (second entry of bw) ")
     } else if (method == "T") {
         B <- as.matrix(bw)
         if (nrow(B) == 1)
