@@ -14,9 +14,9 @@
 #' \code{"TLL1", "TLL2"}: a list with (named) entries \code{B} and \code{alpha}
 #' containing the \eqn{2x2} rotation matrix \code{B} and the nearest-neighbor 
 #' fraction \code{alpha}, \cr
-#' \code{"TT"}: a numeric vector of length four.
-#' @param mult bandwidth multiplier, has to be positive; the bandwidth used for
-#' estimation is \code{bw*mult}.
+#' \code{"TTCV", "TTPI"}: a numeric vector of length four containing (in th.
+#' @param mult bandwidth multiplier, has to be positive; useful for making 
+#' estimates more/less smooth manually.
 #' @param method 
 #' \code{"MR"}: mirror-reflection estimator, \cr 
 #' \code{"beta"}: beta kernel estimator, \cr 
@@ -26,7 +26,9 @@
 #' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr 
 #' \code{"TLL2"}: transformation estimator with log-quadradtic local likelihood 
 #' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
-#' \code{"TT"}: tampered transformation estimator with plug-in bandwidths.
+#' \code{"TTPI"}: tapered transformation estimator with plug-in bandwidths, \cr
+#' \code{"TTCV"}: tapered transformation estimator with profile cross-validation
+#' bandwidths.
 #' @param knots integer; number of knots in each dimension for the spline
 #' approximation; defaults to \code{50}.
 #' @param renorm.iter integer; number of iterations for the renormalization
@@ -65,8 +67,8 @@
 #' renormalization algorithm can be specified with the \code{renorm.iter}
 #' argument. Typically, a very small number of iterations is sufficient. \cr
 #' 
-#' The implementation of the tampered transformation estimator ("TT") was kindly
-#' provided by Kuangyu Wen. 
+#' The implementation of the tapered transformation estimator ("TTPI"/"TTCV") 
+#' was kindly provided by Kuangyu Wen. 
 #' 
 #' @author Thomas Nagler
 #' 
@@ -87,7 +89,11 @@
 #' Kernel Methods for Vine Copula Estimation.
 #' Master's Thesis, Technische Universitaet Muenchen,
 #' \url{https://mediatum.ub.tum.de/node?id=1231221} 
-#' 
+#' \cr \cr
+#' Wen, K. and Wu, X. (2015),
+#' Transformation-Kernel Estimation of the Copula Density,
+#' Working paper,
+#' \url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
 #' 
 #' @examples
 #' 
@@ -120,7 +126,7 @@ kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter
         stop("Dimension has to be 2.")
     if (any(udata > 1) | any(udata < 0))
         stop("'udata' have to be in the interval [0,1].")
-    if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2", "TT", "TTCV")))
+    if (!(method %in% c("MR", "beta", "T", "TLL1", "TLL2", "TTPI", "TTCV")))
         stop("method not implemented")
     if (mult <= 0)
         stop("'mult' has to be a positive number.")
@@ -142,11 +148,14 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         if (any(c(diag(bw$B), bw$alpha) <= 0))
             stop("Bandwidths have to be positive.")
         bw$alpha <- mult * bw$alpha
-    } else if (method %in% c("TT", "TTCV")) {
-#         if (any(bw[c(1, 3:4)] < 0))
-#             stop("The first, third and fourth entries of bw have to be positive.")
-#         if (abs(bw[2] > 0.9999))
-#             stop("The correlation parameter (second entry of bw) ")
+    } else if (method %in% c("TTPI", "TTCV")) {
+        if (bw[1] < 0)
+            stop("The smoothing parameter (bw[1]) has to be positive.")
+        if (bw[3] < 0)
+            stop("The first tapering parameter (bw[3]) has to be positive.")
+        if (abs(bw[2] > 0.9999))
+            stop("The correlation parameter (bw[2]) has to lie in (-1,1).")
+        bw[1] <- bw[1] * mult
     } else if (method == "T") {
         B <- as.matrix(bw)
         if (nrow(B) == 1)
@@ -206,11 +215,10 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     
     ## add further information if asked for
     if (info) {
-        # likelihood
+        # log-likelihood
         likvalues <- dkdecop(udata, res)
         loglik <- sum(log(likvalues))
-        
-        if (!(method %in% c("TT", "TTCV"))) {
+        if (!(method %in% c("TTPI", "TTCV"))) {
             # effective number of parameters
             effp <- eff_num_par(udata, likvalues, bw, method, lfit)
             # information criteria

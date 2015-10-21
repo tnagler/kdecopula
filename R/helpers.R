@@ -8,7 +8,7 @@ bw_select <- function(udata, method) {
            "T"    = n^(-1/(d + 4)) * t(chol(cov(qnorm(udata)))),
            "TLL1" = bw_tll(qnorm(udata), deg = 1),
            "TLL2" = bw_tll(qnorm(udata), deg = 2),
-           "TT"   = bw_tt_plugin(udata),
+           "TTPI" = bw_tt_plugin(udata),
            "TTCV" = bw_tt_pcv(udata))
 }
 
@@ -430,7 +430,7 @@ eval_func <- function(method) {
                eval_tll(uev, obj$lfit, obj$bw$B),
            "TLL2" = function(uev, obj) 
                eval_tll(uev, obj$lfit, obj$bw$B),
-           "TT" = function(uev, obj)
+           "TTPI" = function(uev, obj)
                eval_tt(uev, obj$udata, obj$bw),
            "TTCV" = function(uev, obj)
                eval_tt(uev, obj$udata, obj$bw))

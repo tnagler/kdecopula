@@ -3,7 +3,8 @@ kdecopula 0.4.0
 
 NEW FEATURES
 
-  * New estimation method: tampered transformation estimator (method = "TT"). 
+  * New estimation method: tapered transformation estimator 
+    (methods "TTPI" and "TTCV"). 
     Thanks to Kuangyu Wen for sharing code!
 
 kdecopula 0.3.0
