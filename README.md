@@ -75,8 +75,7 @@ kde.fit <- kdecop(u)  # kernel estimation (bandwidth selected automatically)
 summary(kde.fit)
 #> Kernel copula density estimate
 #> ------------------------------
-#> Variables:    mean radius -- mean concavity
-#> Observations: 569 
+#> Variables:    mean radius -- mean concavityObservations: 569 
 #> Method:       Transformation local likelihood, log-quadratic ('TLL2') 
 #> Bandwidth:    alpha = 0.353621
 #>               B = matrix(c(0.71, 0.7, -1.09, 1.09), 2, 2)
@@ -168,3 +167,5 @@ Charpentier, A., Fermanian, J.-D., and Scaillet, O. (2006). The estimation of co
 Geenens, G., Charpentier, A., and Paindaveine, D. (2014). Probit transformation for nonparametric kernel estimation of the copula density. [*arXiv:1404.4414 (stat.ME)*](arxiv.org/abs/1404.4414).
 
 Nagler, T. (2014). Kernel Methods for Vine Copula Estimation. [*Master's Thesis, Technische Universität München*](https://mediatum.ub.tum.de/node?id=1231221)
+
+Wen, K. and Wu, X. (2015). Transformation-Kernel Estimation of the Copula Density, Working paper, [preprint](http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf)
