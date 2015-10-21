@@ -17,10 +17,10 @@ automatically; Otherwise, please provide (for the respective method) \cr
 \code{"TLL1", "TLL2"}: a list with (named) entries \code{B} and \code{alpha}
 containing the \eqn{2x2} rotation matrix \code{B} and the nearest-neighbor
 fraction \code{alpha}, \cr
-\code{"TT"}: a numeric vector of length four.}
+\code{"TTCV", "TTPI"}: a numeric vector of length four containing (in th.}
 
-\item{mult}{bandwidth multiplier, has to be positive; the bandwidth used for
-estimation is \code{bw*mult}.}
+\item{mult}{bandwidth multiplier, has to be positive; useful for making
+estimates more/less smooth manually.}
 
 \item{method}{\code{"MR"}: mirror-reflection estimator, \cr
 \code{"beta"}: beta kernel estimator, \cr
@@ -30,7 +30,9 @@ estimation, \cr
 estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
 \code{"TLL2"}: transformation estimator with log-quadradtic local likelihood
 estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
-\code{"TT"}: tampered transformation estimator with plug-in bandwidths.}
+\code{"TTPI"}: tapered transformation estimator with plug-in bandwidths, \cr
+\code{"TTCV"}: tapered transformation estimator with profile cross-validation
+bandwidths.}
 
 \item{knots}{integer; number of knots in each dimension for the spline
 approximation; defaults to \code{50}.}
@@ -80,8 +82,8 @@ implementing a renormalization procedure. The number of iterations of the
 renormalization algorithm can be specified with the \code{renorm.iter}
 argument. Typically, a very small number of iterations is sufficient. \cr
 
-The implementation of the tampered transformation estimator ("TT") was kindly
-provided by Kuangyu Wen.
+The implementation of the tapered transformation estimator ("TTPI"/"TTCV")
+was kindly provided by Kuangyu Wen.
 }
 \examples{
 ## load data and transform with empirical cdf
@@ -114,6 +116,11 @@ Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.
 Master's Thesis, Technische Universitaet Muenchen,
 \url{https://mediatum.ub.tum.de/node?id=1231221}
+\cr \cr
+Wen, K. and Wu, X. (2015),
+Transformation-Kernel Estimation of the Copula Density,
+Working paper,
+\url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
 }
 \seealso{
 \code{\link[kdecopula:kdecopula]{kdecopula}},
