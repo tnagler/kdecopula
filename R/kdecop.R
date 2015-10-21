@@ -226,9 +226,9 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
             cAIC <- AIC + (2 * effp * (effp + 1)) / (n - effp - 1)
             BIC  <- - 2 * loglik + log(n) * effp
         } else {
-            warning("Effective number of parameters not yet implemented for this method.
-Use 'info = FALSE' if you don't want to see this message.")
-            effp <- AIC <- cAIC <- BIC <- NULL
+#             warning("Effective number of parameters not yet implemented for this method.
+# Use 'info = FALSE' if you don't want to see this message.")
+            effp <- AIC <- cAIC <- BIC <- NA
         }
         
         ## store results

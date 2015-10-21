@@ -17,7 +17,6 @@ summary.kdecopula <- function(object, ...) {
     if (length(nms) == 2) {
         cat("Variables:   ", nms[1], "--", nms[2])
     }
-    cat("\n")
     
     ## more details about the estimate
     cat("Observations:",
@@ -39,34 +38,44 @@ summary.kdecopula <- function(object, ...) {
         cat("Bandwidth:    ",
             "matrix(c(", paste(round(object$bw, 2), collapse = ", "), "), 2, 2)\n",
             sep = "")
-    } 
+    } else if (object$method %in% c("TTPI", "TTCV")) {
+        cat("Bandwidth:    ",
+            "(",
+            paste(round(object$bw, 2), collapse = ","),
+            ")\n",
+            sep = "")
+    }
     cat("---\n")
     
     ## fit statistics 
-    # calculate
-    effp <- attr(logLik(object), "df")
-    loglik <- logLik(object)
-    AIC  <- AIC(object)
-    cAIC <- AIC + (2 * effp * (effp + 1)) / (nrow(object$udata) - effp - 1)
-    BIC  <- BIC(object)
-    # store in object if not available
-    if (is.null(object$info))  object$info <- list(loglik = as.numeric(loglik),
-                                                   effp   = effp ,
-                                                   AIC    = AIC,
-                                                   cAIC   = cAIC,
-                                                   BIC    = BIC)
-    # print 
-    cat("logLik:", 
-        round(loglik, 2), "   ")
-    cat("AIC:", 
-        round(AIC, 2), "   ")
-    cat("cAIC:",
-        round(cAIC, 2), "   ")
-    cat("BIC:",
-        round(BIC, 2), "\n")
-    cat("Effective number of parameters:", 
-        round(effp, 2))
-    
+    if (object$method %in% c("TTPI", "TTCV")) {
+        cat("logLik:", round(logLik(object), 2), "\n")
+        cat("No further information available for this method")
+    } else {
+        # calculate
+        effp <- attr(logLik(object), "df")
+        loglik <- logLik(object)
+        AIC  <- AIC(object)
+        cAIC <- AIC + (2 * effp * (effp + 1)) / (nrow(object$udata) - effp - 1)
+        BIC  <- BIC(object)
+        # store in object if not available
+        if (is.null(object$info))  object$info <- list(loglik = as.numeric(loglik),
+                                                       effp   = effp ,
+                                                       AIC    = AIC,
+                                                       cAIC   = cAIC,
+                                                       BIC    = BIC)
+        # print 
+        cat("logLik:", 
+            round(loglik, 2), "   ")
+        cat("AIC:", 
+            round(AIC, 2), "   ")
+        cat("cAIC:",
+            round(cAIC, 2), "   ")
+        cat("BIC:",
+            round(BIC, 2), "\n")
+        cat("Effective number of parameters:", 
+            round(effp, 2))
+    }
     ## return with fit statistics
     invisible(object)
 }
@@ -136,5 +145,7 @@ expand_method <- function(method) {
            "TLL2" = "Transformation local likelihood, log-quadratic ('TLL2')",
            "T"    = "Transformation estimator ('T')",
            "MR"   = "Mirror-reflection ('MR')",
-           "beta" = "Beta kernels ('beta')")
+           "beta" = "Beta kernels ('beta')",
+           "TTPI" = "Tapered transformation estimator (plug-in)",
+           "TTCV" = "Tapered transformation estimator (cross-validated)")
 }
