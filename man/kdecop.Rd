@@ -17,7 +17,8 @@ automatically; Otherwise, please provide (for the respective method) \cr
 \code{"TLL1", "TLL2"}: a list with (named) entries \code{B} and \code{alpha}
 containing the \eqn{2x2} rotation matrix \code{B} and the nearest-neighbor
 fraction \code{alpha}, \cr
-\code{"TTCV", "TTPI"}: a numeric vector of length four containing (in th.}
+\code{"TTCV", "TTPI"}: a numeric vector of length four containing \eqn{(h,
+\rho, \theta_1, \theta_2)}, c.f. Wen and Wu (2015).}
 
 \item{mult}{bandwidth multiplier, has to be positive; useful for making
 estimates more/less smooth manually.}
