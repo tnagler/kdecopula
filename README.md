@@ -72,8 +72,6 @@ We start by estimating the copula density with the `kdecop` function. There is a
 
 ``` r
 kde.fit <- kdecop(u)  # kernel estimation (bandwidth selected automatically)
-#> Warning in if (is.na(bw)) bw <- bw_select(udata, method): the condition has
-#> length > 1 and only the first element will be used
 summary(kde.fit)
 #> Kernel copula density estimate
 #> ------------------------------

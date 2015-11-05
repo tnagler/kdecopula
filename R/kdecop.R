@@ -142,7 +142,7 @@ kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 50, renorm
     ## bandwidth selection and adjustment (with bandwidth checks)
     if (missing(bw))
         bw <- bw_select(udata, method)
-    if (is.na(bw))
+    if (any(is.na(bw)))
         bw <- bw_select(udata, method)
     if (method %in% c("TLL1", "TLL2")) {
         if (is.null(bw$B) | is.null(bw$alpha))
