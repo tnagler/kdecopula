@@ -15,7 +15,7 @@ summary.kdecopula <- function(object, ...) {
     ## add variable names if available
     nms <- colnames(object$udata)
     if (length(nms) == 2) {
-        cat("Variables:   ", nms[1], "--", nms[2])
+        cat("Variables:   ", nms[1], "--", nms[2], "\n")
     }
     
     ## more details about the estimate
