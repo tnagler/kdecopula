@@ -4,7 +4,7 @@
 \alias{kdecop}
 \title{Bivariate kernel copula density estimation}
 \usage{
-kdecop(udata, bw, mult = 1, method = "TLL2", knots = NA,
+kdecop(udata, bw, mult = 1, method = "TLL2", knots = 50,
   renorm.iter = 3L, info = TRUE)
 }
 \arguments{
@@ -36,7 +36,7 @@ estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
 bandwidths.}
 
 \item{knots}{integer; number of knots in each dimension for the spline
-approximation; defaults to \code{50}.}
+approximation.}
 
 \item{renorm.iter}{integer; number of iterations for the renormalization
 procedure (see \emph{Details}).}

@@ -31,7 +31,7 @@
 #' \code{"TTCV"}: tapered transformation estimator with profile cross-validation
 #' bandwidths.
 #' @param knots integer; number of knots in each dimension for the spline
-#' approximation; defaults to \code{50}.
+#' approximation.
 #' @param renorm.iter integer; number of iterations for the renormalization
 #' procedure (see \emph{Details}).
 #' @param info logical; if \code{TRUE}, additional information about the
@@ -115,7 +115,7 @@
 #' ## simulate 500 samples from density estimate
 #' rkdecop(500, dens.est)
 #' 
-kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = NA, renorm.iter = 3L, info = TRUE) {
+kdecop <- function(udata, bw, mult = 1, method = "TLL2", knots = 50, renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
     n <- nrow(udata)
     d <- ncol(udata)
