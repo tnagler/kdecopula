@@ -156,7 +156,7 @@ rkdecop <- function(n, obj, quasi = FALSE) {
         W <- cbind(runif(n), runif(n))
     } else {
         # generate quasi random numbers
-        w <- ghalton(n, d = 2)
+        W <- ghalton(n, d = 2)
     }
 
     # if independence copula is specified, return W
