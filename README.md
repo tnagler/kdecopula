@@ -72,10 +72,13 @@ We start by estimating the copula density with the `kdecop` function. There is a
 
 ``` r
 kde.fit <- kdecop(u)  # kernel estimation (bandwidth selected automatically)
+#> Warning in if (is.na(bw)) bw <- bw_select(udata, method): the condition has
+#> length > 1 and only the first element will be used
 summary(kde.fit)
 #> Kernel copula density estimate
 #> ------------------------------
-#> Variables:    mean radius -- mean concavityObservations: 569 
+#> Variables:    mean radius -- mean concavity 
+#> Observations: 569 
 #> Method:       Transformation local likelihood, log-quadratic ('TLL2') 
 #> Bandwidth:    alpha = 0.353621
 #>               B = matrix(c(0.71, 0.7, -1.09, 1.09), 2, 2)
@@ -135,8 +138,6 @@ contour(kde.fit, col = terrain.colors(30), levels = seq(0, 0.3, by = 0.01))
 
 ![](inst/README-unnamed-chunk-10-1.png)
 
-We see that the asymmetries observed in the data are adequately reflected by the estimated model.
-
 #### Working with a `kdecopula` object
 
 The density and *cdf* can be computed easily:
@@ -156,6 +157,8 @@ plot(unew)
 ```
 
 ![](inst/README-unnamed-chunk-12-1.png)
+
+We see that the asymmetries observed in the data are adequately reflected by the estimated model.
 
 References
 ----------

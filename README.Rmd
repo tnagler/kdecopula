@@ -73,7 +73,7 @@ options.
 ## kdecopula in action
 
 ```{r echo = FALSE}
-set.seed(1)
+set.seed(2)
 ```
 
 Below, we demonstrate the main capabilities of the `kdecopula` 
@@ -150,10 +150,6 @@ plot(kde.fit,
 contour(kde.fit, col = terrain.colors(30), levels = seq(0, 0.3, by = 0.01))
 ```
 
-We see that the asymmetries observed in the data are adequately reflected by
-the estimated model.
-
-
 #### Working with a `kdecopula` object
 
 The density and *cdf* can be computed easily:
@@ -168,6 +164,9 @@ Furthermore, we can simulate synthetic data from the estimated density:
 unew <- rkdecop(655, kde.fit)
 plot(unew)
 ```
+
+We see that the asymmetries observed in the data are adequately reflected by
+the estimated model.
 
 ## References
 
