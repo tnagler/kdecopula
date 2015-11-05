@@ -69,7 +69,7 @@ plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
     if (missing(size))
         size <- switch(type,
                        "contour" = 100L,
-                       "surface" = 25L)
+                       "surface" = 15L)
     stopifnot(is.numeric(size))
     size <- round(size)
     

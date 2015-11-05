@@ -121,7 +121,6 @@ You can also pass further arguments to the `...` argument to refine the aestheti
 
 ``` r
 plot(kde.fit, 
-     size = 15,  # reduce grid size
      zlim = c(0, 10),  # z-axis limits
      screen = list(x = -75, z = 45),  # rotate screen
      xlab = list(rot = 25),  # labels can be rotated as well
