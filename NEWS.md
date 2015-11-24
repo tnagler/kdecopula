@@ -1,3 +1,13 @@
+kdecopula 0.4.1
+-------------------------------
+
+BUG FIXES
+
+  * rkdecop now properly working with quasi-random numbers.
+ 
+  * improved efficiency of C++ code. 
+
+
 kdecopula 0.4.0
 -------------------------------
 
