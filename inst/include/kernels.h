@@ -3,9 +3,11 @@
 
 #include <RcppArmadillo.h>
 
-Rcpp::NumericVector kern_epan(Rcpp::NumericVector x);
-Rcpp::NumericVector kern_epan_2d(Rcpp::NumericVector x, Rcpp::NumericVector y);
-Rcpp::NumericVector kern_gauss(Rcpp::NumericVector x);
-Rcpp::NumericVector kern_gauss_2d(Rcpp::NumericVector x, Rcpp::NumericVector y);
-
+arma::vec kern_epan_1d(const arma::vec& x, const double& b);
+arma::vec kern_epan_2d(const arma::vec& x, const arma::vec& y, const double& b);
+arma::vec kern_epan(const arma::mat& x, const arma::vec& b);
+arma::vec kern_gauss_1d(const arma::vec& x, const double& b);
+arma::vec kern_gauss_2d(const arma::vec& x, const arma::vec& y, const double& b);
+arma::vec kern_gauss(const arma::mat& x, const arma::vec& b);
+    
 #endif

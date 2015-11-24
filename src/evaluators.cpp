@@ -2,82 +2,110 @@
 #include <kernels.h>
 #include <interp.h>
 using namespace Rcpp;
-
+using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
 
+// MIRROR-REFLECTION ETIMATOR
 // [[Rcpp::export]]
-NumericVector eval_mr(NumericMatrix uev, NumericMatrix dat, double b) {
-    double n = dat.nrow();
-    NumericVector out(uev.nrow());
-    NumericVector tmp1(n), tmp2(n), tmp3(n),
+arma::vec eval_mr(const arma::mat& uev,  /* evaluation points */
+                  const arma::mat& dat,  /* cpoula data       */
+                  const double& b)       /* bandwidth         */
+{
+    int n = dat.n_rows;
+    int m = uev.n_rows;
+    vec out(uev.n_rows);
+    vec tmp1(n), tmp2(n), tmp3(n),
     tmp4(n), tmp5(n), tmp6(n),
     tmp7(n), tmp8(n), tmp9(n);
+    double nb2 = pow(b, 2.0) * (double)n;  /* scaling factor nb^2 */
     
-    for (int i = 0; i < uev.nrow(); ++i) {
-        tmp1 = kern_epan_2d((uev(i, 0) - dat(_, 0)) / b, (uev(i, 1) - dat(_, 1)) / b); 
+    for (int i = 0; i < m; ++i) {
+        // compute kernels at all reflections
+        tmp1 = kern_epan_2d(uev(i, 0) - dat.col(0), uev(i, 1) - dat.col(1), b);
+        tmp2 = kern_epan_2d(uev(i, 0) + dat.col(0), uev(i, 1) - dat.col(1), b);
+        tmp3 = kern_epan_2d(uev(i, 0) - dat.col(0), uev(i, 1) + dat.col(1), b);
+        tmp4 = kern_epan_2d(uev(i, 0) + dat.col(0), uev(i, 1) + dat.col(1), b);
+        tmp5 = kern_epan_2d(uev(i, 0) - dat.col(0), uev(i, 1) + dat.col(1) - 2, b);
+        tmp6 = kern_epan_2d(uev(i, 0) + dat.col(0), uev(i, 1) + dat.col(1) - 2, b);
+        tmp7 = kern_epan_2d(uev(i, 0) + dat.col(0) - 2, uev(i, 1) - dat.col(1), b);
+        tmp8 = kern_epan_2d(uev(i, 0) + dat.col(0) - 2, uev(i, 1) + dat.col(1), b);
+        tmp9 = kern_epan_2d(uev(i, 0) + dat.col(0) - 2, uev(i, 1) + dat.col(1) - 2, b);
         
-        tmp2 = kern_epan_2d((uev(i, 0) + dat(_, 0)) / b, (uev(i, 1) - dat(_, 1)) / b);
-        tmp3 = kern_epan_2d((uev(i, 0) - dat(_, 0)) / b, (uev(i, 1) + dat(_, 1)) / b);
-        tmp4 = kern_epan_2d((uev(i, 0) + dat(_, 0)) / b, (uev(i, 1) + dat(_, 1)) / b);
+        // estimate is sum of all kernels divided by nb^2
+        out[i] = sum(tmp1 + tmp2 + tmp3 + tmp4 + tmp5 + tmp6 + tmp7 + tmp8) / nb2;
         
-        tmp5 = kern_epan_2d((uev(i, 0) - dat(_, 0)) / b, (uev(i, 1) + dat(_, 1) - 2) / b);
-        tmp6 = kern_epan_2d((uev(i, 0) + dat(_, 0)) / b, (uev(i, 1) + dat(_, 1) - 2) / b);
-        
-        tmp7 = kern_epan_2d((uev(i, 0) + dat(_, 0) - 2) / b, (uev(i, 1) - dat(_, 1)) / b);
-        tmp8 = kern_epan_2d((uev(i, 0) + dat(_, 0) - 2) / b, (uev(i, 1) + dat(_, 1)) / b);
-        
-        tmp9 = kern_epan_2d((uev(i, 0) + dat(_, 0) - 2) / b, (uev(i, 1) + dat(_, 1) - 2) / b);
-        
-        out[i] = sum(tmp1 + tmp2 + tmp3 + tmp4 + tmp5 + tmp6 + tmp7 + tmp8) / (pow(b, 2) * n);
     }
     return out;
 }
 
+// BETA KERNEL ESTIMATOR
 // [[Rcpp::export]]
-NumericVector eval_beta(NumericMatrix uev, NumericMatrix dat, double b){
-    NumericVector out(uev.nrow());
-    double n = dat.nrow();
-    NumericVector B0(n), B1(n);
+arma::vec eval_beta(const arma::mat& uev,  /* evaluation points */
+                    const arma::mat& dat,  /* cpoula data       */
+                    double b)              /* bandwidth         */
+{
+    int n = dat.n_rows;
+    int d = dat.n_cols;
+    int m = uev.n_rows;
+    vec datj(n), B0(n), B1(n), out(uev.n_rows);
     
-    for (int i = 0; i < uev.nrow(); ++i) {
-        NumericVector B = rep(1.0, n);
-        for (int j = 0; j < uev.ncol(); ++j) {
-            B = B * dbeta(dat(_, j), uev(i, j) / b + 1, (1 - uev(i, j)) / b + 1);
+    for (int i = 0; i < m; ++i) {
+        // initialize with vector of ones
+        vec B = rep(1.0, n);
+        
+        // multiply with a beta kernel for each dimension
+        for (int j = 0; j < d; ++j) {
+            datj = dat.col(j);
+            B0 = dbeta(as<NumericVector>(wrap(datj)), 
+                       uev(i, j) / b + 1,
+                       (1 - uev(i, j)) / b + 1);
+            B = B % B0;
         }
-        out[i] = sum(B) / n;
+        
+        // copula density estimate is mean of product kernels
+        out[i] = mean(B);
     }
     return out;
 }
 
 
+// TRANSFORMATION ESTIMATOR
 // [[Rcpp::export]]
-NumericVector eval_trafo(NumericMatrix uev, NumericMatrix dat, arma::mat B){
-    NumericVector out(uev.nrow());
-    double n = dat.nrow();
-    int d = uev.ncol();
-    NumericMatrix xev(uev.nrow(), uev.ncol());
-    NumericMatrix xdat(dat.nrow(), dat.ncol());
+arma::vec eval_trafo(const arma::mat& uev,  /* evaluation points */
+                     const arma::mat& dat,  /* cpoula data       */
+                     const arma::mat& B)    /* bandwidth matrix  */
+{ 
+    int n = dat.n_rows;
+    int d = dat.n_cols;
+    int m = uev.n_rows;
+    vec out(m);
     
-    for(int j = 0; j < d; ++j){
-        xev(_, j) = qnorm(as<NumericVector>(wrap(uev(_, j))));
-        xdat(_, j) = qnorm(as<NumericVector>(wrap(dat(_, j))));
-    }
+    // transform data by inverse Gaussian cdf
+    mat xev = as<vec>(wrap(qnorm(as<NumericVector>(wrap(uev))))); 
+    mat xdat = as<vec>(wrap(qnorm(as<NumericVector>(wrap(dat)))));
+    xev.reshape(m, d);
+    xdat.reshape(n, d);
     
+    // apply bandwidth matrix
+    mat zev  = (inv(B) * (xev).t()).t();
+    mat zdat = (inv(B) * (xdat).t()).t();
     
-    NumericMatrix zev  = wrap((inv(B) * as<arma::mat>(xev).t()).t());
-    NumericMatrix zdat = wrap((inv(B) * as<arma::mat>(xdat).t()).t());
-    
-    NumericMatrix tmpmat(dat.nrow(), dat.ncol());
+    // create temporaray objects for loop
+    mat tmpmat(n, d);
+    rowvec xevi;
     double tmp;
     NumericVector rescale(2);
-    for(int i = 0; i < uev.nrow(); ++i){
-        for(int j = 0; j < 2; ++j){
-            tmpmat(_, j) = zev(i, j) - zdat(_, j);
-        }
-        tmp = sum(kern_gauss_2d(tmpmat(_, 0), tmpmat(_, 1))) / n;
-        rescale = dnorm(as<NumericVector>(wrap(xev(i, _))));
+    
+    for(int i = 0; i < m; ++i){
+        // compute standard kernel estimate
+        tmpmat = zdat - repmat(zev.row(i), n, 1);
+        tmp = mean(kern_gauss(tmpmat, rep(1.0, 2)));
+        
+        // rescale to obtain a kernel estimate of copula density
+        xevi = xev.row(i);
+        rescale = dnorm(as<NumericVector>(wrap(xevi)));
         out[i] = tmp / (rescale[0] * rescale[1] * det(B));
     }
     

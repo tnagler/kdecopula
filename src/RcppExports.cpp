@@ -7,226 +7,254 @@
 using namespace Rcpp;
 
 // eval_mr
-NumericVector eval_mr(NumericMatrix uev, NumericMatrix dat, double b);
+arma::vec eval_mr(const arma::mat& uev, /* evaluation points */                   const arma::mat& dat, /* cpoula data       */                   const double& b);
 RcppExport SEXP kdecopula_eval_mr(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type dat(datSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type uev(uevSEXP);
+    Rcpp::traits::input_parameter< /* evaluation points */                   const arma::mat& >::type dat(datSEXP);
+    Rcpp::traits::input_parameter< /* cpoula data       */                   const double& >::type b(bSEXP);
     __result = Rcpp::wrap(eval_mr(uev, dat, b));
     return __result;
 END_RCPP
 }
 // eval_beta
-NumericVector eval_beta(NumericMatrix uev, NumericMatrix dat, double b);
+arma::vec eval_beta(const arma::mat& uev, /* evaluation points */                     const arma::mat& dat, /* cpoula data       */                     double b);
 RcppExport SEXP kdecopula_eval_beta(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type dat(datSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type uev(uevSEXP);
+    Rcpp::traits::input_parameter< /* evaluation points */                     const arma::mat& >::type dat(datSEXP);
+    Rcpp::traits::input_parameter< /* cpoula data       */                     double >::type b(bSEXP);
     __result = Rcpp::wrap(eval_beta(uev, dat, b));
     return __result;
 END_RCPP
 }
 // eval_trafo
-NumericVector eval_trafo(NumericMatrix uev, NumericMatrix dat, arma::mat B);
+arma::vec eval_trafo(const arma::mat& uev, /* evaluation points */                      const arma::mat& dat, /* cpoula data       */                      const arma::mat& B);
 RcppExport SEXP kdecopula_eval_trafo(SEXP uevSEXP, SEXP datSEXP, SEXP BSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type dat(datSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type uev(uevSEXP);
+    Rcpp::traits::input_parameter< /* evaluation points */                      const arma::mat& >::type dat(datSEXP);
+    Rcpp::traits::input_parameter< /* cpoula data       */                      const arma::mat& >::type B(BSEXP);
     __result = Rcpp::wrap(eval_trafo(uev, dat, B));
     return __result;
 END_RCPP
 }
 // eval_hfunc_2d
-NumericVector eval_hfunc_2d(NumericMatrix uev, int cond_var, NumericMatrix vals, NumericVector grid);
+Rcpp::NumericVector eval_hfunc_2d(const Rcpp::NumericMatrix& uev, const int& cond_var, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid);
 RcppExport SEXP kdecopula_eval_hfunc_2d(SEXP uevSEXP, SEXP cond_varSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< int >::type cond_var(cond_varSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type uev(uevSEXP);
+    Rcpp::traits::input_parameter< const int& >::type cond_var(cond_varSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
     __result = Rcpp::wrap(eval_hfunc_2d(uev, cond_var, vals, grid));
     return __result;
 END_RCPP
 }
 // eval_hfunc
-NumericVector eval_hfunc(NumericMatrix uev, IntegerVector cond_var, IntegerVector uncond_var, NumericVector vals, NumericVector grid, NumericMatrix helpgrid, IntegerMatrix helpind);
+Rcpp::NumericVector eval_hfunc(const Rcpp::NumericMatrix& uev, const Rcpp::IntegerVector& cond_var, const Rcpp::IntegerVector& uncond_var, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid, const Rcpp::NumericMatrix& helpgrid, const Rcpp::IntegerMatrix& helpind);
 RcppExport SEXP kdecopula_eval_hfunc(SEXP uevSEXP, SEXP cond_varSEXP, SEXP uncond_varSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpgridSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type cond_var(cond_varSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type uncond_var(uncond_varSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type helpgrid(helpgridSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type helpind(helpindSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type uev(uevSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type cond_var(cond_varSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type uncond_var(uncond_varSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type helpgrid(helpgridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type helpind(helpindSEXP);
     __result = Rcpp::wrap(eval_hfunc(uev, cond_var, uncond_var, vals, grid, helpgrid, helpind));
     return __result;
 END_RCPP
 }
 // inv_hfunc
-NumericVector inv_hfunc(NumericMatrix uev, int cond_var, NumericMatrix vals, NumericVector grid);
+Rcpp::NumericVector inv_hfunc(const Rcpp::NumericMatrix& uev, const int& cond_var, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid);
 RcppExport SEXP kdecopula_inv_hfunc(SEXP uevSEXP, SEXP cond_varSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< int >::type cond_var(cond_varSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type uev(uevSEXP);
+    Rcpp::traits::input_parameter< const int& >::type cond_var(cond_varSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
     __result = Rcpp::wrap(inv_hfunc(uev, cond_var, vals, grid));
     return __result;
 END_RCPP
 }
 // eval_cdf
-NumericVector eval_cdf(NumericMatrix uev, NumericVector vals, NumericVector grid, NumericMatrix helpgrid, IntegerMatrix helpind);
+Rcpp::NumericVector eval_cdf(const Rcpp::NumericMatrix& uev, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid, const Rcpp::NumericMatrix& helpgrid, const Rcpp::IntegerMatrix& helpind);
 RcppExport SEXP kdecopula_eval_cdf(SEXP uevSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpgridSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type helpgrid(helpgridSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type helpind(helpindSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type uev(uevSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type helpgrid(helpgridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type helpind(helpindSEXP);
     __result = Rcpp::wrap(eval_cdf(uev, vals, grid, helpgrid, helpind));
     return __result;
 END_RCPP
 }
 // int_on_grid
-double int_on_grid(double upr, NumericVector vals, NumericVector grid);
+double int_on_grid(const double& upr, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid);
 RcppExport SEXP kdecopula_int_on_grid(SEXP uprSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< double >::type upr(uprSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const double& >::type upr(uprSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
     __result = Rcpp::wrap(int_on_grid(upr, vals, grid));
     return __result;
 END_RCPP
 }
 // inv_int_on_grid
-double inv_int_on_grid(double q, NumericVector vals, NumericVector grid);
-RcppExport SEXP kdecopula_inv_int_on_grid(SEXP qSEXP, SEXP valsSEXP, SEXP gridSEXP) {
+double inv_int_on_grid(const double& qq, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid);
+RcppExport SEXP kdecopula_inv_int_on_grid(SEXP qqSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< double >::type q(qSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    __result = Rcpp::wrap(inv_int_on_grid(q, vals, grid));
+    Rcpp::traits::input_parameter< const double& >::type qq(qqSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
+    __result = Rcpp::wrap(inv_int_on_grid(qq, vals, grid));
     return __result;
 END_RCPP
 }
 // interp_2d
-NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid);
+Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid);
 RcppExport SEXP kdecopula_interp_2d(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
     __result = Rcpp::wrap(interp_2d(x, vals, grid));
     return __result;
 END_RCPP
 }
 // interp
-NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, IntegerMatrix helpind);
+Rcpp::NumericVector interp(const Rcpp::NumericMatrix& x, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid, const Rcpp::IntegerMatrix& helpind);
 RcppExport SEXP kdecopula_interp(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type helpind(helpindSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type helpind(helpindSEXP);
     __result = Rcpp::wrap(interp(x, vals, grid, helpind));
     return __result;
 END_RCPP
 }
-// kern_epan
-NumericVector kern_epan(NumericVector x);
-RcppExport SEXP kdecopula_kern_epan(SEXP xSEXP) {
+// kern_epan_1d
+arma::vec kern_epan_1d(const arma::vec& x, const double& b);
+RcppExport SEXP kdecopula_kern_epan_1d(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    __result = Rcpp::wrap(kern_epan(x));
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    __result = Rcpp::wrap(kern_epan_1d(x, b));
     return __result;
 END_RCPP
 }
 // kern_epan_2d
-NumericVector kern_epan_2d(NumericVector x, NumericVector y);
-RcppExport SEXP kdecopula_kern_epan_2d(SEXP xSEXP, SEXP ySEXP) {
+arma::vec kern_epan_2d(const arma::vec& x, const arma::vec& y, const double& b);
+RcppExport SEXP kdecopula_kern_epan_2d(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    __result = Rcpp::wrap(kern_epan_2d(x, y));
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    __result = Rcpp::wrap(kern_epan_2d(x, y, b));
     return __result;
 END_RCPP
 }
-// kern_gauss
-NumericVector kern_gauss(NumericVector x);
-RcppExport SEXP kdecopula_kern_gauss(SEXP xSEXP) {
+// kern_epan
+arma::vec kern_epan(const arma::mat& x, const arma::vec& b);
+RcppExport SEXP kdecopula_kern_epan(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    __result = Rcpp::wrap(kern_gauss(x));
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type b(bSEXP);
+    __result = Rcpp::wrap(kern_epan(x, b));
+    return __result;
+END_RCPP
+}
+// kern_gauss_1d
+arma::vec kern_gauss_1d(const arma::vec& x, const double& b);
+RcppExport SEXP kdecopula_kern_gauss_1d(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    __result = Rcpp::wrap(kern_gauss_1d(x, b));
     return __result;
 END_RCPP
 }
 // kern_gauss_2d
-NumericVector kern_gauss_2d(NumericVector x, NumericVector y);
-RcppExport SEXP kdecopula_kern_gauss_2d(SEXP xSEXP, SEXP ySEXP) {
+arma::vec kern_gauss_2d(const arma::vec& x, const arma::vec& y, const double& b);
+RcppExport SEXP kdecopula_kern_gauss_2d(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    __result = Rcpp::wrap(kern_gauss_2d(x, y));
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
+    __result = Rcpp::wrap(kern_gauss_2d(x, y, b));
+    return __result;
+END_RCPP
+}
+// kern_gauss
+arma::vec kern_gauss(const arma::mat& x, const arma::vec& b);
+RcppExport SEXP kdecopula_kern_gauss(SEXP xSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type b(bSEXP);
+    __result = Rcpp::wrap(kern_gauss(x, b));
     return __result;
 END_RCPP
 }
 // ren_subs
-NumericVector ren_subs(NumericVector vals, NumericVector grid, int d);
+Rcpp::NumericVector ren_subs(const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid, const int& d);
 RcppExport SEXP kdecopula_ren_subs(SEXP valsSEXP, SEXP gridSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const int& >::type d(dSEXP);
     __result = Rcpp::wrap(ren_subs(vals, grid, d));
     return __result;
 END_RCPP
 }
 // renorm
-NumericVector renorm(NumericVector x, NumericVector grid, int times, IntegerMatrix helpind);
+Rcpp::NumericVector renorm(const Rcpp::NumericVector& x, const Rcpp::NumericVector& grid, const int times, const Rcpp::IntegerMatrix& helpind);
 RcppExport SEXP kdecopula_renorm(SEXP xSEXP, SEXP gridSEXP, SEXP timesSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< int >::type times(timesSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type helpind(helpindSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
+    Rcpp::traits::input_parameter< const int >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type helpind(helpindSEXP);
     __result = Rcpp::wrap(renorm(x, grid, times, helpind));
     return __result;
 END_RCPP

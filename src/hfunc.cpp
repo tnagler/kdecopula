@@ -6,7 +6,11 @@ using namespace Rcpp;
 
 //// evaluate h-function via integration
 // [[Rcpp::export]]
-NumericVector eval_hfunc_2d(NumericMatrix uev, int cond_var, NumericMatrix vals, NumericVector grid) {
+Rcpp::NumericVector eval_hfunc_2d(const Rcpp::NumericMatrix& uev,
+                                  const int& cond_var, 
+                                  const Rcpp::NumericMatrix& vals,
+                                  const Rcpp::NumericVector& grid) 
+{
     int N = uev.nrow();
     int m = grid.size();
     NumericVector tmpvals(m), out(N);
@@ -36,8 +40,14 @@ NumericVector eval_hfunc_2d(NumericMatrix uev, int cond_var, NumericMatrix vals,
 }
 
 // [[Rcpp::export]]
-NumericVector eval_hfunc(NumericMatrix uev, IntegerVector cond_var, IntegerVector uncond_var,
-NumericVector vals, NumericVector grid, NumericMatrix helpgrid, IntegerMatrix helpind) {
+Rcpp::NumericVector eval_hfunc(const Rcpp::NumericMatrix& uev, 
+                               const Rcpp::IntegerVector& cond_var,
+                               const Rcpp::IntegerVector& uncond_var,
+                               const Rcpp::NumericVector& vals,
+                               const Rcpp::NumericVector& grid, 
+                               const Rcpp::NumericMatrix& helpgrid,
+                               const Rcpp::IntegerMatrix& helpind)
+{
     int N = uev.nrow();
     int m = grid.size();
     IntegerVector gridsq = seq_len(m) - 1;
@@ -77,7 +87,11 @@ NumericVector vals, NumericVector grid, NumericMatrix helpgrid, IntegerMatrix he
 
 //// invert h-function 
 // [[Rcpp::export]]
-NumericVector inv_hfunc(NumericMatrix uev, int cond_var, NumericMatrix vals, NumericVector grid) {
+Rcpp::NumericVector inv_hfunc(const Rcpp::NumericMatrix& uev,
+                              const int& cond_var,
+                              const Rcpp::NumericMatrix& vals,
+                              const Rcpp::NumericVector& grid) 
+{
     int N = uev.nrow();
     int m = grid.size();
     NumericVector tmpvals(m), out(N);
@@ -106,8 +120,12 @@ NumericVector inv_hfunc(NumericMatrix uev, int cond_var, NumericMatrix vals, Num
 
 // full d-dimensional integrals (copula cdf)
 // [[Rcpp::export]]
-NumericVector eval_cdf(NumericMatrix uev, NumericVector vals, NumericVector grid, 
-NumericMatrix helpgrid, IntegerMatrix helpind) {
+Rcpp::NumericVector eval_cdf(const Rcpp::NumericMatrix& uev, 
+                             const Rcpp::NumericVector& vals,
+                             const Rcpp::NumericVector& grid, 
+                             const Rcpp::NumericMatrix& helpgrid, 
+                             const Rcpp::IntegerMatrix& helpind)
+{
     int N = uev.nrow();
     int d = uev.ncol();
     int m = grid.size();

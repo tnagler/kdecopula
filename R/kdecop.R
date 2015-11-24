@@ -179,7 +179,7 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                           bw$alpha,
                           deg = as.numeric(substr(method, 4, 4)))
     } else {
-        lfit <- NA
+        lfit <- NULL
     }
     
     ## construct grid with k knots in dimension d
@@ -193,8 +193,7 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                    bw = bw,
                    lfit = lfit,
                    method = method)
-    vals <- array(evalf(grid, obj = object), 
-                  dim = rep(knots, d))
+    vals <- array(evalf(grid, obj = object), dim = rep(knots, d))
     
     ## rescale copula density to have uniform margins
     if (renorm.iter > 0) {

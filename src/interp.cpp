@@ -4,14 +4,18 @@ using namespace Rcpp;
 
 
 //// evaluate a cubic polynomial with given coefficents
-double cubic_poly(double x, NumericVector a) {
+double cubic_poly(const double& x, 
+                  const Rcpp::NumericVector& a) 
+{
     double x2 = x*x;
     double x3 = x2*x;
     return a[0] + a[1]*x + a[2]*x2 + a[3]*x3;
 }
 
 //// indefinite integral of cubic polynomial
-double cubic_indef_integral(double x, NumericVector a) {
+double cubic_indef_integral(const double& x,
+                            const Rcpp::NumericVector& a) 
+{
     double x2 = x*x;
     double x3 = x2*x;
     double x4 = x3*x;
@@ -19,13 +23,18 @@ double cubic_indef_integral(double x, NumericVector a) {
 }
 
 //// integral of cubic polynomial from lowr to upr
-double cubic_integral(double lowr, double upr, NumericVector a) {
+double cubic_integral(const double& lowr,
+                      const double& upr, 
+                      const Rcpp::NumericVector& a) 
+{
     return cubic_indef_integral(upr, a) - cubic_indef_integral(lowr, a);
 }
 
 //// numerically invert a cubic integral (with 0 as lower bound)
-// -> maximum of 50 search iterations
-double inv_cubic_integral(double q, NumericVector a) {
+// -> maximum of 500 search iterations
+double inv_cubic_integral(const double& q,
+                          const Rcpp::NumericVector& a) 
+{
     double x = fabs(q);
     double qtest, tmpint, sign;
     for (int i = 0; i < 500; ++i) {
@@ -40,7 +49,9 @@ double inv_cubic_integral(double q, NumericVector a) {
 }
 
 //// calculate coefficients for cubic splines (input must have length 4)
-NumericVector coef(NumericVector vals, NumericVector grid) {
+Rcpp::NumericVector coef(const Rcpp::NumericVector& vals,
+                         const Rcpp::NumericVector& grid) 
+{
     NumericVector a(4);
     
     double dt0 = grid[1] - grid[0];
@@ -70,7 +81,9 @@ NumericVector coef(NumericVector vals, NumericVector grid) {
 } 
 
 //// interpolate in one dimension (inputs must have length 4)
-double interp_on_grid(double x, NumericVector vals, NumericVector grid) {
+double interp_on_grid(const double& x,
+                      const Rcpp::NumericVector& vals, 
+                      const Rcpp::NumericVector& grid) {
     NumericVector a = coef(vals, grid);
     double xev = fmax((x - grid[1]), 0)/(grid[2] - grid[1]);
     return cubic_poly(xev, a);
@@ -78,7 +91,10 @@ double interp_on_grid(double x, NumericVector vals, NumericVector grid) {
 
 //// interpolate in two dimensions
 // [[Rcpp::export]]
-NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid) {
+Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, 
+                              const Rcpp::NumericMatrix& vals, 
+                              const Rcpp::NumericVector& grid)
+{
     int N = x.nrow();
     int m = grid.size();
     NumericVector y(4), tmpvals(4), tmpgrid(4), out(N);
@@ -106,9 +122,9 @@ NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid)
             jj = std::max(0, jj);
             
             tmpvals = NumericVector::create(vals(i0, jj),
-            vals(i,   jj),
-            vals(i+1, jj),
-            vals(i2,  jj));
+                                            vals(i,   jj),
+                                            vals(i+1, jj),
+                                            vals(i2,  jj));
             
             y[s] = interp_on_grid(x(n, 0), tmpvals, tmpgrid);
             y[s] = fmax(y[s], 0.0);
@@ -126,7 +142,9 @@ NumericVector interp_2d(NumericMatrix x, NumericMatrix vals, NumericVector grid)
 }
 
 // subset array in C++
-IntegerVector get(IntegerMatrix ind, IntegerVector dims) {
+Rcpp::IntegerVector get(const Rcpp::IntegerMatrix& ind, 
+                        const Rcpp::IntegerVector& dims) 
+{
     int ndims = dims.size();
     int m = dims[0];
     int N = ind.nrow();
@@ -146,7 +164,11 @@ IntegerVector get(IntegerMatrix ind, IntegerVector dims) {
 
 //// interpolate on an array with more than two dimensions
 // [[Rcpp::export]]
-NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, IntegerMatrix helpind) {
+Rcpp::NumericVector interp(const Rcpp::NumericMatrix& x,
+                           const Rcpp::NumericVector& vals, 
+                           const Rcpp::NumericVector& grid, 
+                           const Rcpp::IntegerMatrix& helpind) 
+{
     int d = x.ncol();
     int N = x.nrow();
     int m = grid.size();
@@ -162,7 +184,7 @@ NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, In
         for (int k = 2; k < (m-1); ++k) {
             for (int j = 0; j < d; ++j) {
                 if ((x(n, j) >= grid[k]))
-                i[j] = k;
+                    i[j] = k;
             }
         } 
         
@@ -194,9 +216,9 @@ NumericVector interp(NumericMatrix x, NumericVector vals, NumericVector grid, In
             tmpgrid = NumericVector::create(grid[i0], grid[i[j]], grid[i[j]+1], grid[i2]);
             for (int p = 0; p < helpind.nrow()/pow(4.0, j + 1); ++p) {
                 tmpvals = NumericVector::create(newvals[p*4],
-                newvals[p*4 + 1],
-                newvals[p*4 + 2],
-                newvals[p*4 + 3]);
+                                                newvals[p*4 + 1],
+                                                       newvals[p*4 + 2],
+                                                              newvals[p*4 + 3]);
                 newvals[p] = interp_on_grid(x(n, j), tmpvals, tmpgrid);
                 newvals[p] = fmax(newvals[p], 0.0);
             }

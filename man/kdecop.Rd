@@ -4,13 +4,13 @@
 \alias{kdecop}
 \title{Bivariate kernel copula density estimation}
 \usage{
-kdecop(udata, bw, mult = 1, method = "TLL2", knots = 50,
+kdecop(udata, bw = NA, mult = 1, method = "TLL2", knots = 50,
   renorm.iter = 3L, info = TRUE)
 }
 \arguments{
 \item{udata}{\code{nx2} matrix of copula data.}
 
-\item{bw}{bandwidth specification; if missing, \code{bw} is selected
+\item{bw}{bandwidth specification; if \code{NA}, \code{bw} is selected
 automatically; Otherwise, please provide (for the respective method) \cr
 \code{"MR", "beta"}: a positive real number, \cr
 \code{"T"}: a \eqn{2x2} matrix for method, \cr

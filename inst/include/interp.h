@@ -3,14 +3,36 @@
 
 #include <RcppArmadillo.h>
 
-double cubic_poly(double x, Rcpp::NumericVector a);
-double cubic_indef_integral(double x, Rcpp::NumericVector a); 
-double cubic_integral(double lowr, double upr, Rcpp::NumericVector a);
-double inv_cubic_integral(double q, Rcpp::NumericVector a);
-Rcpp::NumericVector coef(Rcpp::NumericVector vals, Rcpp::NumericVector grid); 
-double interp_on_grid(double x, Rcpp::NumericVector vals, Rcpp::NumericVector grid);
-Rcpp::NumericVector interp_2d(Rcpp::NumericMatrix x, Rcpp::NumericMatrix vals, Rcpp::NumericVector grid);
-Rcpp::IntegerVector get(Rcpp::IntegerMatrix ind, Rcpp::IntegerVector dims);
-Rcpp::NumericVector interp(Rcpp::NumericMatrix x, Rcpp::NumericVector vals, Rcpp::NumericVector grid, Rcpp::IntegerMatrix helpind);
+double cubic_poly(const double& x, 
+                  const Rcpp::NumericVector& a); 
+
+double cubic_indef_integral(const double& x,
+                            const Rcpp::NumericVector& a); 
+
+double cubic_integral(const double& lowr,
+                      const double& upr,
+                      const Rcpp::NumericVector& a);
+
+double inv_cubic_integral(const double& q, 
+                          const Rcpp::NumericVector& a);
+
+Rcpp::NumericVector coef(const Rcpp::NumericVector& vals,
+                         const Rcpp::NumericVector& grid); 
+
+double interp_on_grid(const double& x,
+                      const Rcpp::NumericVector& vals,
+                      const Rcpp::NumericVector& grid);
+
+Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x,
+                              const Rcpp::NumericMatrix& vals, 
+                              const Rcpp::NumericVector& grid);
+
+Rcpp::IntegerVector get(const Rcpp::IntegerMatrix& ind, 
+                        const Rcpp::IntegerVector& dims); 
+
+Rcpp::NumericVector interp(const Rcpp::NumericMatrix& x,
+                           const Rcpp::NumericVector& vals, 
+                           const Rcpp::NumericVector& grid, 
+                           const Rcpp::IntegerMatrix& helpind); 
 
 #endif

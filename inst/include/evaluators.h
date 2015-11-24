@@ -4,8 +4,8 @@
 #include <RcppArmadillo.h>
 #include <kernels.h>
 
-Rcpp::NumericVector eval_mr(Rcpp::NumericMatrix uev, Rcpp::NumericMatrix dat, double b);
-Rcpp::NumericVector eval_beta(Rcpp::NumericMatrix uev, Rcpp::NumericMatrix dat, double b);
-Rcpp::NumericVector eval_trafo(Rcpp::NumericMatrix uev, Rcpp::NumericMatrix dat, arma::mat B);
+arma::vec eval_mr(const arma::mat& uev, const arma::mat& dat, const double& b); 
+arma::vec eval_beta(const arma::mat& uev, const arma::mat& dat, const double& b);
+arma::vec eval_trafo(const arma::mat& uev, const arma::mat& dat, const arma::mat& B);
 
 #endif

@@ -33,8 +33,8 @@ int_on_grid <- function(upr, vals, grid) {
     .Call('kdecopula_int_on_grid', PACKAGE = 'kdecopula', upr, vals, grid)
 }
 
-inv_int_on_grid <- function(q, vals, grid) {
-    .Call('kdecopula_inv_int_on_grid', PACKAGE = 'kdecopula', q, vals, grid)
+inv_int_on_grid <- function(qq, vals, grid) {
+    .Call('kdecopula_inv_int_on_grid', PACKAGE = 'kdecopula', qq, vals, grid)
 }
 
 interp_2d <- function(x, vals, grid) {
@@ -45,20 +45,28 @@ interp <- function(x, vals, grid, helpind) {
     .Call('kdecopula_interp', PACKAGE = 'kdecopula', x, vals, grid, helpind)
 }
 
-kern_epan <- function(x) {
-    .Call('kdecopula_kern_epan', PACKAGE = 'kdecopula', x)
+kern_epan_1d <- function(x, b) {
+    .Call('kdecopula_kern_epan_1d', PACKAGE = 'kdecopula', x, b)
 }
 
-kern_epan_2d <- function(x, y) {
-    .Call('kdecopula_kern_epan_2d', PACKAGE = 'kdecopula', x, y)
+kern_epan_2d <- function(x, y, b) {
+    .Call('kdecopula_kern_epan_2d', PACKAGE = 'kdecopula', x, y, b)
 }
 
-kern_gauss <- function(x) {
-    .Call('kdecopula_kern_gauss', PACKAGE = 'kdecopula', x)
+kern_epan <- function(x, b) {
+    .Call('kdecopula_kern_epan', PACKAGE = 'kdecopula', x, b)
 }
 
-kern_gauss_2d <- function(x, y) {
-    .Call('kdecopula_kern_gauss_2d', PACKAGE = 'kdecopula', x, y)
+kern_gauss_1d <- function(x, b) {
+    .Call('kdecopula_kern_gauss_1d', PACKAGE = 'kdecopula', x, b)
+}
+
+kern_gauss_2d <- function(x, y, b) {
+    .Call('kdecopula_kern_gauss_2d', PACKAGE = 'kdecopula', x, y, b)
+}
+
+kern_gauss <- function(x, b) {
+    .Call('kdecopula_kern_gauss', PACKAGE = 'kdecopula', x, b)
 }
 
 ren_subs <- function(vals, grid, d) {

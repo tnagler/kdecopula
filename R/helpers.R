@@ -1,11 +1,10 @@
 ### bandwidth selection
 bw_select <- function(udata, method) {
-    n <- nrow(udata)
-    d <- ncol(udata)
+ 
     switch(method,
            "MR"   = bw_mr(udata),
            "beta" = bw_beta(udata),
-           "T"    = n^(-1/(d + 4)) * t(chol(cov(qnorm(udata)))),
+           "T"    = nrow(udata)^(-1/(ncol(udata) + 4)) * t(chol(cov(qnorm(udata)))),
            "TLL1" = bw_tll(qnorm(udata), deg = 1),
            "TLL2" = bw_tll(qnorm(udata), deg = 2),
            "TTPI" = bw_tt_plugin(udata),
@@ -113,6 +112,13 @@ bw_beta <- function(udata) {
 
     ## result
     (zeta/(8*pi*xi))^(1/3) * n^(-1/3)
+}
+
+bw_t <- function(udata) {
+    ## normal rederence rule
+    n <- nrow(udata)
+    d <- ncol(udata)
+    n^(- 1 / (d + 4)) * t(chol(cov(qnorm(udata)))) * (4 / (d + 2))^(1 / (d + 4))
 }
 
 bw_tll <- function(zdata, deg) {
@@ -392,11 +398,11 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
                          cbind(2 - U, V),
                          cbind(2 - U, -V),
                          cbind(2 - U, 2 - V))
-        evalpoints <- cbind(rep(U/b, 9) - augdata[, 1]/b,
-                            rep(V/b, 9) - augdata[, 2]/b)
-        K <- kern_gauss_2d(evalpoints[, 1]/b, evalpoints[, 2]/b)
-        S <- rowSums(matrix(K, n, 9)) / b^2
-        effp <- sum(S/likvalues)/n
+        evalpoints <- cbind(rep(U, 9) - augdata[, 1],
+                            rep(V, 9) - augdata[, 2])
+        K <- kern_gauss_2d(evalpoints[, 1], evalpoints[, 2], b)
+        S <- rowSums(matrix(K, n, 9))
+        effp <- sum(S / likvalues) / n
     }
     if (method == "beta") {
         bpkern <- function(x) {
@@ -408,7 +414,7 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
     }
     if (method == "T") {
         scale <- dnorm(qnorm(udata)[, 1]) * dnorm(qnorm(udata)[, 2])
-        effp  <- mean((kern_gauss_2d(0, 0) / (scale * det(b))) / likvalues)
+        effp  <- mean((kern_gauss_2d(0, 0, 1) / (scale * det(b))) / likvalues)
     }
     if(method %in% c("TLL1", "TLL2"))
         effp <- lfit$dp[["df2"]]

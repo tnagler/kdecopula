@@ -6,7 +6,10 @@ using namespace Rcpp;
 
 //// integrate an interpolated function for values on a grid
 // [[Rcpp::export]]
-double int_on_grid(double upr, NumericVector vals, NumericVector grid) {
+double int_on_grid(const double& upr, 
+                   const Rcpp::NumericVector& vals,
+                   const Rcpp::NumericVector& grid) 
+{
     int m = grid.size();
     NumericVector tmpvals(4), tmpgrid(4), tmpa(4);
     double uprnew, newint;
@@ -57,12 +60,16 @@ double int_on_grid(double upr, NumericVector vals, NumericVector grid) {
 
 //// inverse of the integral of an interpolated function for values on a grid
 // [[Rcpp::export]]
-double inv_int_on_grid(double q, NumericVector vals, NumericVector grid) {
+double inv_int_on_grid(const double& qq, 
+                       const Rcpp::NumericVector& vals,
+                       const Rcpp::NumericVector& grid)
+{
     int m = grid.size();
     NumericVector tmpvals(4), tmpgrid(4), tmpa(4);
     double uprnew, newint, out, qtest;
     double tmpint = 0.0;
     int tmpk = 0;
+    double q = qq;
     
     q *= int_on_grid(1.0, vals, grid);
     

@@ -46,30 +46,3 @@ eval_tt <- function(uev, udata, bw) {
     temp * exp(-theta[1] * (s^2 + t^2) - theta[2] * 
                    s * t)/dnorm(s)/dnorm(t)
 }
-
-# 
-# 
-# # An example
-# library("copula")
-# 
-# N <- 500  # sample size
-# udata <- rCopula(N, ellipCopula(family = "t", dim = 2, 
-#                               dispstr = "ex", param = 0.454, df = 5))
-# 
-# # calculate the pseudo-data
-# udata <- cbind(rank(udata[, 1], ties.method = "random")/(N + 1), 
-#              rank(udata[, 2], ties.method = "random")/(N + 1))
-# 
-# par_plugin <- plugin(udata, T)
-# par_pcv <- pcv(udata, T)
-# 
-# # Evaluate the density estimates at the points
-# # (.1,.1), (.2,.2), ..., (.9,.9)
-# u <- v <- 0.1 * c(1:9)
-# 
-# mtk(udata, u, v, par_plugin[1], par_plugin[2], par_plugin[3:4])
-# mtk(udata, u, v, par_pcv[1], par_pcv[2], par_pcv[3:4])
-# 
-# # True values
-# dCopula(cbind(u, v), ellipCopula(family = "t", dim = 2, 
-#                                  dispstr = "ex", param = 0.454, df = 5))
