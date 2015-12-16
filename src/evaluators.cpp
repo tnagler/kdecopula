@@ -13,14 +13,13 @@ arma::vec eval_mr(const arma::mat& uev,  /* evaluation points */
                   const arma::mat& dat,  /* cpoula data       */
                   const double& b)       /* bandwidth         */
 {
-    int n = dat.n_rows;
+    double n = dat.n_rows;
     int m = uev.n_rows;
     vec out(uev.n_rows);
     vec tmp1(n), tmp2(n), tmp3(n),
     tmp4(n), tmp5(n), tmp6(n),
     tmp7(n), tmp8(n), tmp9(n);
-    double nb2 = pow(b, 2.0) * (double)n;  /* scaling factor nb^2 */
-    
+
     for (int i = 0; i < m; ++i) {
         // compute kernels at all reflections
         tmp1 = kern_epan_2d(uev(i, 0) - dat.col(0), uev(i, 1) - dat.col(1), b);
@@ -34,7 +33,7 @@ arma::vec eval_mr(const arma::mat& uev,  /* evaluation points */
         tmp9 = kern_epan_2d(uev(i, 0) + dat.col(0) - 2, uev(i, 1) + dat.col(1) - 2, b);
         
         // estimate is sum of all kernels divided by nb^2
-        out[i] = sum(tmp1 + tmp2 + tmp3 + tmp4 + tmp5 + tmp6 + tmp7 + tmp8) / nb2;
+        out[i] = sum(tmp1 + tmp2 + tmp3 + tmp4 + tmp5 + tmp6 + tmp7 + tmp8) / n;
         
     }
     return out;
