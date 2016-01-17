@@ -1,10 +1,10 @@
 Package: kdecopula
 Type: Package
 Title: Kernel Smoothing for Bivariate Copula Densities
-Version: 0.4.1
+Version: 0.4.2
 Authors@R:
     person("Thomas", "Nagler", , "thomas.nagler@tum.de", c("aut", "cre"))
-Description: Provides fast implementations of kernel smoothing techniques for 
+Description: Provides fast implementations of kernel smoothing techniques for
     bivariate copula densities, in particular density estimation and resampling.
 URL: https://github.com/tnagler/kdecopula
 BugReports: https://github.com/tnagler/kdecopula
@@ -14,14 +14,16 @@ Imports:
     lattice,
     cubature,
     locfit,
-    qrng, 
-    Rcpp (>= 0.11.2), 
+    qrng,
+    Rcpp (>= 0.11.2),
     VineCopula (>= 1.5),
     graphics,
-    grDevices, 
+    grDevices,
     stats,
     utils
 LinkingTo:
-    Rcpp, 
+    Rcpp,
     RcppArmadillo
+Suggests: R.rsp
+VignetteBuilder: R.rsp
 License: GPL-3
