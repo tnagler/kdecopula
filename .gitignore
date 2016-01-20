@@ -12,4 +12,3 @@ src/kdecopula.dll
 *.o
 *.dll
 *.html
-inst/doc
