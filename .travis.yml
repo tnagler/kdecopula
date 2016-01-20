@@ -9,3 +9,7 @@ apt_packages:
   - libgsl0-dbg
   - libgsl0-dev
   - libgsl0ldbl
+  
+r_github_packages:
+ - tnagler/VineCopula
+
