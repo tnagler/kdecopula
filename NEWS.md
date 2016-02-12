@@ -1,3 +1,16 @@
+kdecopula 0.5.0
+-------------------------------
+
+BUG FIXES
+
+  * fix scaling for method = "MR" when not renormalized.
+  
+NEW FEATURES
+
+  * package now has a vignette.
+
+
+
 kdecopula 0.4.1
 -------------------------------
 
