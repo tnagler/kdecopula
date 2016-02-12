@@ -38,6 +38,12 @@ install.pacakges("kdecopula")
 devtools::install_github("tnagler/kdecopula")
 ````
 
+A detailed package description is available in the package vignette:
+``` r
+library("kdecopula")
+vignette("kdecopula")
+````
+
 
 ----------------------------------------------------------------
 

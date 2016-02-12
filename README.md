@@ -21,6 +21,13 @@ You can install:
     devtools::install_github("tnagler/kdecopula")
     ```
 
+A detailed package description is available in the package vignette:
+
+``` r
+library("kdecopula")
+vignette("kdecopula")
+```
+
 ------------------------------------------------------------------------
 
 Functions
@@ -62,7 +69,7 @@ u <- apply(wdbc[, c(2, 8)], 2, rank) / (nrow(wdbc) + 1)  # empirical PIT
 plot(u)  # scatter plot
 ```
 
-![](inst/README-unnamed-chunk-3-1.png)
+![](inst/README-unnamed-chunk-3-1.png)<!-- -->
 
 We see that the data are slightly asymmetric w.r.t. both diagonals. Common parametric copula models are usually not flexible enough to reflect this. Let's see how a kernel estimator does.
 
@@ -102,19 +109,19 @@ The most interesting part for most people is probably to make exploratory plots.
 plot(kde.fit)
 ```
 
-![](inst/README-unnamed-chunk-6-1.png)
+![](inst/README-unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 contour(kde.fit)
 ```
 
-![](inst/README-unnamed-chunk-7-1.png)
+![](inst/README-unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 contour(kde.fit, margins = "unif")
 ```
 
-![](inst/README-unnamed-chunk-8-1.png)
+![](inst/README-unnamed-chunk-8-1.png)<!-- -->
 
 You can also pass further arguments to the `...` argument to refine the aesthetics. The arguments are forwaded to
 `lattice::wireframe` or `graphics::contour`, respectively.
@@ -127,13 +134,13 @@ plot(kde.fit,
      ylab = list(label = "other label", rot = -25))  
 ```
 
-![](inst/README-unnamed-chunk-9-1.png)
+![](inst/README-unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 contour(kde.fit, col = terrain.colors(30), levels = seq(0, 0.3, by = 0.01))
 ```
 
-![](inst/README-unnamed-chunk-10-1.png)
+![](inst/README-unnamed-chunk-10-1.png)<!-- -->
 
 #### Working with a `kdecopula` object
 
@@ -153,7 +160,7 @@ unew <- rkdecop(655, kde.fit)
 plot(unew)
 ```
 
-![](inst/README-unnamed-chunk-12-1.png)
+![](inst/README-unnamed-chunk-12-1.png)<!-- -->
 
 We see that the asymmetries observed in the data are adequately reflected by the estimated model.
 
