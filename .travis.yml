@@ -1,4 +1,4 @@
-language: r
+language: R
 
 warnings_are_errors: true
 
@@ -9,7 +9,9 @@ apt_packages:
   - libgsl0-dbg
   - libgsl0-dev
   - libgsl0ldbl
-  
+  - libcurl4-openssl-dev
+  - libxml2-dev
+
 r_github_packages:
  - tnagler/VineCopula
 
