@@ -1,5 +1,5 @@
 ## Test environments
-* ubuntu 12.04 (release, devel, oldrel) 
+* ubuntu 12.04 (release) 
 * win-builder (release, devel)
 
 ## R CMD check results
