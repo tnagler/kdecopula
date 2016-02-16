@@ -16,6 +16,7 @@ kdecopula
 =========
 > Kernel smoothing for bivariate copula densities
 
+[![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula)
 [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/web/packages/kdecopula/index.html)
 [![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)](https://cran.r-project.org/web/packages/kdecopula/index.html)  
 
