@@ -104,6 +104,7 @@
 #' 
 #' ## estimation of copula density of variables 5 and 6
 #' dens.est <- kdecop(udat[, 5:6])
+#' summary(dens.est)
 #' plot(dens.est) 
 #' 
 #' ## evaluate density estimate at (u1,u2)=(0.123,0.321)
@@ -113,7 +114,8 @@
 #' pkdecop(c(0.123, 0.321), dens.est) 
 #' 
 #' ## simulate 500 samples from density estimate
-#' rkdecop(500, dens.est)
+#' plot(rkdecop(500, dens.est))  # pseudo-random
+#' plot(rkdecop(500, dens.est), quasi = TRUE)  # quasi-random
 #' 
 kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 50, renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
