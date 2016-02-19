@@ -7,6 +7,29 @@ kdecopula
 
 This package provides fast implementations of kernel estimators for the copula density. Due to its several plotting options it is particularly useful for the exploratory analysis of dependence structures. It can be further used for flexible nonparametric estimation of copula densities and resampling.
 
+A detailed package description is available in the package vignette:
+
+``` r
+library("kdecopula")
+vignette("kdecopula")
+```
+
+Table of contents
+-----------------
+
+-   [How to install](#how-to-install)
+-   [Functions](#functions)
+-   [kdecopula in action](#kdecopula-in-action)
+    -   [Estimation of bivariate copula densities](#estimation-of-bivariate-copula-densities)
+    -   [Plotting bivariate copula densities](#plotting-bivariate-copula-densities)
+    -   [Working with a kdecopula object](#working-with-a-kdecopula-object)
+-   [References](#references)
+
+------------------------------------------------------------------------
+
+How to install
+--------------
+
 You can install:
 
 -   the stable release on CRAN:
@@ -20,15 +43,6 @@ You can install:
     ``` r
     devtools::install_github("tnagler/kdecopula")
     ```
-
-A detailed package description is available in the package vignette:
-
-``` r
-library("kdecopula")
-vignette("kdecopula")
-```
-
-------------------------------------------------------------------------
 
 Functions
 ---------
