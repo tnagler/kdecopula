@@ -20,7 +20,7 @@ bw_mr <- function(udata) {
     
     ## parameter for frank copula by inversion of Kendall's tau
     family <- 5
-    tau <- cor(udata, method = "kendall")[1L, 2L]
+    tau <- cor(udata, method="kendall")[1L, 2L]
     if (abs(tau) < 1e-16) {
         family <- 0
         par <- 0
