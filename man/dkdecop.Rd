@@ -15,7 +15,7 @@ rkdecop(n, obj, quasi = FALSE)
 \arguments{
 \item{u}{\code{mx2} matrix of evaluation points.}
 
-\item{obj}{\code{kdecop} object.}
+\item{obj}{\code{kdecopula} object.}
 
 \item{stable}{logical; option for stabilizing the estimator: the estimated
 density is cut off at \eqn{50}.}

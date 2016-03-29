@@ -14,7 +14,8 @@ importFrom("utils", "modifyList")
 export(kdecop,
        dkdecop,
        pkdecop,
-       rkdecop)
+       rkdecop,
+       hkdecop)
 S3method(plot, kdecopula)
 S3method(contour, kdecopula)
 S3method(print, kdecopula)
