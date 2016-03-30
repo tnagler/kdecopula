@@ -34,19 +34,63 @@ double cubic_integral(const double& lowr,
 // -> maximum of 500 search iterations
 double inv_cubic_integral(const double& q,
                           const Rcpp::NumericVector& a) 
+// {
+//     double x = fabs(q);
+//     double qtest, tmpint, sign;
+//     for (int i = 0; i < 100; ++i) {
+//         tmpint = cubic_integral(0.0, x, a);
+//         if (tmpint > 0) sign = 1; else sign = -1;
+//         qtest = fabs(tmpint) - q;
+//         if (fabs(qtest) < 1e-20) break;
+//         x += - sign * qtest / cubic_poly(x, a);
+//     }
+//     return x;
+// }
 {
-    double x = fabs(q);
-    double qtest, tmpint, sign;
-    for (int i = 0; i < 500; ++i) {
-        tmpint = cubic_integral(0.0, x, a);
-        if (tmpint > 0) sign = 1;
-        else sign = -1;
-        qtest = fabs(tmpint) - q;
-        if (fabs(qtest) < 1e-10) break;
-        x += - sign*qtest/cubic_poly(x, a);
+    double x0, x1, ql, qh, ans, val;
+    ans = 0.0, val = 0.0; x0 = 0.0; x1 = 1.0;
+    ql = 0.0;
+    qh = cubic_integral(0.0, x1, a);
+    int br = 0;
+    double tol = ::fmax(1e-10 * (x1 - x0), 1e-10);
+    
+    // check if already close enough (or 1.0 is exceeded)
+    ql = ql - q;
+    qh = qh - q;
+    if (::fabs(ql) <= tol) {
+        ans = x0;
+        br = 1;
     }
-    return x;
+    if ((::fabs(qh) <= tol) | (qh < 0)) {
+        ans = x1;
+        br = 1;
+    }
+    
+    for (int it = 0; it < 20; ++it) {
+        ans = (x0 + x1) / 2.0;
+        val = cubic_integral(0.0, ans, a);
+        val = val - q;
+        // stop if values become too close (avoid infinite loop)
+        if (::fabs(val) <= tol)
+            br = 1;
+        if (::fabs(x0 - x1) <= tol)
+            br = 1;
+        // check which of x0, x1 is closer
+        if (val > 0.0) {
+            x1 = ans;
+            qh = val;
+        } else {
+            x0 = ans;
+            ql = val;
+        }
+        // stop if convergence 
+        if (br == 1)
+            break;
+    }
+    
+    return ans;
 }
+
 
 //// calculate coefficients for cubic splines (input must have length 4)
 Rcpp::NumericVector coef(const Rcpp::NumericVector& vals,
