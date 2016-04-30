@@ -17,10 +17,6 @@ eval_hfunc_2d <- function(uev, cond_var, vals, grid) {
     .Call('kdecopula_eval_hfunc_2d', PACKAGE = 'kdecopula', uev, cond_var, vals, grid)
 }
 
-eval_hfunc <- function(uev, cond_var, uncond_var, vals, grid, helpgrid, helpind) {
-    .Call('kdecopula_eval_hfunc', PACKAGE = 'kdecopula', uev, cond_var, uncond_var, vals, grid, helpgrid, helpind)
-}
-
 inv_hfunc <- function(uev, cond_var, vals, grid) {
     .Call('kdecopula_inv_hfunc', PACKAGE = 'kdecopula', uev, cond_var, vals, grid)
 }

@@ -60,7 +60,7 @@
 #'
 dkdecop <- function(u, obj, stable = FALSE) {
     stopifnot(is.numeric(u))
-    stopifnot(all(u > 0 & u < 1))
+    stopifnot(all(u >= 0 & u <= 1))
     stopifnot(inherits(obj, "kdecopula"))
     stopifnot(is.logical(stable))
     
@@ -107,7 +107,7 @@ dkdecop <- function(u, obj, stable = FALSE) {
 #' @rdname dkdecop
 #'
 pkdecop <- function(u, obj) {
-    stopifnot(all(u > 0 & u < 1))
+    stopifnot(all(u >= 0 & u <= 1))
     stopifnot(inherits(obj, "kdecopula"))
     ## define appropriately shaped u matrix
     u <- as.matrix(u)
@@ -214,7 +214,7 @@ rkdecop <- function(n, obj, quasi = FALSE) {
 #' hkdecop(c(0.123, 0.321), dens.est, cond.var = 2, inverse = TRUE) 
 #' 
 hkdecop <- function(u, obj, cond.var, inverse = FALSE) {
-    stopifnot(all(u > 0) & all(u < 1))
+    stopifnot(all(u >= 0) & all(u <= 1))
     stopifnot(inherits(obj, "kdecopula"))
     stopifnot(all(cond.var %in% c(1, 2)))
     ## define appropriately shaped u matrix
