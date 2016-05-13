@@ -16,9 +16,10 @@
 matching is activated) for a contour or perspective/surface plot
 respectively.}
 
-\item{margins}{either \code{"unif"} for the original copula density or
-\code{"norm"} for the transformed density with standard normal margins
-(partial matching is activated). Default is \code{"norm"} for \code{type =
+\item{margins}{\code{"unif"} for the original copula density,
+\code{"norm"} for the transformed density with standard normal margins,
+\code{"exp"} with standard exponential margins, and  \code{"flexp"} with
+flipped exponential margins. Default is \code{"norm"} for \code{type =
 "contour"}, and \code{"unif"} for \code{type = "surface"}.}
 
 \item{size}{integer; the plot is based on values on a \eqn{size x size}
@@ -41,7 +42,7 @@ udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
 obj <- kdecop(udat[, 5:6])
 
 ## plots
-plot(obj)  # surface plot of copula density 
+plot(obj)  # surface plot of copula density
 contour(obj)  # contour plot with standard normal margins
 contour(obj, margins = "unif")  # contour plot of copula density
 
