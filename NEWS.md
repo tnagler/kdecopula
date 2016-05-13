@@ -1,3 +1,22 @@
+kdecopula 0.6.0
+-------------------------------
+
+BUG FIXES
+
+  * improved algorithms for numerical inversion
+  
+NEW FEATURES
+
+  * new function `hkdecop` to evaluate conditional distributions 
+    ("h-functions").
+    
+  * extended plotting functionality (exponential margins).
+    
+OTHER
+
+  * updated vignette.
+  
+  
 kdecopula 0.5.0
 -------------------------------
 
