@@ -10,6 +10,7 @@ importFrom("grDevices", "colorRampPalette", "rgb", "col2rgb")
 importFrom("stats", "cor", "cov", "dbeta", "dnorm", "optim", "pnorm",
            "predict", "qnorm", "runif", "logLik")
 importFrom("utils", "modifyList")
+importFrom("stats", "dexp", "pexp", "qexp")
 
 export(kdecop,
        dkdecop,
