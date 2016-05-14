@@ -1,4 +1,6 @@
-language: c
+language: R
+warnings_are_errors: true
+
 sudo: required
 
 apt_packages:
@@ -9,28 +11,6 @@ apt_packages:
   - libcurl4-openssl-dev
   - libxml2-dev
 
-before_install:
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
-  - chmod 755 pkg-build.sh
-  - ./pkg-build.sh bootstrap
 
-install:
-  - ./pkg-build.sh install_github tnagler/VineCopula
-  - ./pkg-build.sh install_deps
-
-script:
-  - ./pkg-build.sh run_tests
-
-after_failure:
-  - ./pkg-build.sh dump_logs
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
-
-env:
-  matrix:
-    - RVERSION=oldrel
-    - RVERSION=release
-    - RVERSION=devel
+repos:
+  CRAN: http://cran.rstudio.com
