@@ -23,7 +23,8 @@ LinkingTo:
     Rcpp,
     RcppArmadillo
 Suggests:
-    R.rsp
+    R.rsp,
+    VineCopula
 VignetteBuilder: R.rsp
 License: GPL-3
 RoxygenNote: 5.0.1
