@@ -5,7 +5,6 @@ DEPENDS
 
   * Package no longer imports packages `cubature` and `VineCopula`.
 
-
 BUG FIXES
 
   * improved algorithms for numerical inversion
