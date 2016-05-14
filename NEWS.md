@@ -1,6 +1,11 @@
 kdecopula 0.6.0
 -------------------------------
 
+DEPENDS
+
+  * Package no longer imports packages `cubature` and `VineCopula`.
+
+
 BUG FIXES
 
   * improved algorithms for numerical inversion
@@ -11,6 +16,9 @@ NEW FEATURES
     ("h-functions").
     
   * extended plotting functionality (exponential margins).
+  
+  * faster calculations of bandwidths for methods "MR" and "beta" due to
+    precalculated integral values.
     
 OTHER
 
