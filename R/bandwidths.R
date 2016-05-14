@@ -11,6 +11,37 @@ bw_select <- function(udata, method) {
            "TTCV" = bw_tt_pcv(udata))
 }
 
+# precalculated integral values
+tau.sq <- seq(-0.9, 0.9, l = 50)
+beta.sq <- c(5.8e+06, 2.4e+06, 1.7e+06, 4.5e+05, 2.7e+05, 1.7e+05, 1e+05, 7e+04,
+             6.3e+04, 4.9e+04, 3.1e+04, 2.1e+04, 1.5e+04, 1.1e+04, 8e+03, 5.8e+03,
+             4.2e+03, 3.1e+03, 2.3e+03, 1.8e+03, 1.3e+03, 1e+03, 7.7e+02, 5.8e+02,
+             4.4e+02, 3.4e+02, 2.6e+02, 2e+02, 1.5e+02, 1.1e+02,  86,  64,  48,
+             35,  26,  19,  13, 9.3, 6.4, 4.3, 2.7, 1.7,   1, 0.55, 0.28, 0.12,
+             0.044, 0.011, 0.0015, 1.8e-05, 1.8e-05, 0.0015, 0.011, 0.044, 0.12, 
+             0.28, 0.55,   1, 1.7, 2.7, 4.3, 6.4, 9.3,  13,  19,  26,  35,  48, 
+             64,  86, 1.1e+02, 1.5e+02, 2e+02, 2.6e+02, 3.4e+02, 4.4e+02, 5.8e+02, 
+             7.7e+02, 1e+03, 1.3e+03, 1.8e+03, 2.3e+03, 3.1e+03, 4.2e+03, 5.8e+03, 
+             8e+03, 1.1e+04, 1.5e+04, 2.1e+04, 3.1e+04, 4.9e+04, 6.3e+04, 7e+04, 
+             1e+05, 1.7e+05, 2.7e+05, 4.5e+05, 1.7e+06, 2.4e+06, 5.8e+06)
+xi.sq <- c(4.3e+04, 2e+04, 1.3e+04, 4.9e+03, 2.8e+03, 1.7e+03, 1.5e+03, 1.1e+03,
+           7e+02, 5.1e+02, 3.7e+02, 2.9e+02, 2.2e+02, 1.7e+02, 1.3e+02, 1.1e+02,
+           83,  68,  54,  45,  38,  32,  27,  23,  20,  17,  14,  12,  10,   9,
+           7.7, 6.5, 5.6, 4.7,   4, 3.3, 2.8, 2.3, 1.9, 1.5, 1.2, 0.95, 0.72, 
+           0.53, 0.38, 0.25, 0.15, 0.075, 0.027, 0.003, 0.003, 0.027, 0.075, 
+           0.15, 0.25, 0.38, 0.53, 0.72, 0.95, 1.2, 1.5, 1.9, 2.3, 2.8, 3.3,  
+           4, 4.7, 5.6, 6.5, 7.7,   9,  10,  12,  14,  17,  20,  23,  27,  32, 
+           38,  45,  54,  68,  83, 1.1e+02, 1.3e+02, 1.7e+02, 2.2e+02, 2.9e+02,
+           3.7e+02, 5.1e+02, 7e+02, 1.1e+03, 1.5e+03, 1.7e+03, 2.8e+03, 4.9e+03,
+           1.3e+04, 2e+04, 4.3e+04)
+zeta.sq <- c( 18,  21,  21,  21,  20,  20,  19,  19,  18,  18,  17,  17,  15, 
+              16,  15,  15,  15,  14,  14,  14,  14,  13,  13,  13,  12,  12,  12,  12,  12, 
+              11,  11,  11,  11,  11,  11,  10,  10,  10,  10, 9.9, 9.8, 9.7, 9.6, 9.5, 9.4, 
+              9.4, 9.3, 9.3, 9.3, 9.3, 9.3, 9.3, 9.3, 9.3, 9.4, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9,  
+              10,  10,  10,  10,  11,  11,  11,  11,  11,  11,  12,  12,  12,  12,  12,  13, 
+              13,  13,  14,  14,  14,  14,  15,  15,  15,  16,  15,  17,  17,  18,  18,  19, 
+              19,  20,  20,  21,  21,  21,  18)
+
 bw_mr <- function(udata) {
     n <- nrow(udata)
     
@@ -19,27 +50,11 @@ bw_mr <- function(udata) {
     d_K     <- 3/5
     
     ## parameter for frank copula by inversion of Kendall's tau
-    family <- 5
     tau <- cor(udata, method="kendall")[1L, 2L]
-    if (abs(tau) < 1e-16) {
-        family <- 0
-        par <- 0
-    } else {
-        par <- BiCopTau2Par(family, tau = tau)
-    }
-    
-    ## short handles for copula density and derivatives
-    c_uu <- function(u,v)
-        BiCopDeriv2(u, v, family, par, deriv = "u1")
-    c_vv <- function(u,v)
-        BiCopDeriv2(u, v, family, par, deriv = "u2")
-    
+
     ## integrals
-    bet <- function(w) (c_uu(w[1L], w[2L]) + c_vv(w[1L], w[2L]))^2
-    beta  <- adaptIntegrate(bet,
-                            lowerLimit = c(0, 0),
-                            upperLimit = c(1, 1),
-                            tol = 5e-3)$integral
+    tau.ind <- which.min(tau.sq - tau)
+    beta  <- beta.sq[tau.ind]
     gamma <- 1
     
     ## result
@@ -47,56 +62,17 @@ bw_mr <- function(udata) {
     if (res > 1) 1 else res
 }
 
+
+
 bw_beta <- function(udata) {
     n  <- nrow(udata)
     
-    ## parameter for frank copula by inversion of Kendall's tau
-    family <- 5
-    R <- cor(udata, method = "kendall")
-    tau <- mean(R[lower.tri(R)])
-    if (abs(tau) < 1e-16) {
-        family <- 0
-        par <- 0
-    } else {
-        par <- BiCopTau2Par(family, tau = tau)
-    }
-    
-    ## short handles for copula density and derivatives
-    cd   <- function(u,v)
-        BiCopPDF(u, v, family, par)
-    c_u  <- function(u,v)
-        BiCopDeriv(u, v, family, par, deriv = "u1")
-    c_v  <- function(u,v)
-        BiCopDeriv(u, v, family, par, deriv = "u2")
-    c_uu <- function(u,v)
-        BiCopDeriv2(u, v, family, par, deriv = "u1")
-    c_vv <- function(u,v)
-        BiCopDeriv2(u, v, family, par, deriv = "u2")
-    
-    ## short handles for integrands
-    x <- function(w) {
-        u <- w[1L]
-        v <- w[2L]
-        ((1-2*u)*c_u(u,v) + (1-2*v)*c_v(u,v) +
-            1/2 * (u*(1-u)*c_uu(u,v) + v*(1-v)*c_vv(u,v)))^2
-    }
-    zet <- function(w) {
-        u <- w[1L]
-        v <- w[2L]
-        cd(u,v) / sqrt(u*(1-u)*v*(1-v))
-    }
-    
-    ## integrations
-    xi   <- adaptIntegrate(x,
-                           lowerLimit = c(0, 0),
-                           upperLimit = c(1, 1),
-                           tol = 5e-3,
-                           maxEval = 10^3)$integral
-    zeta <- adaptIntegrate(zet,
-                           lowerLimit = c(0, 0),
-                           upperLimit = c(1, 1),
-                           tol = 5e-3,
-                           maxEval = 10^3)$integral
+    tau <- cor(udata, method="kendall")[1L, 2L]
+
+    ## integrals
+    tau.ind <- which.min(tau.sq - tau)
+    xi   <- xi.sq[tau.ind]
+    zeta <- zeta.sq[tau.ind]
     
     ## result
     (zeta/(8*pi*xi))^(1/3) * n^(-1/3)
