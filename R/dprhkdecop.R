@@ -196,8 +196,7 @@ rkdecop <- function(n, obj, quasi = FALSE) {
 #' 
 #' @seealso 
 #' \code{\link[kdecopula:kdecop]{kdecop}},
-#' \code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}},
-#' \code{\link[VineCopula:BiCopHfunc]{BiCopHinv}}
+#' \code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}
 #' 
 #' @examples 
 #' ## load data and transform with empirical cdf
