@@ -1,10 +1,8 @@
 useDynLib(kdecopula)
 import(lattice,
-       cubature,
        locfit,
        qrng,
-       Rcpp,
-       VineCopula)
+       Rcpp)
 importFrom("graphics", "plot", "contour")
 importFrom("grDevices", "colorRampPalette", "rgb", "col2rgb")
 importFrom("stats", "cor", "cov", "dbeta", "dnorm", "optim", "pnorm",

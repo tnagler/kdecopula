@@ -12,11 +12,9 @@ Depends:
     R (>= 3.0.0)
 Imports:
     lattice,
-    cubature,
     locfit,
     qrng,
     Rcpp (>= 0.11.2),
-    VineCopula (>= 1.6),
     graphics,
     grDevices,
     stats,
