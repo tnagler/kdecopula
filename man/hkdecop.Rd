@@ -25,8 +25,7 @@ A length \eqn{n} vector of the (inverse) h-function evaluated at
 Evaluates the h-function (or its inverse) corresponding to a \code{kdecopula}
 object. H-functions are conditional distribution functions obtained by
 integrating the copula density w.r.t. to one of its arguments (see also
-\code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}/
-\code{\link[VineCopula:BiCopHfunc]{BiCopHinv}}).
+\code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}).
 }
 \examples{
 ## load data and transform with empirical cdf

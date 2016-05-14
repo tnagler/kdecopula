@@ -180,8 +180,7 @@ rkdecop <- function(n, obj, quasi = FALSE) {
 #' Evaluates the h-function (or its inverse) corresponding to a \code{kdecopula}
 #' object. H-functions are conditional distribution functions obtained by
 #' integrating the copula density w.r.t. to one of its arguments (see also
-#' \code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}/
-#' \code{\link[VineCopula:BiCopHfunc]{BiCopHinv}}).
+#' \code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}).
 #' 
 #' @param u \eqn{n x 2} matrix of evaluation points.
 #' @param obj \code{kdecopula} object.
