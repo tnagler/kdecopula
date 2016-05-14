@@ -46,7 +46,6 @@ Thomas Nagler
 }
 \seealso{
 \code{\link[kdecopula:kdecop]{kdecop}},
-\code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}},
-\code{\link[VineCopula:BiCopHfunc]{BiCopHinv}}
+\code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}
 }
 
