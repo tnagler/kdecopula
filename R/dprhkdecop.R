@@ -80,7 +80,8 @@ dkdecop <- function(u, obj, stable = FALSE) {
         return(rep(1, nrow(u)))
     
     ## evaluate density  (use faster algorithm for d = 2)
-    u <- pmin(pmax(u, 1e-3), 1 - 1e-3)
+    if (stable)
+        u <- pmin(pmax(u, 1e-3), 1 - 1e-3)
     if (d == 2) {
         out <- interp_2d(u,
                          obj$estimate,

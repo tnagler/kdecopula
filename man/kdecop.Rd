@@ -4,7 +4,7 @@
 \alias{kdecop}
 \title{Bivariate kernel copula density estimation}
 \usage{
-kdecop(udata, bw = NA, mult = 1, method = "TLL2", knots = 50,
+kdecop(udata, bw = NA, mult = 1, method = "TLL2c", knots = 30,
   renorm.iter = 3L, info = TRUE)
 }
 \arguments{
@@ -28,8 +28,12 @@ estimates more/less smooth manually.}
 \code{"T"}: transformation estimator with standard bivariate kernel 
 estimation, \cr 
 \code{"TLL1"}: transformation estimator with log-linear local likelihood
-estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr 
-\code{"TLL2"}: transformation estimator with log-quadradtic local likelihood 
+estimation (Geenenens et al., 2014), \cr 
+\code{"TLL2"}: transformation estimator with log-quadradtic local likelihood
+estimation (Geenenens et al., 2014), \cr 
+\code{"TLL1nn"}: transformation estimator with log-linear local likelihood
+estimation (Geenenens et al., 2014), \cr 
+\code{"TLL2nn"}: transformation estimator with log-quadradtic local likelihood 
 estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
 \code{"TTPI"}: tapered transformation estimator with plug-in bandwidths, \cr
 \code{"TTCV"}: tapered transformation estimator with profile cross-validation

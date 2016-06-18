@@ -7,6 +7,8 @@ bw_select <- function(udata, method) {
            "T"    = nrow(udata)^(-1/(ncol(udata) + 4)) * t(chol(cov(qnorm(udata)))),
            "TLL1" = bw_tll(qnorm(udata), deg = 1),
            "TLL2" = bw_tll(qnorm(udata), deg = 2),
+           "TLL1c" = bw_tllc(qnorm(udata), deg = 1),
+           "TLL2c" = bw_tllc(qnorm(udata), deg = 2),
            "TTPI" = bw_tt_plugin(udata),
            "TTCV" = bw_tt_pcv(udata))
 }
@@ -51,7 +53,7 @@ bw_mr <- function(udata) {
     
     ## parameter for frank copula by inversion of Kendall's tau
     tau <- cor(udata, method="kendall")[1L, 2L]
-
+    
     ## integrals
     tau.ind <- which.min(tau.sq - tau)
     beta  <- beta.sq[tau.ind]
@@ -68,7 +70,7 @@ bw_beta <- function(udata) {
     n  <- nrow(udata)
     
     tau <- cor(udata, method="kendall")[1L, 2L]
-
+    
     ## integrals
     tau.ind <- which.min(tau.sq - tau)
     xi   <- xi.sq[tau.ind]
@@ -89,32 +91,25 @@ bw_tll <- function(zdata, deg) {
     n <- nrow(zdata)
     d <- ncol(zdata)
     # transform to uncorrelated data
-    B <- eigen(cov(zdata))$vectors
+    pca <- princomp(zdata)
+    B <- unclass(pca$loadings)
     B <- B * sign(diag(B))
-    qrs <- zdata %*% B
+    qrs <- unclass(pca$scores)
     
     ## find optimal alpha in for each principal component
-    # function to optimize over
-    fn <- function(alpha, x) {
-        e <- suppressWarnings(try(lscv(lp(x, nn = alpha, deg = deg),
-                                       kern = "gauss"),
-                                  silent = TRUE))
-        if (inherits(e, "try-error")) Inf else e[1]
-    }
-    # optimization function
+    alphsq <- seq(nrow(zdata)^(-1/5), 1, l = 50)
     opt <- function(i) {
-        optim(0.2,
-              fn,
-              x = qrs[, i],
-              lower = 1e-6,
-              upper = 1,
-              method = "Brent")$par
+        val <- lscvplot(~qrs[, i], 
+                        alpha  = alphsq, 
+                        deg    = deg, 
+                        kern   = "gauss", 
+                        maxk   = 512)$value
+        mean(alphsq[which.min(val)])
     }
     alpha.vec <- sapply(1:d, opt)
-    
+
     ## adjustments for multivariate estimation and transformation
     kappa <- alpha.vec[1]/alpha.vec
-    B <- B %*% diag(1/kappa)
     dimnames(B) <- NULL
     if (deg == 1) {
         alpha <- n^(1/5 - d/(4 + d)) * alpha.vec[1]
@@ -123,7 +118,16 @@ bw_tll <- function(zdata, deg) {
     }
     
     ## return results
-    list(B = B, alpha = alpha)
+    list(B = B, alpha = alpha, kappa = kappa)
+}
+
+bw_tllc <- function(zdata, deg) {
+    n <- nrow(zdata)
+    d <- ncol(zdata)
+    # transform to uncorrelated data
+    H <- cov(zdata) * nrow(zdata)^(-2/ (2 * 2 * deg + d))
+    
+    solve(chol(H)) 
 }
 
 ## tapered transformation estimator
