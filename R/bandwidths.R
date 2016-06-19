@@ -5,10 +5,10 @@ bw_select <- function(udata, method) {
            "MR"   = bw_mr(udata),
            "beta" = bw_beta(udata),
            "T"    = nrow(udata)^(-1/(ncol(udata) + 4)) * t(chol(cov(qnorm(udata)))),
+           "TLL1nn" = bw_tllnn(qnorm(udata), deg = 1),
+           "TLL2nn" = bw_tllnn(qnorm(udata), deg = 2),
            "TLL1" = bw_tll(qnorm(udata), deg = 1),
            "TLL2" = bw_tll(qnorm(udata), deg = 2),
-           "TLL1c" = bw_tllc(qnorm(udata), deg = 1),
-           "TLL2c" = bw_tllc(qnorm(udata), deg = 2),
            "TTPI" = bw_tt_plugin(udata),
            "TTCV" = bw_tt_pcv(udata))
 }
@@ -87,7 +87,7 @@ bw_t <- function(udata) {
     n^(- 1 / (d + 4)) * t(chol(cov(qnorm(udata)))) * (4 / (d + 2))^(1 / (d + 4))
 }
 
-bw_tll <- function(zdata, deg) {
+bw_tllnn <- function(zdata, deg) {
     n <- nrow(zdata)
     d <- ncol(zdata)
     # transform to uncorrelated data
@@ -121,11 +121,11 @@ bw_tll <- function(zdata, deg) {
     list(B = B, alpha = alpha, kappa = kappa)
 }
 
-bw_tllc <- function(zdata, deg) {
+bw_tll <- function(zdata, deg) {
     n <- nrow(zdata)
     d <- ncol(zdata)
     # transform to uncorrelated data
-    H <- cov(zdata) * nrow(zdata)^(-2/ (2 * 2 * deg + d))
+    H <- cov(zdata) * nrow(zdata)^(-2/ (4 * deg + d))
     
     solve(chol(H)) 
 }

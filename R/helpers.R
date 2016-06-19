@@ -31,7 +31,7 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
         scale <- dnorm(qnorm(udata)[, 1]) * dnorm(qnorm(udata)[, 2])
         effp  <- mean((kern_gauss_2d(0, 0, 1) / (scale * det(b))) / likvalues)
     }
-    if(method %in% c("TLL1", "TLL2", "TLL1c", "TLL2c"))
+    if(method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn"))
         effp <- lfit$dp[["df2"]]
     
     ## return result
@@ -48,13 +48,13 @@ eval_func <- function(method) {
            "T"    = function(uev, obj)
                eval_trafo(uev, obj$udata, obj$bw),
            "TLL1" = function(uev, obj)
-               eval_tll(uev, obj$lfit, obj$bw$B),
+               eval_tll(uev, obj$lfit, obj$bw),
            "TLL2" = function(uev, obj)
+               eval_tll(uev, obj$lfit, obj$bw),
+           "TLL1nn" = function(uev, obj)
                eval_tll(uev, obj$lfit, obj$bw$B),
-           "TLL1c" = function(uev, obj)
-               eval_tll(uev, obj$lfit, obj$bw),
-           "TLL2c" = function(uev, obj)
-               eval_tll(uev, obj$lfit, obj$bw),
+           "TLL2nn" = function(uev, obj)
+               eval_tll(uev, obj$lfit, obj$bw$B),
            "TTPI" = function(uev, obj)
                eval_tt(uev, obj$udata, obj$bw),
            "TTCV" = function(uev, obj)

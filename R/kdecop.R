@@ -62,8 +62,10 @@
 #' and \code{\link[kdecopula:contour.kdecopula]{contour}}.
 #' 
 #' @details Details on the estimation methods and bandwidth selection can be
-#' found in Geenens et al. (2014) for methods \code{TLL1/2} and Nagler (2014) 
-#' for other methods. We use a Gaussian product kernel function for all methods 
+#' found in Geenens et al. (2014) for methods \code{TLL1/2nn} and Nagler (2014) 
+#' for other methods. For \code{TLL1/2}, we use the rule of thumb
+#' \deqn{cov(\Phi^{-1}(udata))^{1/2} * 3.5 * n^{1 / (4 * deg + 2)}}.  
+#' We use a Gaussian product kernel function for all methods 
 #' except the beta kernel estimator.\cr 
 #' 
 #' Kernel estimates are usually no proper copula densities. In particular, the
@@ -121,7 +123,7 @@
 #' plot(rkdecop(500, dens.est))  # pseudo-random
 #' plot(rkdecop(500, dens.est), quasi = TRUE)  # quasi-random
 #' 
-kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2c", knots = 30, renorm.iter = 3L, info = TRUE) {
+kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
     n <- nrow(udata)
     d <- ncol(udata)
@@ -134,7 +136,7 @@ kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2c", knots = 30, renor
     if (any(udata > 1) | any(udata < 0))
         stop("'udata' have to be in the interval [0,1].")
     if (!(method %in% c("MR", "beta", "T",
-                        "TLL1", "TLL2", "TLL1c", "TLL2c",
+                        "TLL1", "TLL2", "TLL1nn", "TLL2nn",
                         "TTPI", "TTCV")))
         stop("method not implemented")
     if (mult <= 0)
@@ -152,9 +154,9 @@ kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2c", knots = 30, renor
         bw <- bw_select(udata, method)
     if (any(is.na(bw)))
         bw <- bw_select(udata, method)
-    if (method %in% c("TLL1", "TLL2")) {
+    if (method %in% c("TLL1nn", "TLL2nn")) {
         if (is.null(bw$B) | is.null(bw$alpha))
-            stop("For methods 'TLL1/2', you have to provide a list 'bw = list(B = <your.B>,  alpha = <your.alpha>)'
+            stop("For methods 'TLL1/2nn', you have to provide a list 'bw = list(B = <your.B>,  alpha = <your.alpha>)'
 where both parts of the bandwidth specification are provided via  'your.B', and 'your.alpha'.")
         if (any(c(diag(bw$B), bw$alpha) <= 0))
             stop("Bandwidths have to be positive.")
@@ -180,14 +182,14 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     }
     
     ## fit model for method TLL
-    if (method %in% c("TLL1", "TLL2")) {
+    if (method %in% c("TLL1nn", "TLL2nn")) {
         zdata <-  qnorm(udata)
         lfit <- my_locfit(zdata,
                           bw$B,
                           bw$alpha,
                           bw$kappa,
                           deg = as.numeric(substr(method, 4, 4)))
-    } else if (method %in% c("TLL1c", "TLL2c")) {
+    } else if (method %in% c("TLL1", "TLL2")) {
         zdata <-  qnorm(udata)
         lfit <- my_locfitc(zdata,
                            bw,
@@ -236,7 +238,7 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     class(res) <- "kdecopula"
     
     ## add effp for TLL
-    if (method %in% c("TLL1", "TLL2"))
+    if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn"))
         res$effp <- eff_num_par(udata, likvalues, bw, method, lfit)
     
     ## add further information if asked for
@@ -264,10 +266,6 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                          AIC       = AIC,
                          cAIC      = cAIC,
                          BIC       = BIC)
-        
-        ## remove effp for TLL
-        if (method %in% c("TLL1", "TLL2"))
-            res$effp <- NULL
     }
     
     ## return results as kdecopula object
