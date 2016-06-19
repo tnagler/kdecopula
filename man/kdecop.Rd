@@ -4,7 +4,7 @@
 \alias{kdecop}
 \title{Bivariate kernel copula density estimation}
 \usage{
-kdecop(udata, bw = NA, mult = 1, method = "TLL2c", knots = 30,
+kdecop(udata, bw = NA, mult = 1, method = "TLL2", knots = 30,
   renorm.iter = 3L, info = TRUE)
 }
 \arguments{

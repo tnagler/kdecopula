@@ -1,3 +1,14 @@
+kdecopula 0.7.0
+-------------------------------
+
+NEW FEATURES
+  
+  * Methods `TLL1` and `TLL2` now use fixed bandwidths; nearest neighbor methods
+    are implemented as `TLL1nn` and `TLL2n`.
+  
+  * Improved bandwidth selection for methods `TLL1nn` and `TLL2nn`.
+
+
 kdecopula 0.6.0
 -------------------------------
 
