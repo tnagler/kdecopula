@@ -11,13 +11,13 @@ print.kdecopula <- function(x, ...) {
 summary.kdecopula <- function(object, ...) {
     cat("Kernel copula density estimate\n")
     cat("------------------------------\n")
-    
+
     ## add variable names if available
     nms <- colnames(object$udata)
     if (length(nms) == 2) {
         cat("Variables:   ", nms[1], "--", nms[2], "\n")
     }
-    
+
     ## more details about the estimate
     cat("Observations:",
         nrow(object$udata), "\n")
@@ -26,12 +26,18 @@ summary.kdecopula <- function(object, ...) {
     if (object$method %in% c("MR", "beta")) {
         cat("Bandwidth:   ",
             round(object$bw,3), "\n")
-    } else if (object$method %in% c("TLL1", "TLL2")) {
+    } else if (object$method %in% c("TLL1nn", "TLL2nn")) {
         cat("Bandwidth:    ",
             "alpha = ",
             object$bw$alpha, "\n              ",
             "B = matrix(c(",
             paste(round(object$bw$B, 2), collapse = ", "),
+            "), 2, 2)\n",
+            sep = "")
+    } else if (object$method %in% c("TLL1", "TLL2")) {
+        cat("Bandwidth:    ",
+            "matrix(c(",
+            paste(round(object$bw, 2), collapse = ", "),
             "), 2, 2)\n",
             sep = "")
     } else if (object$method %in% c("T")) {
@@ -46,8 +52,8 @@ summary.kdecopula <- function(object, ...) {
             sep = "")
     }
     cat("---\n")
-    
-    ## fit statistics 
+
+    ## fit statistics
     if (object$method %in% c("TTPI", "TTCV")) {
         cat("logLik:", round(logLik(object), 2), "\n")
         cat("No further information available for this method")
@@ -64,16 +70,16 @@ summary.kdecopula <- function(object, ...) {
                                                        AIC    = AIC,
                                                        cAIC   = cAIC,
                                                        BIC    = BIC)
-        # print 
-        cat("logLik:", 
+        # print
+        cat("logLik:",
             round(loglik, 2), "   ")
-        cat("AIC:", 
+        cat("AIC:",
             round(AIC, 2), "   ")
         cat("cAIC:",
             round(cAIC, 2), "   ")
         cat("BIC:",
             round(BIC, 2), "\n")
-        cat("Effective number of parameters:", 
+        cat("Effective number of parameters:",
             round(effp, 2))
     }
     ## return with fit statistics
@@ -81,36 +87,36 @@ summary.kdecopula <- function(object, ...) {
 }
 
 
-#' Log-Likelihood of a \code{kdecopula} object 
-#' 
+#' Log-Likelihood of a \code{kdecopula} object
+#'
 #' @method logLik kdecopula
-#' 
+#'
 #' @param object an object of class \code{kdecopula}.
 #' @param ... not used.
-#' 
+#'
 #' @return Returns an object of class \code{\link[stats:logLik]{logLik}} containing the log-
 #' likelihood, number of observations and effective number of parameters ("df").
-#' 
+#'
 #' @author Thomas Nagler
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' \code{\link[stats:logLik]{logLik}},
 #' \code{\link[stats:AIC]{AIC}},
 #' \code{\link[stats:BIC]{BIC}}
-#' 
+#'
 #' @examples
 #' ## load data and transform with empirical cdf
 #' data(wdbc)
 #' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
-#' 
+#'
 #' ## estimation of copula density of variables 5 and 6
 #' dens.est <- kdecop(udat[, 5:6])
-#' 
+#'
 #' ## compute fit statistics
 #' logLik(dens.est)
 #' AIC(dens.est)
 #' BIC(dens.est)
-#' 
+#'
 logLik.kdecopula <- function(object, ...) {
     if (!is.null(object$info)) {
         ## access info slot if available
@@ -122,18 +128,18 @@ logLik.kdecopula <- function(object, ...) {
         out <- sum(log(likvalues))
         effp <- eff_num_par(object$udata,
                             likvalues,
-                            object$bw, 
+                            object$bw,
                             object$method,
                             object$lfit)
         # for TLL effp is stored already
         if (object$method %in% c("TLL1", "TLL2"))
             effp <- object$effp
     }
-    
+
     ## add attributes
     attr(out, "nobs") <- nrow(object$udata)
     attr(out, "df") <- effp
-    
+
     ## return object with class "logLik"
     class(out) <- "logLik"
     out
