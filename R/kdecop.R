@@ -181,24 +181,6 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         bw <- bw * mult
     }
     
-    ## fit model for method TLL
-    if (method %in% c("TLL1nn", "TLL2nn")) {
-        zdata <-  qnorm(udata)
-        lfit <- my_locfit(zdata,
-                          bw$B,
-                          bw$alpha,
-                          bw$kappa,
-                          deg = as.numeric(substr(method, 4, 4)))
-    } else if (method %in% c("TLL1", "TLL2")) {
-        zdata <-  qnorm(udata)
-        lfit <- my_locfitc(zdata,
-                           bw,
-                           mult,
-                           deg = as.numeric(substr(method, 4, 4)))
-    } else {
-        lfit <- NULL
-    }
-    
     ## construct grid with k knots in dimension d
     knots <- 30
     k.outer <- 2 * floor(knots / 6)
@@ -211,6 +193,26 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     pnts <- pnorm(seq(-3.25, 3.25, l = 30))
     grid <- as.matrix(do.call(expand.grid,
                               split(rep(pnts, d), rep(c(1, 2), each = knots))))
+    
+    ## fit model for method TLL
+    if (method %in% c("TLL1nn", "TLL2nn")) {
+        zdata <-  qnorm(udata)
+        lfit <- my_locfit(zdata,
+                          bw$B,
+                          bw$alpha,
+                          bw$kappa,
+                          deg = as.numeric(substr(method, 4, 4)),
+                          grid = grid)
+    } else if (method %in% c("TLL1", "TLL2")) {
+        zdata <-  qnorm(udata)
+        lfit <- my_locfitc(zdata,
+                           bw,
+                           mult,
+                           deg = as.numeric(substr(method, 4, 4)),
+                           grid = grid)
+    } else {
+        lfit <- NULL
+    }
     
     ## evaluate estimator on grid
     evalf <- eval_func(method)  # get evaluation function
