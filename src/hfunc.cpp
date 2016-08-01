@@ -49,7 +49,6 @@ Rcpp::NumericVector inv_hfunc(const Rcpp::NumericMatrix& uev,
 {
     NumericVector out(uev.nrow()), ans, val, x0, x1;
     double q;
-    int m = grid.size();
     NumericMatrix tmpu0(1, 2), tmpu1(1, 2);
     ans = 0.0, val = 0.0;
     double tol = 1e-10;
