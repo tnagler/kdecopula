@@ -11,7 +11,7 @@ double int_on_grid(const double& upr,
                    const Rcpp::NumericVector& grid) 
 {
     int m = grid.size();
-    NumericVector tmpvals(4), tmpgrid(4), tmpa(4);
+    NumericVector tmpvals(4), tmpgrid(4), tmpa(4), a(4);
     double uprnew, newint;
     
     double tmpint = 0.0;
@@ -37,7 +37,7 @@ double int_on_grid(const double& upr,
             grid[k],
             grid[k+1], 
             grid[std::min(k+2, m-1)]);
-            tmpa = coef(tmpvals, tmpgrid);
+            tmpa = coef(tmpvals, tmpgrid, a);
             
             // don't integrate over full cell if upr is in interior
             uprnew = (upr - grid[k]) / (grid[k+1] - grid[k]);
@@ -65,7 +65,7 @@ double inv_int_on_grid(const double& qq,
                        const Rcpp::NumericVector& grid)
 {
     int m = grid.size();
-    NumericVector tmpvals(4), tmpgrid(4), tmpa(4);
+    NumericVector tmpvals(4), tmpgrid(4), tmpa(4), a(4);
     double uprnew, newint, out, qtest;
     double tmpint = 0.0;
     int tmpk = 0;
@@ -85,7 +85,7 @@ double inv_int_on_grid(const double& qq,
             // select length 4 subvectors and calculate spline coefficients
             tmpvals = NumericVector::create(vals[k-1], vals[k], vals[k+1], vals[k+2]);
             tmpgrid = NumericVector::create(grid[k-1], grid[k], grid[k+1], grid[k+2]);
-            tmpa = coef(tmpvals, tmpgrid);
+            tmpa = coef(tmpvals, tmpgrid, a);
             newint = cubic_integral(0.0, 1.0, tmpa);
             tmpint += newint * (grid[k+1] - grid[k]);
             tmpk = k;

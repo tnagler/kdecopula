@@ -33,8 +33,8 @@ inv_int_on_grid <- function(qq, vals, grid) {
     .Call('kdecopula_inv_int_on_grid', PACKAGE = 'kdecopula', qq, vals, grid)
 }
 
-interp_2d <- function(x, vals, grid) {
-    .Call('kdecopula_interp_2d', PACKAGE = 'kdecopula', x, vals, grid)
+interp_2d <- function(x, vals, grid, tmpgrid, tmpvals) {
+    .Call('kdecopula_interp_2d', PACKAGE = 'kdecopula', x, vals, grid, tmpgrid, tmpvals)
 }
 
 interp <- function(x, vals, grid, helpind) {

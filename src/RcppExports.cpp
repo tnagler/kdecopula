@@ -115,15 +115,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // interp_2d
-Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid);
-RcppExport SEXP kdecopula_interp_2d(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP) {
+Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid, Rcpp::NumericVector tmpgrid, Rcpp::NumericVector tmpvals);
+RcppExport SEXP kdecopula_interp_2d(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP tmpgridSEXP, SEXP tmpvalsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type vals(valsSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
-    __result = Rcpp::wrap(interp_2d(x, vals, grid));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tmpgrid(tmpgridSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tmpvals(tmpvalsSEXP);
+    __result = Rcpp::wrap(interp_2d(x, vals, grid, tmpgrid, tmpvals));
     return __result;
 END_RCPP
 }
