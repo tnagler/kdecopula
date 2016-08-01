@@ -7,6 +7,8 @@ NEW FEATURES
     are implemented as `TLL1nn` and `TLL2n`.
   
   * Improved bandwidth selection for methods `TLL1nn` and `TLL2nn`.
+  
+  * Improved memory allocation (slightly faster now).
 
 
 kdecopula 0.6.0
