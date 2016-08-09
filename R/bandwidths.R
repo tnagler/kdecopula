@@ -55,7 +55,7 @@ bw_mr <- function(udata) {
     tau <- cor(udata, method="kendall")[1L, 2L]
     
     ## integrals
-    tau.ind <- which.min(tau.sq - tau)
+    tau.ind <- which.min(abs(tau.sq - tau))
     beta  <- beta.sq[tau.ind]
     gamma <- 1
     
@@ -72,7 +72,7 @@ bw_beta <- function(udata) {
     tau <- cor(udata, method="kendall")[1L, 2L]
     
     ## integrals
-    tau.ind <- which.min(tau.sq - tau)
+    tau.ind <- which.min(abs(tau.sq - tau))
     xi   <- xi.sq[tau.ind]
     zeta <- zeta.sq[tau.ind]
     
