@@ -52,7 +52,7 @@ bw_mr <- function(udata) {
     d_K     <- 3/5
     
     ## parameter for frank copula by inversion of Kendall's tau
-    tau <- cor(udata, method="kendall")[1L, 2L]
+    tau <- cor(udata, method = "kendall")[1L, 2L]
     
     ## integrals
     tau.ind <- which.min(abs(tau.sq - tau))
@@ -60,7 +60,7 @@ bw_mr <- function(udata) {
     gamma <- 1
     
     ## result
-    res <- (2*d_K^2/sigma_K^4*gamma/beta)^(1/6) * n^(-1/6)
+    res <- (2*d_K^2/sigma_K^4*gamma/beta)^(1/6) * n^(-1/6) * (1 - tau)
     if (res > 1) 1 else res
 }
 
@@ -69,7 +69,7 @@ bw_mr <- function(udata) {
 bw_beta <- function(udata) {
     n  <- nrow(udata)
     
-    tau <- cor(udata, method="kendall")[1L, 2L]
+    tau <- cor(udata, method = "kendall")[1L, 2L]
     
     ## integrals
     tau.ind <- which.min(abs(tau.sq - tau))
@@ -77,7 +77,7 @@ bw_beta <- function(udata) {
     zeta <- zeta.sq[tau.ind]
     
     ## result
-    (zeta/(8*pi*xi))^(1/3) * n^(-1/3)
+    (zeta/(8*pi*xi))^(1/3) * n^(-1/3) * (1 - tau)
 }
 
 bw_t <- function(udata) {
