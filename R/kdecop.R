@@ -183,14 +183,7 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     
     ## construct grid with k knots in dimension d
     knots <- 30
-    k.outer <- 2 * floor(knots / 6)
-    k.inner <- knots - k.outer
-    pnts <- seq(0.05, 0.95, l = k.inner)
-    zsq <- seq(-3.5, qnorm(pnts[1]), l = k.outer/2 + 1)
-    phi1 <- pnorm(zsq[-(k.outer/2 + 1)])
-    phi2 <- pnorm(-rev(zsq[-(k.outer/2 + 1)]))
-    pnts <- c(phi1, pnts, phi2)
-    pnts <- pnorm(seq(-3.25, 3.25, l = 30))
+    pnts <- pnorm(seq(-3.25, 3.25, l = knots))
     grid <- as.matrix(do.call(expand.grid,
                               split(rep(pnts, d), rep(c(1, 2), each = knots))))
     
