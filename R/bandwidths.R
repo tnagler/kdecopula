@@ -1,6 +1,4 @@
-### bandwidth selection
 bw_select <- function(udata, method) {
-    
     switch(method,
            "MR"   = bw_mr(udata),
            "beta" = bw_beta(udata),
@@ -13,73 +11,150 @@ bw_select <- function(udata, method) {
            "TTCV" = bw_tt_pcv(udata))
 }
 
-# precalculated integral values
-tau.sq <- seq(-0.9, 0.9, l = 50)
-beta.sq <- c(5.8e+06, 2.4e+06, 1.7e+06, 4.5e+05, 2.7e+05, 1.7e+05, 1e+05, 7e+04,
-             6.3e+04, 4.9e+04, 3.1e+04, 2.1e+04, 1.5e+04, 1.1e+04, 8e+03, 5.8e+03,
-             4.2e+03, 3.1e+03, 2.3e+03, 1.8e+03, 1.3e+03, 1e+03, 7.7e+02, 5.8e+02,
-             4.4e+02, 3.4e+02, 2.6e+02, 2e+02, 1.5e+02, 1.1e+02,  86,  64,  48,
-             35,  26,  19,  13, 9.3, 6.4, 4.3, 2.7, 1.7,   1, 0.55, 0.28, 0.12,
-             0.044, 0.011, 0.0015, 1.8e-05, 1.8e-05, 0.0015, 0.011, 0.044, 0.12, 
-             0.28, 0.55,   1, 1.7, 2.7, 4.3, 6.4, 9.3,  13,  19,  26,  35,  48, 
-             64,  86, 1.1e+02, 1.5e+02, 2e+02, 2.6e+02, 3.4e+02, 4.4e+02, 5.8e+02, 
-             7.7e+02, 1e+03, 1.3e+03, 1.8e+03, 2.3e+03, 3.1e+03, 4.2e+03, 5.8e+03, 
-             8e+03, 1.1e+04, 1.5e+04, 2.1e+04, 3.1e+04, 4.9e+04, 6.3e+04, 7e+04, 
-             1e+05, 1.7e+05, 2.7e+05, 4.5e+05, 1.7e+06, 2.4e+06, 5.8e+06)
-xi.sq <- c(4.3e+04, 2e+04, 1.3e+04, 4.9e+03, 2.8e+03, 1.7e+03, 1.5e+03, 1.1e+03,
-           7e+02, 5.1e+02, 3.7e+02, 2.9e+02, 2.2e+02, 1.7e+02, 1.3e+02, 1.1e+02,
-           83,  68,  54,  45,  38,  32,  27,  23,  20,  17,  14,  12,  10,   9,
-           7.7, 6.5, 5.6, 4.7,   4, 3.3, 2.8, 2.3, 1.9, 1.5, 1.2, 0.95, 0.72, 
-           0.53, 0.38, 0.25, 0.15, 0.075, 0.027, 0.003, 0.003, 0.027, 0.075, 
-           0.15, 0.25, 0.38, 0.53, 0.72, 0.95, 1.2, 1.5, 1.9, 2.3, 2.8, 3.3,  
-           4, 4.7, 5.6, 6.5, 7.7,   9,  10,  12,  14,  17,  20,  23,  27,  32, 
-           38,  45,  54,  68,  83, 1.1e+02, 1.3e+02, 1.7e+02, 2.2e+02, 2.9e+02,
-           3.7e+02, 5.1e+02, 7e+02, 1.1e+03, 1.5e+03, 1.7e+03, 2.8e+03, 4.9e+03,
-           1.3e+04, 2e+04, 4.3e+04)
-zeta.sq <- c( 18,  21,  21,  21,  20,  20,  19,  19,  18,  18,  17,  17,  15, 
-              16,  15,  15,  15,  14,  14,  14,  14,  13,  13,  13,  12,  12,  12,  12,  12, 
-              11,  11,  11,  11,  11,  11,  10,  10,  10,  10, 9.9, 9.8, 9.7, 9.6, 9.5, 9.4, 
-              9.4, 9.3, 9.3, 9.3, 9.3, 9.3, 9.3, 9.3, 9.3, 9.4, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9,  
-              10,  10,  10,  10,  11,  11,  11,  11,  11,  11,  12,  12,  12,  12,  12,  13, 
-              13,  13,  14,  14,  14,  14,  15,  15,  15,  16,  15,  17,  17,  18,  18,  19, 
-              19,  20,  20,  21,  21,  21,  18)
 
+## for precalculate
+
+## mirror reflection ------------------------
 bw_mr <- function(udata) {
-    n <- nrow(udata)
-    
-    ## constants for kernel
-    sigma_K <- sqrt(1/5)
-    d_K     <- 3/5
-    
-    ## parameter for frank copula by inversion of Kendall's tau
-    tau <- cor(udata, method = "kendall")[1L, 2L]
-    
-    ## integrals
-    tau.ind <- which.min(abs(tau.sq - tau))
-    beta  <- beta.sq[tau.ind]
-    gamma <- 1
-    
-    ## result
-    res <- (2*d_K^2/sigma_K^4*gamma/beta)^(1/6) * n^(-1/6) * (1 - tau)
+    # optimal bandwidth depends only on |tau| 
+    tau <- abs(cor(udata, method = "kendall")[1L, 2L])
+    res <- precalc_bw_mr(tau) * nrow(udata)^(-1/6)
     if (res > 1) 1 else res
 }
 
 
 
-bw_beta <- function(udata) {
-    n  <- nrow(udata)
+precalc_bw_mr <- function(tau) {
+    # ## constants for kernel
+    # sigma_K <- sqrt(1/5)
+    # d_K     <- 3/5
+    # 
+    # ## parameter for frank copula by inversion of Kendall's tau
+    # family <- 5
+    # if (abs(tau) < 1e-2) {
+    #     family <- 0
+    #     par <- 0
+    # } else {
+    #     par <- BiCopTau2Par(family, tau = tau)
+    # }
+    # 
+    # ## short handles for copula density and derivatives
+    # c_uu <- function(u,v)
+    #     BiCopDeriv2(u, v, family, par, deriv = "u1")
+    # c_vv <- function(u,v)
+    #     BiCopDeriv2(u, v, family, par, deriv = "u2")
+    # 
+    # ## integrals
+    # require(cubature)
+    # bet <- function(w) (c_uu(w[1L], w[2L]) + c_vv(w[1L], w[2L]))^2
+    # beta  <- adaptIntegrate(bet,
+    #                         lowerLimit = c(0, 0),
+    #                         upperLimit = c(1, 1),
+    #                         tol = 5e-3)$integral
+    # gamma <- 1
+    # 
+    # ## result
+    # (2*d_K^2/sigma_K^4*gamma/beta)^(1/6)
     
-    tau <- cor(udata, method = "kendall")[1L, 2L]
-    
-    ## integrals
-    tau.ind <- which.min(abs(tau.sq - tau))
-    xi   <- xi.sq[tau.ind]
-    zeta <- zeta.sq[tau.ind]
-    
-    ## result
-    (zeta/(8*pi*xi))^(1/3) * n^(-1/3) * (1 - tau)
+    ## the above calculations were done on a grid for Kendall's tau.
+    v <- c(Inf, Inf, Inf, Inf, Inf, 9.38981068252189, 7.36254398988451,
+           5.9934473841143, 5.01438723715381, 4.28489907652576, 3.72151713690116,
+           3.27524808116924, 2.91396051165559, 2.61608148151527, 2.36661799041074,
+           2.15485773318137, 1.97295862876476, 1.81504529817913, 1.67664440477963,
+           1.55428808465057, 1.44524733239357, 1.34727336943063, 1.2588505869573,
+           1.17831883935096, 1.10458837918203, 1.03668522552123, 0.973750351604238,
+           0.915194628199262, 0.860406562943529, 0.808890181007853, 0.760230558570832,
+           0.714051901933609, 0.670076097370562, 0.628067045708522, 0.587716317232067,
+           0.548818087457592, 0.51120935335435, 0.474708408418336, 0.439129770121076,
+           0.404297062441312, 0.370046576741511, 0.336198423712505, 0.302561619578939,
+           0.26895782427755, 0.23518179071423, 0.201000830641606, 0.16613394170313,
+           0.13018932667288, 0.0925244955920096, 0.037769121689797)
+    ## we choose the value that correponds to the value of Kendall's tau that
+    ## is closest to the empirical one.
+    tausq <- seq(0, 0.98, l = 50)^2
+    v[which.min(abs(tau - tausq))]
 }
 
+
+## beta kernels -----------------------------
+bw_beta <- function(udata) {
+    # optimal bandwidth depends only on |tau| 
+    tau <- abs(cor(udata, method="kendall")[1L, 2L])
+    precalc_bw_beta(tau) * nrow(udata)^(-1/3)
+}
+
+precalc_bw_beta <- function(tau) {
+    # ## parameter for frank copula by inversion of Kendall's tau
+    # family <- 5
+    # if (abs(tau) < 1e-2) {
+    #     family <- 0
+    #     par <- 0
+    # } else {
+    #     par <- BiCopTau2Par(family, tau = tau)
+    # }
+    # 
+    # ## short handles for copula density and derivatives
+    # cd   <- function(u,v)
+    #     BiCopPDF(u, v, family, par)
+    # c_u  <- function(u,v)
+    #     BiCopDeriv(u, v, family, par, deriv = "u1")
+    # c_v  <- function(u,v)
+    #     BiCopDeriv(u, v, family, par, deriv = "u2")
+    # c_uu <- function(u,v)
+    #     BiCopDeriv2(u, v, family, par, deriv = "u1")
+    # c_vv <- function(u,v)
+    #     BiCopDeriv2(u, v, family, par, deriv = "u2")
+    # 
+    # ## short handles for integrands
+    # x <- function(w) {
+    #     u <- w[1L]
+    #     v <- w[2L]
+    #     ((1-2*u)*c_u(u,v) + (1-2*v)*c_v(u,v) +
+    #             1/2 * (u*(1-u)*c_uu(u,v) + v*(1-v)*c_vv(u,v)))^2
+    # }
+    # zet <- function(w) {
+    #     u <- w[1L]
+    #     v <- w[2L]
+    #     cd(u,v) / sqrt(u*(1-u)*v*(1-v))
+    # }
+    # 
+    # ## integrations
+    # require(cubature)
+    # xi   <- adaptIntegrate(x,
+    #                        lowerLimit = c(0, 0),
+    #                        upperLimit = c(1, 1),
+    #                        tol = 5e-3,
+    #                        maxEval = 10^3)$integral
+    # zeta <- adaptIntegrate(zet,
+    #                        lowerLimit = c(0, 0),
+    #                        upperLimit = c(1, 1),
+    #                        tol = 5e-3,
+    #                        maxEval = 10^3)$integral
+    # 
+    # ## result
+    # (zeta/(8*pi*xi))^(1/3)
+    
+    ## the above calculations were done on a grid for Kendall's tau.
+    v <- c(Inf, Inf, Inf, Inf, Inf, 4.69204254128018, 3.67817865896611,
+           2.99306705888, 2.50600489245533, 2.14070935782172, 1.85882498366308,
+           1.63542027413745, 1.45447243427281, 1.30516553259084, 1.18006222840396,
+           1.07369616223661, 0.982279653155062, 0.902786075906722, 0.832989698639277,
+           0.77116216500065, 0.71594673568386, 0.666226838391616, 0.621283273241791,
+           0.580285687536092, 0.542978050804531, 0.508272377148461, 0.476077286848213,
+           0.445778127751307, 0.417823893972421, 0.391328969202865, 0.366246870917148,
+           0.342361362868933, 0.31955865730248, 0.297652278179634, 0.276344663543029,
+           0.255870283604903, 0.235590782152833, 0.215830541690526, 0.196004036954186,
+           0.176279793709377, 0.156562165388165, 0.13363202871254, 0.116793384758542,
+           0.0963960312149928, 0.0805978666127558, 0.0612707894515751, 0.0402224124093885,
+           0.0294236043019451, 0.0162264027190233, 0.00459925701909334)
+    ## we choose the value that correponds to the value of Kendall's tau that
+    ## is closest to the empirical one.
+    tausq <- seq(0, 0.98, l = 50)^2
+    v[which.min(abs(tau - tausq))]
+    
+}
+
+## transformation kernel -----------------------------
 bw_t <- function(udata) {
     ## normal rederence rule
     n <- nrow(udata)
@@ -87,6 +162,7 @@ bw_t <- function(udata) {
     n^(- 1 / (d + 4)) * t(chol(cov(qnorm(udata)))) * (4 / (d + 2))^(1 / (d + 4))
 }
 
+## transformation local likelihood -------------------
 bw_tllnn <- function(zdata, deg) {
     n <- nrow(zdata)
     d <- ncol(zdata)
@@ -107,7 +183,7 @@ bw_tllnn <- function(zdata, deg) {
         mean(alphsq[which.min(val)])
     }
     alpha.vec <- sapply(1:d, opt)
-
+    
     ## adjustments for multivariate estimation and transformation
     kappa <- alpha.vec[1]/alpha.vec
     dimnames(B) <- NULL
@@ -130,7 +206,7 @@ bw_tll <- function(zdata, deg) {
     solve(chol(H)) 
 }
 
-## tapered transformation estimator
+## tapered transformation estimator ------------------
 bw_tt_plugin <- function(obs, rho.add = T) {
     # This function uses the plug in method to select
     # the optimal smoothing parameters.  rho.add = T
