@@ -8,7 +8,12 @@ NEW FEATURES
   
   * Improved bandwidth selection for methods `TLL1nn` and `TLL2nn`.
   
-  * Improved memory allocation (slightly faster now).
+  * Improved memory allocation.
+  
+BUG FIXES
+
+  * Bandwidth selection for methods `TTxx` are now safe even when correlation is
+    high and sample size small.
 
 
 kdecopula 0.6.0

@@ -218,7 +218,10 @@ bw_tt_plugin <- function(obs, rho.add = T) {
     Si <- qnorm(obs[, 1])
     Ti <- qnorm(obs[, 2])
     
-    pre_rho <- mean(Si * Ti)
+    ## the following line causes errors for very strong dependence (pre_rho > 1)
+    # pre_rho <- mean(Si * Ti)
+    ## this is almost the same, but safer
+    pre_rho <- cor(Si, Ti)
     b <- (32 * (1 - pre_rho^2)^3 * sqrt(1 - pre_rho^2)/(9 * pre_rho^2 + 6)/n)^(1/8)
     
     Xi <- rep(Si, each = n)
@@ -290,13 +293,9 @@ bw_tt_plugin <- function(obs, rho.add = T) {
         rho <- 0
     }
     
-    C2 <- matrix(C21 + C22 + 2 * rho * C23, dim(B)[1],
-                 1)
-    C3 <- phi40 + phi04 + (4 * rho^2 + 2) * phi22 +
-        4 * rho * (phi31 + phi13)
-    
-    h <- as.numeric((1/2/pi/n/
-                         (C3 - t(C2) %*% solve(C1) %*%  C2)/
+    C2 <- matrix(C21 + C22 + 2 * rho * C23, dim(B)[1], 1)
+    C3 <- phi40 + phi04 + (4 * rho^2 + 2) * phi22 + 4 * rho * (phi31 + phi13)
+    h <- as.numeric((1/2/pi/n/(C3 - t(C2) %*% solve(C1) %*%  C2)/
                          sqrt(1 - rho^2))^(1/6))
     theta <- as.vector(-h^2/2 * solve(C1) %*% C2)
     
@@ -311,7 +310,10 @@ bw_tt_pcv <- function(obs, rho.add = T) {
     Si <- qnorm(obs[, 1])
     Ti <- qnorm(obs[, 2])
     
-    pre_rho <- mean(Si * Ti)
+    ## the following line causes errors for very strong dependence (pre_rho > 1)
+    # pre_rho <- mean(Si * Ti)
+    ## this is almost the same, but safer
+    pre_rho <- cor(Si, Ti)
     a2 <- 19/4/pi^2
     a3 <- (48 * pre_rho^2 + 57)/32/pi^2/(pre_rho^2 -
                                              1)^3/sqrt(1 - pre_rho^2)
@@ -396,8 +398,7 @@ bw_tt_pcv <- function(obs, rho.add = T) {
                          dim(B)[1], 1)
             C3 <- phi40 + phi04 + (4 * rho^2 + 2) *
                 phi22 + 4 * rho * (phi31 + phi13)
-            (C3 - t(C2) %*% solve(C1) %*% C2)/(1 -
-                                                   rho^2)
+            (C3 - t(C2) %*% solve(C1) %*% C2)/(1 - rho^2)
         }
         
         rho_optimization <- optim(0,
