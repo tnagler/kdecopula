@@ -1,14 +1,14 @@
 bw_select <- function(udata, method) {
     switch(method,
-           "MR"   = bw_mr(udata),
-           "beta" = bw_beta(udata),
-           "T"    = nrow(udata)^(-1/(ncol(udata) + 4)) * t(chol(cov(qnorm(udata)))),
+           "MR"     = bw_mr(udata),
+           "beta"   = bw_beta(udata),
+           "T"      = nrow(udata)^(-1/(ncol(udata) + 4)) * t(chol(cov(qnorm(udata)))),
            "TLL1nn" = bw_tllnn(qnorm(udata), deg = 1),
            "TLL2nn" = bw_tllnn(qnorm(udata), deg = 2),
-           "TLL1" = bw_tll(qnorm(udata), deg = 1),
-           "TLL2" = bw_tll(qnorm(udata), deg = 2),
-           "TTPI" = bw_tt_plugin(udata),
-           "TTCV" = bw_tt_pcv(udata))
+           "TLL1"   = bw_tll(qnorm(udata), deg = 1),
+           "TLL2"   = bw_tll(qnorm(udata), deg = 2),
+           "TTPI"   = bw_tt_plugin(udata),
+           "TTCV"   = bw_tt_pcv(udata))
 }
 
 
@@ -217,11 +217,12 @@ bw_tt_plugin <- function(obs, rho.add = T) {
     n <- dim(obs)[1]
     Si <- qnorm(obs[, 1])
     Ti <- qnorm(obs[, 2])
-    
-    ## the following line causes errors for very strong dependence (pre_rho > 1)
-    # pre_rho <- mean(Si * Ti)
-    ## this is almost the same, but safer
-    pre_rho <- cor(Si, Ti)
+    # standardization is asymptotically negligble, but prevents invalid choices
+    # of the bandwidth parameters when pre_rho^2 > 1
+    Si <- Si / sd(Si)
+    Ti <- Ti / sd(Ti)
+
+    pre_rho <- mean(Si * Ti)
     b <- (32 * (1 - pre_rho^2)^3 * sqrt(1 - pre_rho^2)/(9 * pre_rho^2 + 6)/n)^(1/8)
     
     Xi <- rep(Si, each = n)
@@ -283,7 +284,7 @@ bw_tt_plugin <- function(obs, rho.add = T) {
         rho_optimization <- optim(0,
                                   M,
                                   method = "BFGS",
-                                  control = list(maxit = 20000))
+                                  control = list(maxit = 2000))
         if (rho_optimization$convergence != 0) {
             stop("Check the optimization in choosing rho.")
         }
@@ -292,13 +293,13 @@ bw_tt_plugin <- function(obs, rho.add = T) {
     } else {
         rho <- 0
     }
-    
+
     C2 <- matrix(C21 + C22 + 2 * rho * C23, dim(B)[1], 1)
     C3 <- phi40 + phi04 + (4 * rho^2 + 2) * phi22 + 4 * rho * (phi31 + phi13)
     h <- as.numeric((1/2/pi/n/(C3 - t(C2) %*% solve(C1) %*%  C2)/
                          sqrt(1 - rho^2))^(1/6))
     theta <- as.vector(-h^2/2 * solve(C1) %*% C2)
-    
+
     c(h, rho, theta)
 }
 
@@ -309,11 +310,12 @@ bw_tt_pcv <- function(obs, rho.add = T) {
     n <- dim(obs)[1]
     Si <- qnorm(obs[, 1])
     Ti <- qnorm(obs[, 2])
+    # standardization is asymptotically negligble, but prevents invalid choices
+    # of the bandwidth parameters when pre_rho^2 > 1
+    Si <- Si / sd(Si)
+    Ti <- Ti / sd(Ti)
     
-    ## the following line causes errors for very strong dependence (pre_rho > 1)
-    # pre_rho <- mean(Si * Ti)
-    ## this is almost the same, but safer
-    pre_rho <- cor(Si, Ti)
+    pre_rho <- mean(Si * Ti)
     a2 <- 19/4/pi^2
     a3 <- (48 * pre_rho^2 + 57)/32/pi^2/(pre_rho^2 -
                                              1)^3/sqrt(1 - pre_rho^2)
@@ -404,24 +406,25 @@ bw_tt_pcv <- function(obs, rho.add = T) {
         rho_optimization <- optim(0,
                                   M,
                                   method = "BFGS",
-                                  control = list(maxit = 20000))
+                                  control = list(maxit = 2000))
         opt_rho <- 2 * pnorm(rho_optimization$par) - 1
         obj <- function(param) wcv(exp(param), opt_rho)
         optimization <- optim(log(0.2),
                               obj,
                               method = "BFGS",
-                              control = list(maxit = 50000))
+                              control = list(maxit = 2000))
         opt_h <- exp(optimization$par)
     } else {
         obj <- function(param) wcv(exp(param), 0)
         optimization <- optim(log(0.2),
                               obj,
                               method = "BFGS",
-                              control = list(maxit = 50000))
+                              control = list(maxit = 2000))
         opt_h <- exp(optimization$par)
         opt_rho <- 0
     }
     opt_C2 <- matrix(C21 + C22 + 2 * opt_rho * C23, dim(B)[1], 1)
     opt_theta <- as.vector(solve(C1) %*% opt_C2) * (-opt_h^2/2)
+    opt_theta[1] <- max(opt_theta[1], 0)
     c(opt_h, opt_rho, opt_theta, optimization$convergence)
 }
