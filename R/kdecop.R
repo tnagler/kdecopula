@@ -137,7 +137,7 @@ kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, renorm
         stop("'udata' have to be in the interval [0,1].")
     if (!(method %in% c("MR", "beta", "T",
                         "TLL1", "TLL2", "TLL1nn", "TLL2nn",
-                        "TTPI", "TTCV")))
+                        "TTPI", "TTCV", "bern")))
         stop("method not implemented")
     if (mult <= 0)
         stop("'mult' has to be a positive number.")
@@ -178,6 +178,8 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     } else if (method == "MR") {
         bw <- min(bw * mult, 1)
     } else if (method == "beta") {
+        bw <- bw * mult
+    } else if (method == "bern") {
         bw <- bw * mult
     }
     

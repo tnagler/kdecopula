@@ -31,8 +31,10 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
         scale <- dnorm(qnorm(udata)[, 1]) * dnorm(qnorm(udata)[, 2])
         effp  <- mean((kern_gauss_2d(0, 0, 1) / (scale * det(b))) / likvalues)
     }
-    if(method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn"))
+    if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn"))
         effp <- lfit$dp[["df2"]]
+    if (method == "bern")
+        effp <- NA
     
     ## return result
     effp
@@ -58,7 +60,9 @@ eval_func <- function(method) {
            "TTPI" = function(uev, obj)
                eval_tt(uev, obj$udata, obj$bw),
            "TTCV" = function(uev, obj)
-               eval_tt(uev, obj$udata, obj$bw))
+               eval_tt(uev, obj$udata, obj$bw),
+           "bern" = function(uev, obj)
+               dberncop(uev, berncop(obj$udata, obj$bw)))
 }
 
 ##### local likelihood fitting

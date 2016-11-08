@@ -8,11 +8,10 @@ bw_select <- function(udata, method) {
            "TLL1"   = bw_tll(qnorm(udata), deg = 1),
            "TLL2"   = bw_tll(qnorm(udata), deg = 2),
            "TTPI"   = bw_tt_plugin(udata),
-           "TTCV"   = bw_tt_pcv(udata))
+           "TTCV"   = bw_tt_pcv(udata),
+           "bern"   = 14)
 }
 
-
-## for precalculate
 
 ## mirror reflection ------------------------
 bw_mr <- function(udata) {
