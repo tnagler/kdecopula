@@ -180,7 +180,7 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     } else if (method == "beta") {
         bw <- bw * mult
     } else if (method == "bern") {
-        bw <- bw * mult
+        bw <- round(bw * mult)
     }
     
     ## construct grid with k knots in dimension d

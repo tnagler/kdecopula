@@ -9,9 +9,16 @@ bw_select <- function(udata, method) {
            "TLL2"   = bw_tll(qnorm(udata), deg = 2),
            "TTPI"   = bw_tt_plugin(udata),
            "TTCV"   = bw_tt_pcv(udata),
-           "bern"   = 14)
+           "bern"   = bw_bern(udata))
 }
 
+
+bw_bern <- function(udata) {
+    n <- nrow(udata)
+    rho <- cor(udata)[1, 2]
+    # Rose (2015)
+    n^(1/3) * exp(rho^(1/n)) * (rho + 0.1)
+}
 
 ## mirror reflection ------------------------
 bw_mr <- function(udata) {
