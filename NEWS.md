@@ -1,6 +1,10 @@
 kdecopula 0.7.0
 -------------------------------
 
+DEPENDS
+
+  * Added `quadprog` to imports.
+
 NEW FEATURES
   
   * Methods `TLL1` and `TLL2` now use fixed bandwidths; nearest neighbor methods
@@ -9,6 +13,8 @@ NEW FEATURES
   * Improved bandwidth selection for methods `TLL1nn` and `TLL2nn`.
   
   * Improved memory allocation.
+  
+  * Hidden (and undocumented) method `bern` for the Bernstein copula density.
   
 BUG FIXES
 

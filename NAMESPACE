@@ -5,10 +5,11 @@ import(lattice,
        Rcpp)
 importFrom("graphics", "plot", "contour")
 importFrom("grDevices", "colorRampPalette", "rgb", "col2rgb")
-importFrom("stats", "cor", "cov", "dbeta", "dnorm", "optim", "pnorm",
+importFrom("stats", "sd", "cor", "cov", "dbeta", "dnorm", "optim", "pnorm",
            "predict", "qnorm", "runif", "logLik", "princomp")
 importFrom("utils", "modifyList")
 importFrom("stats", "dexp", "pexp", "qexp")
+importFrom("quadprog", "solve.QP")
 
 export(kdecop,
        dkdecop,

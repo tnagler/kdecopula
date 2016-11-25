@@ -1,9 +1,9 @@
 ## Test environments
-* ubuntu 12.04 (devel, release, oldrel) 
+* ubuntu 12.04 (devel, release) 
 * win-builder (release)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
 ## Downstream dependencies
-No downstream dependencies yet.
+Checked VineCopula: 0 errors | 0 warnings | 0 notes
