@@ -66,11 +66,12 @@ eval_func <- function(method) {
 }
 
 ##### local likelihood fitting
-my_locfit <- function(zdata, B, alpha, kappa, deg, grid) {
+my_locfit <- function(udata, B, alpha, kappa, deg, grid) {
     # transform data
-    qrs  <- zdata %*% B
+    zdata <- qnorm(udata)
+    qrs  <- zdata %*% solve(B)
     gr <- do.call(expand.grid, lapply(1:ncol(qrs), function(i) c(-4, 4)))
-    qgr <- as.matrix(gr) %*% B
+    qgr <- as.matrix(gr) %*% solve(B)
     lims <- apply(qgr, 2L, range)
     
     ## fit model
@@ -88,21 +89,22 @@ my_locfit <- function(zdata, B, alpha, kappa, deg, grid) {
 }
 
 ##### local likelihood fitting
-my_locfitc <- function(zdata, B, mult, deg, grid) {
+my_locfitc <- function(udata, B, deg, grid) {
     # transform data
-    qrs  <- zdata %*% B
+    zdata <- qnorm(udata)
+    qrs  <- zdata %*% solve(B)
     gr <- do.call(expand.grid, lapply(1:ncol(qrs), function(i) c(-4, 4)))
-    qgr <- as.matrix(gr) %*% B
+    qgr <- as.matrix(gr) %*% solve(B)
     lims <- apply(qgr, 2L, range)
     
     ## fit model
     cl.lst <- split(as.vector(qrs), rep(1:ncol(qrs), each = nrow(qrs)))
-    cl.lst$h <- 3.5 * mult
+    cl.lst$h <- 1
     cl.lst$deg <- deg
     lf.lst <- list(~do.call(lp, cl.lst),
                    maxk = 1000,
                    kern = "gauss",
-                   scale = TRUE,
+                   scale = FALSE,
                    ev = lfgrid(mg = 50, 
                                ll = lims[1L, ], 
                                ur = lims[2L, ]))

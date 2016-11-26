@@ -2,11 +2,11 @@ bw_select <- function(udata, method) {
     switch(method,
            "MR"     = bw_mr(udata),
            "beta"   = bw_beta(udata),
-           "T"      = nrow(udata)^(-1/(ncol(udata) + 4)) * t(chol(cov(qnorm(udata)))),
-           "TLL1nn" = bw_tllnn(qnorm(udata), deg = 1),
-           "TLL2nn" = bw_tllnn(qnorm(udata), deg = 2),
-           "TLL1"   = bw_tll(qnorm(udata), deg = 1),
-           "TLL2"   = bw_tll(qnorm(udata), deg = 2),
+           "T"      = bw_t(udata),
+           "TLL1nn" = bw_tllnn(udata, deg = 1),
+           "TLL2nn" = bw_tllnn(udata, deg = 2),
+           "TLL1"   = bw_tll(udata, deg = 1),
+           "TLL2"   = bw_tll(udata, deg = 2),
            "TTPI"   = bw_tt_plugin(udata),
            "TTCV"   = bw_tt_pcv(udata),
            "bern"   = bw_bern(udata))
@@ -164,12 +164,18 @@ precalc_bw_beta <- function(tau) {
 bw_t <- function(udata) {
     ## normal rederence rule
     n <- nrow(udata)
-    d <- ncol(udata)
-    n^(- 1 / (d + 4)) * t(chol(cov(qnorm(udata)))) * (4 / (d + 2))^(1 / (d + 4))
+    n^(-1 / 6) * t(chol(cov(qnorm(udata))))
 }
 
 ## transformation local likelihood -------------------
-bw_tllnn <- function(zdata, deg) {
+bw_tll <- function(udata, deg) {
+    n <- nrow(udata)
+    # transform to uncorrelated data
+    sqrt(5)^deg * n^(-1 / (4 * deg + 2)) * t(chol(cov(qnorm(udata))))
+}
+
+bw_tllnn <- function(udata, deg) {
+    zdata <- qnorm(udata)
     n <- nrow(zdata)
     d <- ncol(zdata)
     # transform to uncorrelated data
@@ -201,15 +207,6 @@ bw_tllnn <- function(zdata, deg) {
     
     ## return results
     list(B = B, alpha = alpha, kappa = kappa)
-}
-
-bw_tll <- function(zdata, deg) {
-    n <- nrow(zdata)
-    d <- ncol(zdata)
-    # transform to uncorrelated data
-    H <- cov(zdata) * nrow(zdata)^(-2/ (4 * deg + d))
-    
-    solve(chol(H)) 
 }
 
 ## tapered transformation estimator ------------------

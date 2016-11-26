@@ -10,8 +10,8 @@
 #' @param bw bandwidth specification; if \code{NA}, \code{bw} is selected
 #' automatically; Otherwise, please provide (for the respective method) \cr
 #' \code{"MR", "beta"}: a positive real number, \cr
-#' \code{"T"}: a \eqn{2x2} matrix for method, \cr
-#' \code{"TLL1", "TLL2"}: a list with (named) entries \code{B} and \code{alpha}
+#' \code{"T", "TLL1", "TLL2"}: a \eqn{2x2} bandwidth matrix, \cr
+#' \code{"TLL1nn", "TLL2nn"}: a list with (named) entries \code{B} and \code{alpha}
 #' containing the \eqn{2x2} rotation matrix \code{B} and the nearest-neighbor 
 #' fraction \code{alpha}, \cr
 #' \code{"TTCV", "TTPI"}: a numeric vector of length four containing \eqn{(h, 
@@ -64,7 +64,7 @@
 #' @details Details on the estimation methods and bandwidth selection can be
 #' found in Geenens et al. (2014) for methods \code{TLL1/2nn} and Nagler (2014) 
 #' for other methods. For \code{TLL1/2}, we use the rule of thumb
-#' \deqn{cov(\Phi^{-1}(udata))^{1/2} * 3.5 * n^{1 / (4 * deg + 2)}}.  
+#' \deqn{cov(\Phi^{-1}(udata))^{1/2} * 5^{deg / 2} * n^{- 1 / (4 * deg + 2)}}.  
 #' We use a Gaussian product kernel function for all methods 
 #' except the beta kernel estimator.\cr 
 #' 
@@ -161,6 +161,16 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         if (any(c(diag(bw$B), bw$alpha) <= 0))
             stop("Bandwidths have to be positive.")
         bw$alpha <- mult * bw$alpha
+    } else if (method == "TLL1") {
+        B <- as.matrix(bw)
+        if (nrow(B) == 1)
+            bw <- diag(as.numeric(bw), d)
+        bw <- mult * bw
+    }  else if (method == "TLL2") {
+        B <- as.matrix(bw)
+        if (nrow(B) == 1)
+            bw <- diag(as.numeric(bw), d)
+        bw <- mult * bw
     } else if (method %in% c("TTPI", "TTCV")) {
         if (bw[1] < 0)
             stop("The smoothing parameter (bw[1]) has to be positive.")
@@ -191,18 +201,15 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
     
     ## fit model for method TLL
     if (method %in% c("TLL1nn", "TLL2nn")) {
-        zdata <-  qnorm(udata)
-        lfit <- my_locfit(zdata,
+        lfit <- my_locfit(udata,
                           bw$B,
                           bw$alpha,
                           bw$kappa,
                           deg = as.numeric(substr(method, 4, 4)),
                           grid = grid)
     } else if (method %in% c("TLL1", "TLL2")) {
-        zdata <-  qnorm(udata)
-        lfit <- my_locfitc(zdata,
+        lfit <- my_locfitc(udata,
                            bw,
-                           mult,
                            deg = as.numeric(substr(method, 4, 4)),
                            grid = grid)
     } else {

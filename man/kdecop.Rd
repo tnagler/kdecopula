@@ -13,8 +13,8 @@ kdecop(udata, bw = NA, mult = 1, method = "TLL2", knots = 30,
 \item{bw}{bandwidth specification; if \code{NA}, \code{bw} is selected
 automatically; Otherwise, please provide (for the respective method) \cr
 \code{"MR", "beta"}: a positive real number, \cr
-\code{"T"}: a \eqn{2x2} matrix for method, \cr
-\code{"TLL1", "TLL2"}: a list with (named) entries \code{B} and \code{alpha}
+\code{"T", "TLL1", "TLL2"}: a \eqn{2x2} bandwidth matrix, \cr
+\code{"TLL1nn", "TLL2nn"}: a list with (named) entries \code{B} and \code{alpha}
 containing the \eqn{2x2} rotation matrix \code{B} and the nearest-neighbor 
 fraction \code{alpha}, \cr
 \code{"TTCV", "TTPI"}: a numeric vector of length four containing \eqn{(h, 
@@ -79,7 +79,7 @@ or simulate synthetic data, respectively.
 Details on the estimation methods and bandwidth selection can be
 found in Geenens et al. (2014) for methods \code{TLL1/2nn} and Nagler (2014) 
 for other methods. For \code{TLL1/2}, we use the rule of thumb
-\deqn{cov(\Phi^{-1}(udata))^{1/2} * 3.5 * n^{1 / (4 * deg + 2)}}.  
+\deqn{cov(\Phi^{-1}(udata))^{1/2} * 5^{deg / 2} * n^{- 1 / (4 * deg + 2)}}.  
 We use a Gaussian product kernel function for all methods 
 except the beta kernel estimator.\cr 
 
