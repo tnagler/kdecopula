@@ -8,7 +8,7 @@
 indicates wether the sample is classified as benign (\code{B}) or malignant
 (\code{M}). The remaining columns contain measurements for 30 features.}
 \source{
-\url{https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)}
+\url{http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)}
 \cr \cr 
 Bache, K. & Lichman, M. (2013).
 UCI Machine Learning Repository.

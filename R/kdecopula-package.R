@@ -114,7 +114,7 @@ NULL
 #' 
 #' 
 #' @source
-#' \url{https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)}
+#' \url{http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)}
 #' \cr \cr 
 #' Bache, K. & Lichman, M. (2013).
 #' UCI Machine Learning Repository.
