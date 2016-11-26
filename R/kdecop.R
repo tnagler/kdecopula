@@ -64,7 +64,8 @@
 #' @details Details on the estimation methods and bandwidth selection can be
 #' found in Geenens et al. (2014) for methods \code{TLL1/2nn} and Nagler (2014) 
 #' for other methods. For \code{TLL1/2}, we use the rule of thumb
-#' \deqn{cov(\Phi^{-1}(udata))^{1/2} * 5^{deg / 2} * n^{- 1 / (4 * deg + 2)}}.  
+#' \deqn{cov(\Phi^{-1}(udata))^{1/2} * 5^{deg / 2} * n^{- 1 / (4 * deg + 2)},}
+#' where \eqn{deg = 1} for \code{TLL1} and \eqn{deg = 2} for \code{TLL2}.   
 #' We use a Gaussian product kernel function for all methods 
 #' except the beta kernel estimator.\cr 
 #' 
