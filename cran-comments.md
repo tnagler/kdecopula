@@ -1,3 +1,10 @@
+## Resubmission
+This is a resubmission requested by Duncan Murdoch. In this version I have:
+
+* fixed the outdated Date field
+
+* fixed a broken link in the documentation of a dataset.
+
 ## Test environments
 * ubuntu 12.04 (devel, release) 
 * win-builder (release)
