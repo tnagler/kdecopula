@@ -6,6 +6,6 @@ eval_tll <- function(uev, lfit, B) {
     zev <- qnorm(uev)
     ev  <- zev %*% solve(B)
     
-    rescale <- pmax(apply(dnorm(zev), 1L, prod), 10^(- 2 * d)) * 1 / abs(det(B))
+    rescale <- pmax(apply(dnorm(zev), 1L, prod), 10^(- 2 * d)) * abs(det(B))
     suppressWarnings(as.numeric(predict(lfit, ev) / rescale))
 }
