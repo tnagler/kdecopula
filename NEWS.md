@@ -1,3 +1,16 @@
+kdecopula 0.7.1
+-------------------------------
+
+NEW FEATURES
+
+  * Improved bandwidth selection heuristic for methods `TLL1/TLL2`.
+
+BUG FIXES
+
+  * fixed inconsistencies in bandwidth specification. The interbretation of the
+    bandwidth matrix is now the same for `TLL`-methods and `T` method.
+
+
 kdecopula 0.7.0
 -------------------------------
 
