@@ -110,157 +110,131 @@
 #' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
 #' 
 #' ## estimation of copula density of variables 5 and 6
-#' dens.est <- kdecop(udat[, 5:6])
-#' summary(dens.est)
-#' plot(dens.est) 
+#' est <- kdecop(udat[, 5:6])
+#' summary(est)
+#' plot(est) 
 #' 
 #' ## evaluate density estimate at (u1,u2)=(0.123,0.321)
-#' dkdecop(c(0.123, 0.321), dens.est) 
+#' dkdecop(c(0.123, 0.321), est) 
 #' 
 #' ## evaluate cdf estimate at (u1,u2)=(0.123,0.321)
-#' pkdecop(c(0.123, 0.321), dens.est) 
+#' pkdecop(c(0.123, 0.321), est) 
 #' 
 #' ## simulate 500 samples from density estimate
-#' plot(rkdecop(500, dens.est))  # pseudo-random
-#' plot(rkdecop(500, dens.est), quasi = TRUE)  # quasi-random
+#' plot(rkdecop(500, est))  # pseudo-random
+#' plot(rkdecop(500, est), quasi = TRUE)  # quasi-random
 #' 
 kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
-    n <- nrow(udata)
-    d <- ncol(udata)
+    n <- NROW(udata)
+    d <- NCOL(udata)
+    check_kdecop_input(as.list(environment()))
     
-    ## sanity checks
-    if (n < 2)
-        stop("Number of observations has to be at least 2.")
-    if (d != 2)
-        stop("Dimension has to be 2.")
-    if (any(udata > 1) | any(udata < 0))
-        stop("'udata' have to be in the interval [0,1].")
-    if (!(method %in% c("MR", "beta", "T",
-                        "TLL1", "TLL2", "TLL1nn", "TLL2nn",
-                        "TTPI", "TTCV", "bern")))
-        stop("method not implemented")
-    if (mult <= 0)
-        stop("'mult' has to be a positive number.")
-    if (is.na(knots))
-        knots <- 100/d
-    knots <- round(knots)
-    stopifnot(is.numeric(renorm.iter))
-    renorm.iter <- round(renorm.iter)
-    stopifnot(renorm.iter >= 0)
-    stopifnot(is.logical(info))
-    
-    ## bandwidth selection and adjustment (with bandwidth checks)
-    if (missing(bw))
-        bw <- bw_select(udata, method)
+    # bandwidth selection
     if (any(is.na(bw)))
         bw <- bw_select(udata, method)
-    if (method %in% c("TLL1nn", "TLL2nn")) {
-        if (is.null(bw$B) | is.null(bw$alpha))
-            stop("For methods 'TLL1/2nn', you have to provide a list 'bw = list(B = <your.B>,  alpha = <your.alpha>)'
-where both parts of the bandwidth specification are provided via  'your.B', and 'your.alpha'.")
-        if (any(c(diag(bw$B), bw$alpha) <= 0))
-            stop("Bandwidths have to be positive.")
-        bw$alpha <- mult * bw$alpha
-    } else if (method == "TLL1") {
-        B <- as.matrix(bw)
-        if (nrow(B) == 1)
-            bw <- diag(as.numeric(bw), d)
-        bw <- mult * bw
-    }  else if (method == "TLL2") {
-        B <- as.matrix(bw)
-        if (nrow(B) == 1)
-            bw <- diag(as.numeric(bw), d)
-        bw <- mult * bw
-    } else if (method %in% c("TTPI", "TTCV")) {
-        if (bw[1] < 0)
-            stop("The smoothing parameter (bw[1]) has to be positive.")
-        if (bw[3] < 0)
-            stop("The first tapering parameter (bw[3]) has to be positive.")
-        if (abs(bw[2] > 0.9999))
-            stop("The correlation parameter (bw[2]) has to lie in (-1,1).")
-        bw[1] <- bw[1] * mult
-    } else if (method == "T") {
-        B <- as.matrix(bw)
-        if (nrow(B) == 1)
-            bw <- diag(as.numeric(bw), d)
-        bw <- mult * bw
-        # bw <- bw * sqrt(min((n^(-1/6))^2 / det(bw), 1))
-    } else if (method == "MR") {
-        bw <- min(bw * mult, 1)
-    } else if (method == "beta") {
-        bw <- bw * mult
-    } else if (method == "bern") {
-        bw <- round(bw * mult)
-    }
+    bw <- multiply_bw(bw, mult, method, d)
+    check_bw(bw, method)
     
-    ## construct grid with k knots in dimension d
-    knots <- 30
-    pnts <- pnorm(seq(-3.25, 3.25, l = knots))
-    grid <- as.matrix(do.call(expand.grid,
-                              split(rep(pnts, d), rep(c(1, 2), each = knots))))
-    
-    ## fit model for method TLL
-    if (method %in% c("TLL1nn", "TLL2nn")) {
-        lfit <- my_locfit(udata,
-                          bw$B,
-                          bw$alpha,
-                          bw$kappa,
-                          deg = as.numeric(substr(method, 4, 4)),
-                          grid = grid)
-    } else if (method %in% c("TLL1", "TLL2")) {
-        lfit <- my_locfitc(udata,
-                           bw,
-                           deg = as.numeric(substr(method, 4, 4)),
-                           grid = grid)
+    # fit model for method TLL
+    if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn")) {
+        lfit <- my_locfit(udata, bw, deg = as.numeric(substr(method, 4, 4)))
     } else {
         lfit <- NULL
     }
     
-    ## evaluate estimator on grid
-    evalf <- eval_func(method)  # get evaluation function
+    # evaluate estimator on grid
+    grid <- make_grid(knots, d)
+    evalf <- eval_func(method)
     object <- list(udata = udata,
                    bw = bw,
                    lfit = lfit,
                    method = method)
-    vals <- array(evalf(grid, obj = object), dim = rep(knots, d))
+    vals <- array(evalf(grid$expanded, obj = object), dim = rep(knots, d))
+    rm("object")
+    # rescale copula density to have uniform margins
+    vals <- renorm2unif(vals, grid, renorm.iter)
     
-    ## rescale copula density to have uniform margins
-    if (renorm.iter > 0) {
-        tmplst <- split(rep(seq.int(knots)-1, d-1),
-                        ceiling(seq.int(knots*(d-1))/knots))
-        helpind <- as.matrix(do.call(expand.grid, tmplst))
-        vals <- renorm(vals, pnts, renorm.iter, helpind)
-    }
-    
-    ## store results
+    # store results
     res <- list(udata    = udata,
-                grid     = pnts,
+                grid     = grid$pnts,
                 estimate = vals,
                 bw       = bw,
                 mult     = mult,
                 method   = method)
     class(res) <- "kdecopula"
+    # add further (information if asked for)
+    with_fit_info(res, info, lfit)
+}
+
+check_kdecop_input <- function(args) {
+    if (args$n < 2)
+        stop("Number of observations has to be at least 2.")
+    if (args$d != 2)
+        stop("Dimension has to be 2.")
+    if (any(args$udata > 1) | any(args$udata < 0))
+        stop("'udata' have to be in the interval [0,1].")
     
-    ## add effp for TLL
-    if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn"))
-        res$effp <- eff_num_par(udata, likvalues, bw, method, lfit)
+    if (!(args$method %in% c("MR", "beta", "T",
+                        "TLL1", "TLL2", "TLL1nn", "TLL2nn",
+                        "TTPI", "TTCV", "bern")))
+        stop("method not implemented")
     
-    ## add further information if asked for
+    if (args$mult <= 0)
+        stop("'mult' has to be a positive number.")
+    
+    stopifnot(is.numeric(args$knots))
+    if (!all.equal(args$knots, as.integer(args$knots)))
+        stop("'knots' must be a positive integer.")
+    if (args$knots < 1)
+        stop("'knots' must be a positive integer.")
+    
+    stopifnot(is.numeric(args$renorm.iter))
+    if (!all.equal(args$renorm.iter, as.integer(args$renorm.iter)))
+        stop("'renorm.iter' must be a positive integer.")
+    if (args$renorm.iter < 0)
+        stop("'renorm.iter' must be a non-negative integer.")
+    
+    stopifnot(is.logical(args$info))
+}
+
+make_grid <- function(knots, d) {
+    pnts <- pnorm(seq(-3.25, 3.25, l = knots))
+    pntlst <- split(rep(pnts, d), rep(c(1, 2), each = knots))
+    expanded <- as.matrix(do.call(expand.grid, pntlst))
+    list(pnts = pnts, expanded = expanded)
+}
+
+renorm2unif <- function(vals, grid, renorm.iter) {
+    if (renorm.iter > 0) {
+        d <- NCOL(grid$expanded)
+        knots <- length(grid$pnts)
+        tmplst <- split(rep(seq.int(knots)-1, d-1),
+                        ceiling(seq.int(knots*(d-1))/knots))
+        helpind <- as.matrix(do.call(expand.grid, tmplst))
+        vals <- renorm(vals, grid$pnts, renorm.iter, helpind)
+    }
+    vals
+}
+
+with_fit_info <- function(res, info, lfit) {
     if (info) {
         # log-likelihood
-        likvalues <- dkdecop(udata, res)
+        likvalues <- dkdecop(res$udata, res)
         loglik <- sum(log(likvalues))
-        if (!(method %in% c("TTPI", "TTCV"))) {
+        if (!(res$method %in% c("TTPI", "TTCV", "bern"))) {
             # effective number of parameters
-            effp <- eff_num_par(udata, likvalues, bw, method, lfit)
+            effp <- eff_num_par(res$udata,
+                                likvalues, 
+                                res$bw,
+                                res$method, 
+                                lfit)
             # information criteria
             AIC  <- - 2 * loglik + 2 * effp
+            n <- nrow(res$udata)
             cAIC <- AIC + (2 * effp * (effp + 1)) / (n - effp - 1)
             BIC  <- - 2 * loglik + log(n) * effp
         } else {
-            #             warning("Effective number of parameters not yet implemented for this method.
-            # Use 'info = FALSE' if you don't want to see this message.")
             effp <- AIC <- cAIC <- BIC <- NA
         }
         
@@ -272,7 +246,6 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
                          cAIC      = cAIC,
                          BIC       = BIC)
     }
-    
-    ## return results as kdecopula object
+
     res
 }

@@ -121,7 +121,7 @@ logLik.kdecopula <- function(object, ...) {
     if (!is.null(object$info)) {
         ## access info slot if available
         out <- object$info$loglik
-        effp   <- object$info$effp
+        effp <- object$info$effp
     } else {
         ## calculate log likelihood and effp from data
         likvalues <- dkdecop(object$udata, object)

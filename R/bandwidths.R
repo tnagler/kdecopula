@@ -12,6 +12,49 @@ bw_select <- function(udata, method) {
            "bern"   = bw_bern(udata))
 }
 
+multiply_bw <- function(bw, mult, method, d) {
+    if (method %in% c("TLL1nn", "TLL2nn")) {
+        bw$alpha <- mult * bw$alpha
+    } else if (method %in% c("T", "TLL1", "TLL2")) {
+        B <- as.matrix(bw)
+        if (nrow(B) == 1)
+            bw <- diag(as.numeric(bw), d)
+        bw <- mult * bw
+    } else if (method %in% c("TTPI", "TTCV")) {
+        bw[1] <- bw[1] * mult
+    } else if (method == "MR") {
+        bw <- min(bw * mult, 1)
+    } else if (method == "beta") {
+        bw <- bw * mult
+    } else if (method == "bern") {
+        bw <- max(1, round(bw * mult))
+    }
+    
+    bw
+}
+
+check_bw <- function(bw, method) {
+    if (method %in% c("TLL1nn", "TLL2nn")) {
+        if (is.null(bw$B) | is.null(bw$alpha))
+            stop(paste0("For methods 'TLL1/2nn', you have to provide a list",
+                        "'bw = list(B = <your.B>,  alpha = <your.alpha>, ",
+                        "kappa = <your.kappa>)'."))
+        if (bw$alpha <= 0)
+            stop("Nearest neighbor fraction 'bw$alpha' has to be positive.")
+    }
+    if (method %in% c("T", "TLL1", "TLL2", "TLL1nn", "TLL2nn")) {
+        if (det(bw) <= 0)
+            stop("Bandwidth matrix has to be positive definite.")
+    } else if (method %in% c("TTPI", "TTCV")) {
+        if (bw[1] < 0)
+            stop("The smoothing parameter (bw[1]) has to be positive.")
+        if (bw[3] < 0)
+            stop("The first tapering parameter (bw[3]) has to be positive.")
+        if (abs(bw[2] > 0.9999))
+            stop("The correlation parameter (bw[2]) has to lie in (-1,1).")
+    }
+}
+
 
 bw_bern <- function(udata) {
     n <- nrow(udata)

@@ -1,6 +1,8 @@
 ### effective number of parameters
 eff_num_par <- function(udata, likvalues, b, method, lfit) {
-    if (method %in% c("MR")) {
+    if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn")) {
+        effp <- lfit$dp[["df2"]]
+    } else if (method %in% c("MR")) {
         U <- udata[, 1]
         V <- udata[, 2]
         n <- length(U)
@@ -18,23 +20,17 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
         K <- kern_gauss_2d(evalpoints[, 1], evalpoints[, 2], b)
         S <- rowSums(matrix(K, n, 9))
         effp <- sum(S / likvalues) / n
-    }
-    if (method == "beta") {
+    } else if (method == "beta") {
         bpkern <- function(x) {
             dbeta(x[1L], x[1L]/b + 1, (1-x[1L])/b + 1) *
                 dbeta(x[2L], x[2L]/b + 1, (1-x[2L])/b + 1)
         }
         p <- apply(udata, 1, bpkern)
         effp <- mean(p/likvalues)
-    }
-    if (method == "T") {
+    } else if (method == "T") {
         scale <- dnorm(qnorm(udata)[, 1]) * dnorm(qnorm(udata)[, 2])
         effp  <- mean((kern_gauss_2d(0, 0, 1) / (scale * det(b))) / likvalues)
     }
-    if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn"))
-        effp <- lfit$dp[["df2"]]
-    if (method == "bern")
-        effp <- NA
     
     ## return result
     effp
@@ -66,7 +62,7 @@ eval_func <- function(method) {
 }
 
 ##### local likelihood fitting
-my_locfit <- function(udata, B, alpha, kappa, deg, grid) {
+my_locfitnn <- function(udata, B, alpha, kappa, deg) {
     # transform data
     zdata <- qnorm(udata)
     qrs  <- zdata %*% solve(B)
@@ -89,7 +85,9 @@ my_locfit <- function(udata, B, alpha, kappa, deg, grid) {
 }
 
 ##### local likelihood fitting
-my_locfitc <- function(udata, B, deg, grid) {
+my_locfit <- function(udata, B, deg) {
+    if (is.list(B))
+        return(my_locfitnn(udata, B$B, B$alpha, B$kappa, deg))
     # transform data
     zdata <- qnorm(udata)
     qrs  <- zdata %*% solve(B)
