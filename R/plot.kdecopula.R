@@ -43,7 +43,7 @@
 #' contour(obj)  # contour plot with standard normal margins
 #' contour(obj, margins = "unif")  # contour plot of copula density
 #'
-#'
+#' @export
 plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
     if (length(dim(x$estimate)) > 2)
         stop("Plotting is only available for 2-dimensional densities.")
@@ -217,6 +217,7 @@ plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
 
 #' @method contour kdecopula
 #' @rdname plot.kdecopula
+#' @export
 contour.kdecopula <- function(x, margins = "norm", size = 100L, ...) {
     plot(x, type = "contour", margins = margins, size = size, ...)
 }

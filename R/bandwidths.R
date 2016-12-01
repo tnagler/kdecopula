@@ -56,6 +56,11 @@ check_bw <- function(bw, method) {
 }
 
 
+#' Bandwidth selection for the Bernstein copula estimator
+#'
+#' @param udata data
+#'
+#' @return bandwidth
 bw_bern <- function(udata) {
     n <- nrow(udata)
     rho <- cor(udata)[1, 2]
@@ -63,7 +68,13 @@ bw_bern <- function(udata) {
     max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1)))
 }
 
-## mirror reflection ------------------------
+#' Bandwidth selection for the Mirror-reflection estimator
+#'
+#' @param udata data
+#'
+#' @return bandwidth
+#' 
+#' @importFrom stats cor
 bw_mr <- function(udata) {
     # optimal bandwidth depends only on |tau| 
     tau <- abs(cor(udata, method = "kendall")[1L, 2L])

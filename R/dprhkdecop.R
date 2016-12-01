@@ -58,6 +58,7 @@
 #' ## simulate 500 samples from density estimate
 #' rkdecop(500, dens.est)
 #'
+#' @export
 dkdecop <- function(u, obj, stable = FALSE) {
     stopifnot(is.numeric(u))
     stopifnot(all(u >= 0 & u <= 1))
@@ -109,7 +110,8 @@ dkdecop <- function(u, obj, stable = FALSE) {
 }
 
 #' @rdname dkdecop
-#'
+#' 
+#' @export
 pkdecop <- function(u, obj) {
     stopifnot(all(u >= 0 & u <= 1))
     stopifnot(inherits(obj, "kdecopula"))
@@ -149,7 +151,8 @@ pkdecop <- function(u, obj) {
 #' \code{\link[qrng:ghalton]{ghalton}}).
 #'
 #' @rdname dkdecop
-#'
+#' 
+#' @export
 rkdecop <- function(n, obj, quasi = FALSE) {
     n <- round(n)
     stopifnot(inherits(obj, "kdecopula"))
@@ -215,6 +218,7 @@ rkdecop <- function(n, obj, quasi = FALSE) {
 #' hkdecop(c(0.123, 0.321), dens.est, cond.var = 2) 
 #' hkdecop(c(0.123, 0.321), dens.est, cond.var = 2, inverse = TRUE) 
 #' 
+#' @export
 hkdecop <- function(u, obj, cond.var, inverse = FALSE) {
     stopifnot(all(u >= 0) & all(u <= 1))
     stopifnot(inherits(obj, "kdecopula"))

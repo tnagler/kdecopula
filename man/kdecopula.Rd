@@ -2,6 +2,8 @@
 % Please edit documentation in R/kdecopula-package.R
 \docType{package}
 \name{kdecopula}
+\alias{VineCopula}
+\alias{VineCopula-package}
 \alias{kdecopula}
 \alias{kdecopula-package}
 \title{Kernel Smoothing for Bivariate Copula Densities}

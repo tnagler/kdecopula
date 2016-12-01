@@ -113,6 +113,7 @@
 #' est <- kdecop(udat[, 5:6])
 #' summary(est)
 #' plot(est) 
+#' contour(est)
 #' 
 #' ## evaluate density estimate at (u1,u2)=(0.123,0.321)
 #' dkdecop(c(0.123, 0.321), est) 
@@ -123,6 +124,14 @@
 #' ## simulate 500 samples from density estimate
 #' plot(rkdecop(500, est))  # pseudo-random
 #' plot(rkdecop(500, est), quasi = TRUE)  # quasi-random
+#' 
+#' 
+#' @import lattice 
+#' @importFrom grDevices col2rgb colorRampPalette rgb
+#' @importFrom graphics contour plot
+#' @importFrom stats modifyList
+#' 
+#' @export
 #' 
 kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
@@ -176,8 +185,8 @@ check_kdecop_input <- function(args) {
         stop("'udata' have to be in the interval [0,1].")
     
     if (!(args$method %in% c("MR", "beta", "T",
-                        "TLL1", "TLL2", "TLL1nn", "TLL2nn",
-                        "TTPI", "TTCV", "bern")))
+                             "TLL1", "TLL2", "TLL1nn", "TLL2nn",
+                             "TTPI", "TTCV", "bern")))
         stop("method not implemented")
     
     if (args$mult <= 0)
@@ -246,6 +255,6 @@ with_fit_info <- function(res, info, lfit) {
                          cAIC      = cAIC,
                          BIC       = BIC)
     }
-
+    
     res
 }

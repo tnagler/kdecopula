@@ -46,7 +46,6 @@ plot(obj)  # surface plot of copula density
 contour(obj)  # contour plot with standard normal margins
 contour(obj, margins = "unif")  # contour plot of copula density
 
-
 }
 \author{
 Thomas Nagler

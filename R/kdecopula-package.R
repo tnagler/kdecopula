@@ -15,7 +15,11 @@
 #' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.
 #' 
 #' @name kdecopula
+#' @aliases VineCopula-package VineCopula
 #' @docType package
+#' @useDynLib kdecopula
+#' @importFrom Rcpp evalCpp
+#' 
 #' @author Thomas Nagler
 #' 
 #' @references
