@@ -185,7 +185,7 @@ where both parts of the bandwidth specification are provided via  'your.B', and 
         if (nrow(B) == 1)
             bw <- diag(as.numeric(bw), d)
         bw <- mult * bw
-        bw <- bw * sqrt(min((n^(-1/6))^2 / det(bw), 1))
+        # bw <- bw * sqrt(min((n^(-1/6))^2 / det(bw), 1))
     } else if (method == "MR") {
         bw <- min(bw * mult, 1)
     } else if (method == "beta") {
