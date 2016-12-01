@@ -7,8 +7,8 @@ NEW FEATURES
 
 BUG FIXES
 
-  * fixed inconsistencies in bandwidth specification. The interbretation of the
-    bandwidth matrix is now the same for `TLL`-methods and `T` method.
+  * fixed inconsistencies in bandwidth specification. The interpretation of the
+    bandwidth matrix is now the same for `TLL` and `T` methods.
 
 
 kdecopula 0.7.0
