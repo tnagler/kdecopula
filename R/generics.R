@@ -147,11 +147,13 @@ logLik.kdecopula <- function(object, ...) {
 
 expand_method <- function(method) {
     switch(method,
-           "TLL1" = "Transformation local likelihood, log-linear ('TLL1')",
-           "TLL2" = "Transformation local likelihood, log-quadratic ('TLL2')",
-           "T"    = "Transformation estimator ('T')",
-           "MR"   = "Mirror-reflection ('MR')",
-           "beta" = "Beta kernels ('beta')",
-           "TTPI" = "Tapered transformation estimator (plug-in)",
-           "TTCV" = "Tapered transformation estimator (cross-validated)")
+           "TLL1"   = "Transformation local likelihood, log-linear ('TLL1')",
+           "TLL2"   = "Transformation local likelihood, log-quadratic ('TLL2')",
+           "TLL1nn" = "Transformation local likelihood, log-linear (nearest-neighbor, 'TLL1nn')",
+           "TLL2nn" = "Transformation local likelihood, log-quadratic (nearest-neighbor, 'TLL2nn')",
+           "T"      = "Transformation estimator ('T')",
+           "MR"     = "Mirror-reflection ('MR')",
+           "beta"   = "Beta kernels ('beta')",
+           "TTPI"   = "Tapered transformation estimator (plug-in, 'TTPI')",
+           "TTCV"   = "Tapered transformation estimator (cross-validated, 'TTCV')")
 }
