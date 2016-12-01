@@ -60,7 +60,7 @@ bw_bern <- function(udata) {
     n <- nrow(udata)
     rho <- cor(udata)[1, 2]
     # Rose (2015)
-    max(1, n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1))
+    max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1)))
 }
 
 ## mirror reflection ------------------------
