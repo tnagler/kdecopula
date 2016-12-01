@@ -25,7 +25,8 @@ LinkingTo:
     RcppArmadillo
 Suggests:
     R.rsp,
-    VineCopula
+    VineCopula,
+    testthat
 VignetteBuilder: R.rsp
 License: GPL-3
 RoxygenNote: 5.0.1
