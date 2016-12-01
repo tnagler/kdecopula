@@ -131,9 +131,6 @@ logLik.kdecopula <- function(object, ...) {
                             object$bw,
                             object$method,
                             object$lfit)
-        # for TLL effp is stored already
-        if (object$method %in% c("TLL1", "TLL2"))
-            effp <- object$effp
     }
 
     ## add attributes
