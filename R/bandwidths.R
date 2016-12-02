@@ -402,8 +402,9 @@ bw_tll_nn <- function(udata, deg) {
 #' @param rho.add logical; whether a rotation (correlation) parameter shall be
 #' included.
 #'
-#' @return optimal smoothing parameters as in Wen and Wu (2015).
-#' 
+#' @return optimal smoothing parameters as in Wen and Wu (2015): a numeric
+#' vector of length 4; entries are \eqn{(h, \rho, \theta_1, \theta_2)}.
+#'  
 #' @author Kuangyu Wen
 #' 
 #' @references 
@@ -636,5 +637,5 @@ bw_tt_cv <- function(udata, rho.add = T) {
     opt_C2 <- matrix(C21 + C22 + 2 * opt_rho * C23, dim(B)[1], 1)
     opt_theta <- as.vector(solve(C1) %*% opt_C2) * (-opt_h^2/2)
     opt_theta[1] <- max(opt_theta[1], 0)
-    c(opt_h, opt_rho, opt_theta, optimization$convergence)
+    c(opt_h, opt_rho, opt_theta)
 }
