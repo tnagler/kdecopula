@@ -94,16 +94,24 @@
 #' Probit transformation for nonparametric kernel estimation of the copula
 #' density.
 #' arXiv:1404.4414 [stat.ME]. 
-#' \cr \cr 
-#' Nagler, T. (2014). 
-#' Kernel Methods for Vine Copula Estimation.
-#' Master's Thesis, Technische Universitaet Muenchen,
-#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
 #' \cr \cr
 #' Wen, K. and Wu, X. (2015).
 #' Transformation-Kernel Estimation of the Copula Density,
 #' Working paper,
 #' \url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
+#' \cr \cr
+#' Gijbels, I. and Mielniczuk, J. (1990).
+#' Estimating the density of a copula function.
+#' Communications in Statistics - Theory and Methods, 19(2):445-464. 
+#' \cr \cr 
+#' Charpentier, A., Fermanian, J.-D., and Scaillet, O. (2006).
+#' The estimation of copulas: Theory and practice. 
+#' In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
+#' \cr \cr 
+#' Nagler, T. (2014). 
+#' Kernel Methods for Vine Copula Estimation.
+#' Master's Thesis, Technische Universitaet Muenchen,
+#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
 #' 
 #' @examples
 #' 
