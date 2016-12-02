@@ -79,6 +79,9 @@ check_bw <- function(bw, method) {
             stop("The first tapering parameter (bw[3]) has to be positive.")
         if (abs(bw[2] > 0.9999))
             stop("The correlation parameter (bw[2]) has to lie in (-1,1).")
+    } else if (method %in% c("MR", "beta", "bern")) {
+        if (bw <= 0)
+            stop(paste0('bw has to be positive for method "', method ,'".'))
     }
 }
 
