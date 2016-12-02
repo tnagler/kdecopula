@@ -16,7 +16,7 @@ bw_tt_cv(udata, rho.add = T)
 included.}
 }
 \value{
-bandwidth matrix
+smoothing parameters as in Wen and Wu (2015).
 }
 \description{
 The smoothing parameters are selected by the method of Wen and Wu (2015).

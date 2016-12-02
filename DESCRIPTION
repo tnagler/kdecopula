@@ -10,7 +10,7 @@ Authors@R: c(
 Description: Provides fast implementations of kernel smoothing techniques for
     bivariate copula densities, in particular density estimation and resampling.
 URL: https://github.com/tnagler/kdecopula
-BugReports: https://github.com/tnagler/kdecopula
+BugReports: https://github.com/tnagler/kdecopula/issues
 Depends:
     R (>= 3.0.0)
 Imports:

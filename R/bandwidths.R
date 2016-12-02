@@ -375,7 +375,7 @@ bw_tll_nn <- function(udata, deg) {
 #' @param rho.add logical; whether a rotation (correlation) parameter shall be
 #' included.
 #'
-#' @return bandwidth matrix
+#' @return smoothing parameters as in Wen and Wu (2015).
 #' 
 #' @author Kuangyu Wen
 #' 

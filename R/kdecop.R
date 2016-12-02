@@ -8,21 +8,18 @@
 #'   
 #' @param udata \code{nx2} matrix of copula data.
 #' @param bw bandwidth specification; if \code{NA}, \code{bw} is selected
-#' automatically; Otherwise, please provide (for the respective method) \cr
-#' \code{"MR", "beta"}: a positive real number, \cr
+#' automatically (see Details); Otherwise, please provide \cr
 #' \code{"T", "TLL1", "TLL2"}: a \eqn{2x2} bandwidth matrix, \cr
-#' \code{"TLL1nn", "TLL2nn"}: a list with (named) entries \code{B} and \code{alpha}
-#' containing the \eqn{2x2} rotation matrix \code{B} and the nearest-neighbor 
-#' fraction \code{alpha}, \cr
+#' \code{"TLL1nn", "TLL2nn"}: a list with (named) entries \code{B}, \code{alpha},
+#' and \code{kappa}, \cr
 #' \code{"TTCV", "TTPI"}: a numeric vector of length four containing \eqn{(h, 
-#' \rho, \theta_1, \theta_2)}, c.f. Wen and Wu (2015).
+#' \rho, \theta_1, \theta_2)}, c.f. Wen and Wu (2015), \cr
+#' \code{"MR", "beta"}: a positive real number.
 #' @param mult bandwidth multiplier, has to be positive; useful for making 
 #' estimates more/less smooth manually.
 #' @param method 
-#' \code{"MR"}: mirror-reflection estimator, \cr 
-#' \code{"beta"}: beta kernel estimator, \cr 
-#' \code{"T"}: transformation estimator with standard bivariate kernel 
-#' estimation, \cr 
+#' \code{"T"}: transformation estimator based on classical bivariate kernel 
+#' estimation (e.g., Geenenens et al., 2014), \cr 
 #' \code{"TLL1"}: transformation estimator with log-linear local likelihood
 #' estimation (Geenenens et al., 2014), \cr 
 #' \code{"TLL2"}: transformation estimator with log-quadradtic local likelihood
@@ -31,9 +28,13 @@
 #' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr 
 #' \code{"TLL2nn"}: transformation estimator with log-quadradtic local likelihood 
 #' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
-#' \code{"TTPI"}: tapered transformation estimator with plug-in bandwidths, \cr
+#' \code{"TTPI"}: tapered transformation estimator with plug-in bandwidths
+#' (Wu and Wen, 2015), \cr
 #' \code{"TTCV"}: tapered transformation estimator with profile cross-validation
-#' bandwidths.
+#' bandwidths (Wu and Wen, 2015), \cr
+#' \code{"MR"}: mirror-reflection estimator (Gijbels and Mielniczuk, 1990), \cr 
+#' \code{"beta"}: beta kernel estimator (Charpentier et al., 2006), \cr
+#' \code{"bern"}: Bernstein copula estimator (Sanchetta and Satchell, 2004).
 #' @param knots integer; number of knots in each dimension for the spline
 #' approximation.
 #' @param renorm.iter integer; number of iterations for the renormalization
@@ -61,20 +62,21 @@
 #' options are available with \code{\link[kdecopula:plot.kdecopula]{plot}}
 #' and \code{\link[kdecopula:contour.kdecopula]{contour}}.
 #' 
-#' @details Details on the estimation methods and bandwidth selection can be
-#' found in Geenens et al. (2014) for methods \code{TLL1/2nn} and Nagler (2014) 
-#' for other methods. For \code{TLL1/2}, we use the rule of thumb
-#' \deqn{cov(\Phi^{-1}(udata))^{1/2} * 5^{deg / 2} * n^{- 1 / (4 * deg + 2)},}
-#' where \eqn{deg = 1} for \code{TLL1} and \eqn{deg = 2} for \code{TLL2}.   
-#' We use a Gaussian product kernel function for all methods 
-#' except the beta kernel estimator.\cr 
+#' @details We use a Gaussian product kernel function for all methods 
+#' except the beta kernel and Bernstein estimators. For details on bandwidth 
+#' selection for a specific method, see: \code{\link{bw_t}}, 
+#' \code{\link{bw_tll}}, \code{\link{bw_tll_nn}}, \code{\link{bw_tt_pi}}, 
+#' \code{\link{bw_tt_cv}}, \code{\link{bw_mr}}, \code{\link{bw_beta}}, 
+#' \code{\link{bw_bern}}.
+#' \cr 
 #' 
 #' Kernel estimates are usually no proper copula densities. In particular, the
-#' estimated marginal densities are not uniform. We mitigate this issue bei
-#' implementing a renormalization procedure. The number of iterations of the
+#' estimated marginal densities are not uniform. We mitigate this issue by
+#' a renormalization procedure. The number of iterations of the
 #' renormalization algorithm can be specified with the \code{renorm.iter}
 #' argument. Typically, a very small number of iterations is sufficient. \cr
 #' 
+#' @note 
 #' The implementation of the tapered transformation estimator ("TTPI"/"TTCV") 
 #' was kindly provided by Kuangyu Wen. 
 #' 
@@ -132,7 +134,8 @@
 #' 
 #' @export
 #' 
-kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, renorm.iter = 3L, info = TRUE) {
+kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, 
+                   renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
     n <- NROW(udata)
     d <- NCOL(udata)
