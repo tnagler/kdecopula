@@ -175,6 +175,11 @@ kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, renorm
     with_fit_info(res, info, lfit)
 }
 
+#' Sanity checks for kdecop function
+#'
+#' @param args list of all argument-value pairs
+#'
+#' @noRd
 check_kdecop_input <- function(args) {
     if (args$n < 2)
         stop("Number of observations has to be at least 2.")
@@ -206,6 +211,11 @@ check_kdecop_input <- function(args) {
     stopifnot(is.logical(args$info))
 }
 
+#' Grid for spline representation of the copula density estimate
+#'
+#' @param knots number of knots
+#' @param d dimension
+#' @noRd
 make_grid <- function(knots, d) {
     pnts <- pnorm(seq(-3.25, 3.25, l = knots))
     pntlst <- split(rep(pnts, d), rep(c(1, 2), each = knots))
@@ -213,6 +223,16 @@ make_grid <- function(knots, d) {
     list(pnts = pnts, expanded = expanded)
 }
 
+#' Normalizing the estimate to uniform margins
+#'
+#' @param vals initial values of the copula density evaluated on the grid
+#' @param grid a list with expanded grid and univarite gridpoints
+#' @param renorm.iter integer; number of iterations for the renormalization
+#' procedure
+#'
+#' @return normalized values on the grid
+#'
+#' @noRd
 renorm2unif <- function(vals, grid, renorm.iter) {
     if (renorm.iter > 0) {
         d <- NCOL(grid$expanded)
@@ -225,6 +245,16 @@ renorm2unif <- function(vals, grid, renorm.iter) {
     vals
 }
 
+#' Finalize kdecopula object
+#'
+#' @param res kdecopula object
+#' @param info logical; whether further information about the fit shall be 
+#' computed
+#' @param lfit locfit object (only for TLL methods, otherwise NULL)
+#'
+#' @return the kdecopula object with added info entry (if demanded).
+#'
+#' @noRd
 with_fit_info <- function(res, info, lfit) {
     if (info) {
         # log-likelihood
