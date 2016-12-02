@@ -42,6 +42,9 @@
 #' plot(obj)  # surface plot of copula density
 #' contour(obj)  # contour plot with standard normal margins
 #' contour(obj, margins = "unif")  # contour plot of copula density
+#' 
+#' @importFrom utils modifyList
+#' @importFrom stats dexp pexp qexp
 #'
 #' @export
 plot.kdecopula <- function(x, type = "surface", margins, size, ...) {

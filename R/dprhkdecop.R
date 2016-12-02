@@ -152,6 +152,9 @@ pkdecop <- function(u, obj) {
 #'
 #' @rdname dkdecop
 #' 
+#' @importFrom stats runif 
+#' @importFrom qrng ghalton
+#' 
 #' @export
 rkdecop <- function(n, obj, quasi = FALSE) {
     n <- round(n)

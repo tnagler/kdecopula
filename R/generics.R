@@ -1,9 +1,3 @@
-#' Print a kdecopula obejcts
-#'
-#' @param x kdecopula object
-#' @param ... 
-#'
-#' @return \code{invisible(x)} 
 #' @export
 print.kdecopula <- function(x, ...) {
     cat("Kernel copula density estimate")
@@ -16,12 +10,8 @@ print.kdecopula <- function(x, ...) {
 }
 
 
-#' Summary of kdecopula object
-#'
-#' @param object kdecopula object
-#' @param ... 
-#'
-#' @return \code{invisible(object)} after adding information (if missing).
+
+#' @importFrom stats logLik
 #' @export
 summary.kdecopula <- function(object, ...) {
     cat("Kernel copula density estimate\n")

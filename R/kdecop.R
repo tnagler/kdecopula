@@ -129,7 +129,6 @@
 #' @import lattice 
 #' @importFrom grDevices col2rgb colorRampPalette rgb
 #' @importFrom graphics contour plot
-#' @importFrom stats modifyList
 #' 
 #' @export
 #' 

@@ -1,4 +1,13 @@
-### effective number of parameters
+# Calculate the effective number of parameters of a fitted kdecopula
+#
+# @param udata data
+# @param likvalues liklihood values for each observation
+# @param b bandwidth
+# @param method estimation method
+# @param lfit locfit object (only for TLL methods)
+# 
+# Does not work for methods "bern", "TTPI", "TTCV".
+#' @importFrom stats dbeta
 eff_num_par <- function(udata, likvalues, b, method, lfit) {
     if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn")) {
         effp <- lfit$dp[["df2"]]
@@ -36,7 +45,9 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
     effp
 }
 
-##### return functions for evaluators
+# Get evaluation function for given estimation method
+#
+# @param method estimation method
 eval_func <- function(method) {
     switch(method,
            "MR"   = function(uev, obj)
@@ -60,62 +71,3 @@ eval_func <- function(method) {
            "bern" = function(uev, obj)
                dberncop(uev, berncop(obj$udata, obj$bw)))
 }
-
-
-
-#' Title
-#'
-#' @param udata 
-#' @param B 
-#' @param deg 
-#'
-#' @return
-#' 
-#' @import locfit
-my_locfit <- function(udata, B, deg) {
-    if (is.list(B))
-        return(my_locfitnn(udata, B$B, B$alpha, B$kappa, deg))
-    # transform data
-    zdata <- qnorm(udata)
-    qrs  <- zdata %*% solve(B)
-    gr <- do.call(expand.grid, lapply(1:ncol(qrs), function(i) c(-4, 4)))
-    qgr <- as.matrix(gr) %*% solve(B)
-    lims <- apply(qgr, 2L, range)
-    
-    ## fit model
-    cl.lst <- split(as.vector(qrs), rep(1:ncol(qrs), each = nrow(qrs)))
-    cl.lst$h <- 1
-    cl.lst$deg <- deg
-    lf.lst <- list(~do.call(lp, cl.lst),
-                   maxk = 1000,
-                   kern = "gauss",
-                   scale = FALSE,
-                   ev = lfgrid(mg = 50, 
-                               ll = lims[1L, ], 
-                               ur = lims[2L, ]))
-    suppressWarnings(do.call(locfit, lf.lst))
-}
-
-my_locfitnn <- function(udata, B, alpha, kappa, deg) {
-    # transform data
-    zdata <- qnorm(udata)
-    qrs  <- zdata %*% solve(B)
-    gr <- do.call(expand.grid, lapply(1:ncol(qrs), function(i) c(-4, 4)))
-    qgr <- as.matrix(gr) %*% solve(B)
-    lims <- apply(qgr, 2L, range)
-    
-    ## fit model
-    cl.lst <- split(as.vector(qrs), rep(1:ncol(qrs), each = nrow(qrs)))
-    cl.lst$nn <- alpha
-    cl.lst$deg <- deg
-    cl.lst$scale <- kappa
-    lf.lst <- list(~do.call(lp, cl.lst),
-                   maxk = 1024,
-                   kern = "gauss",
-                   ev = lfgrid(mg = 50, 
-                               ll = lims[1L, ], 
-                               ur = lims[2L, ]))
-    suppressWarnings(do.call(locfit, lf.lst))
-}
-
-
