@@ -7,10 +7,10 @@
 bw_mr(udata)
 }
 \arguments{
-\item{udata}{data}
+\item{udata}{data.}
 }
 \value{
-bandwidth
+optimal bandwidth parameter.
 }
 \description{
 The bandwidth is selected by minimizing the MISE using the Frank copula as

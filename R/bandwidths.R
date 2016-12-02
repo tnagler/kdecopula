@@ -1,3 +1,10 @@
+#' Automatic bandwidth selection
+#'
+#' @param udata data
+#' @param method estimation method.
+#'
+#' @return a bandwidth specification suitable for the estimation method.
+#' @noRd
 bw_select <- function(udata, method) {
     switch(method,
            "MR"     = bw_mr(udata),
@@ -12,6 +19,19 @@ bw_select <- function(udata, method) {
            "bern"   = bw_bern(udata))
 }
 
+#' Add multiplier to given bandwidth specification
+#' 
+#' Allows to further control the degree of smoothing.
+#'
+#' @param bw full bandwidth specification as returned by 
+#' \code{\link{bw_select}}.
+#' @param mult the multiplier, a positive real number.
+#' @param method estimation method.
+#' @param d dimension (only 2 allowed so far).
+#'
+#' @return a bandwidth specification where the appropriate entries have been
+#' multiplied with \code{mult}.
+#' @noRd
 multiply_bw <- function(bw, mult, method, d) {
     if (method %in% c("TLL1nn", "TLL2nn")) {
         bw$alpha <- mult * bw$alpha
@@ -33,6 +53,13 @@ multiply_bw <- function(bw, mult, method, d) {
     bw
 }
 
+#' Check if bandwidth specification is valid
+#'
+#' @param bw bandwidth specification.
+#' @param method estimation method.
+#' 
+#' @return throws an error if invalid; returns nothing otherwise.
+#' @noRd
 check_bw <- function(bw, method) {
     if (method %in% c("TLL1nn", "TLL2nn")) {
         if (is.null(bw$B) | is.null(bw$alpha))
@@ -61,14 +88,14 @@ check_bw <- function(bw, method) {
 #' The optimal size of knots is chosen by a rule of thumb adapted from
 #' Rose (2015). 
 #'
-#' @param udata data
+#' @param udata data.
 #' 
 #' @details 
 #' The formula is 
 #' \deqn{max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1))),}
 #' where \eqn{\rho} is the empirical Spearman's rho of the data.
 #'
-#' @return bandwidth
+#' @return optimal order of the Bernstein polynimals.
 #' 
 bw_bern <- function(udata) {
     n <- nrow(udata)
@@ -83,9 +110,9 @@ bw_bern <- function(udata) {
 #' the reference family. The copula parameter is set by inversion of Kendall's
 #' tau. See Nagler (2014) for details.
 #'
-#' @param udata data
+#' @param udata data.
 #'
-#' @return bandwidth
+#' @return optimal bandwidth parameter.
 #' 
 #' @details
 #' To speed things up, optimal bandwidths have been precalculated on a grid of
@@ -164,9 +191,9 @@ precalc_bw_mr <- function(tau) {
 #' the reference family. The copula parameter is set by inversion of Kendall's
 #' tau. See Nagler (2014) for details.
 #'
-#' @param udata data
+#' @param udata data.
 #'
-#' @return bandwidth
+#' @return optimal bandwidth parameter.
 #' 
 #' @details
 #' To speed things up, optimal bandwidths have been precalculated on a grid of
@@ -261,11 +288,11 @@ precalc_bw_beta <- function(tau) {
 #' The bandwidth is selected by a rule of thumb. It approximately minimizes
 #' the MISE of the Gaussian copula on the transformed domain. The usual normal
 #' reference matrix is multiplied by 1.25 to account for the higher variance
-#' on the copula level.#' 
+#' on the copula level.
 #'
-#' @param udata data
+#' @param udata data.
 #'
-#' @return bandwidth matrix
+#' @return optimal bandwidth matrix.
 #' 
 #' @details
 #' The formula is
@@ -289,10 +316,10 @@ bw_t <- function(udata) {
 #' 
 #' The bandwidth is selected by a rule of thumb similar to \code{\link{bw_t}}. 
 #'
-#' @param udata data
-#' @param deg degree of the polynomial
+#' @param udata data.
+#' @param deg degree of the polynomial.
 #' 
-#' @return bandwidth matrix
+#' @return optimal bandwidth matrix.
 #' 
 #' @details
 #' The formula is
@@ -313,8 +340,8 @@ bw_tll <- function(udata, deg) {
 #' 
 #' The smoothing parameters is selected by the method of Geenens et al. (2014). 
 #'
-#' @param udata data
-#' @param deg degree of the polynomial
+#' @param udata data.
+#' @param deg degree of the polynomial.
 #'
 #' @return A list with entires:
 #' \describe{
@@ -371,11 +398,11 @@ bw_tll_nn <- function(udata, deg) {
 #' 
 #' The smoothing parameters are selected by the method of Wen and Wu (2015). 
 #'
-#' @param udata data
+#' @param udata data.
 #' @param rho.add logical; whether a rotation (correlation) parameter shall be
 #' included.
 #'
-#' @return smoothing parameters as in Wen and Wu (2015).
+#' @return optimal smoothing parameters as in Wen and Wu (2015).
 #' 
 #' @author Kuangyu Wen
 #' 

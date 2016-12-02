@@ -10,13 +10,13 @@ bw_tt_pi(udata, rho.add = TRUE)
 bw_tt_cv(udata, rho.add = T)
 }
 \arguments{
-\item{udata}{data}
+\item{udata}{data.}
 
 \item{rho.add}{logical; whether a rotation (correlation) parameter shall be
 included.}
 }
 \value{
-smoothing parameters as in Wen and Wu (2015).
+optimal smoothing parameters as in Wen and Wu (2015).
 }
 \description{
 The smoothing parameters are selected by the method of Wen and Wu (2015).

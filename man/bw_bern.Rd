@@ -7,10 +7,10 @@
 bw_bern(udata)
 }
 \arguments{
-\item{udata}{data}
+\item{udata}{data.}
 }
 \value{
-bandwidth
+optimal order of the Bernstein polynimals.
 }
 \description{
 The optimal size of knots is chosen by a rule of thumb adapted from

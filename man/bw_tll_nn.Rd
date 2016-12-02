@@ -8,9 +8,9 @@ estimator}
 bw_tll_nn(udata, deg)
 }
 \arguments{
-\item{udata}{data}
+\item{udata}{data.}
 
-\item{deg}{degree of the polynomial}
+\item{deg}{degree of the polynomial.}
 }
 \value{
 A list with entires:

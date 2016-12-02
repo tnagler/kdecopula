@@ -7,16 +7,16 @@
 bw_t(udata)
 }
 \arguments{
-\item{udata}{data}
+\item{udata}{data.}
 }
 \value{
-bandwidth matrix
+optimal bandwidth matrix.
 }
 \description{
 The bandwidth is selected by a rule of thumb. It approximately minimizes
 the MISE of the Gaussian copula on the transformed domain. The usual normal
 reference matrix is multiplied by 1.25 to account for the higher variance
-on the copula level.#'
+on the copula level.
 }
 \details{
 The formula is
