@@ -3,8 +3,8 @@ bw_select <- function(udata, method) {
            "MR"     = bw_mr(udata),
            "beta"   = bw_beta(udata),
            "T"      = bw_t(udata),
-           "TLL1nn" = bw_tllnn(udata, deg = 1),
-           "TLL2nn" = bw_tllnn(udata, deg = 2),
+           "TLL1nn" = bw_tll_nn(udata, deg = 1),
+           "TLL2nn" = bw_tll_nn(udata, deg = 2),
            "TLL1"   = bw_tll(udata, deg = 1),
            "TLL2"   = bw_tll(udata, deg = 2),
            "TTPI"   = bw_tt_plugin(udata),
@@ -57,10 +57,19 @@ check_bw <- function(bw, method) {
 
 
 #' Bandwidth selection for the Bernstein copula estimator
+#' 
+#' The optimal size of knots is chosen by a rule of thumb adapted from
+#' Rose (2015). 
 #'
 #' @param udata data
+#' 
+#' @details 
+#' The formula is 
+#' \deqn{max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1))),}
+#' where \eqn{\rho} is the empirical Spearman's rho of the data.
 #'
 #' @return bandwidth
+#' 
 bw_bern <- function(udata) {
     n <- nrow(udata)
     rho <- cor(udata)[1, 2]
@@ -68,21 +77,34 @@ bw_bern <- function(udata) {
     max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1)))
 }
 
-#' Bandwidth selection for the Mirror-reflection estimator
+#' Bandwidth selection for the mirror-reflection estimator
+#' 
+#' The bandwidth is selected by minimizing the MISE using the Frank copula as
+#' the reference family. The copula parameter is set by inversion of Kendall's
+#' tau. See Nagler (2014) for details.
 #'
 #' @param udata data
 #'
 #' @return bandwidth
 #' 
+#' @details
+#' To speed things up, optimal bandwidths have been precalculated on a grid of
+#' tau values.
+#' 
+#' @references 
+#' Nagler, T. (2014). 
+#' Kernel Methods for Vine Copula Estimation.
+#' Master's Thesis, Technische Universitaet Muenchen,
+#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
+#' 
+#' @export
+#' 
 #' @importFrom stats cor
 bw_mr <- function(udata) {
-    # optimal bandwidth depends only on |tau| 
     tau <- abs(cor(udata, method = "kendall")[1L, 2L])
     res <- precalc_bw_mr(tau) * nrow(udata)^(-1/6)
     if (res > 1) 1 else res
 }
-
-
 
 precalc_bw_mr <- function(tau) {
     # ## constants for kernel
@@ -136,9 +158,29 @@ precalc_bw_mr <- function(tau) {
 }
 
 
-## beta kernels -----------------------------
+#' Bandwidth selection for the beta kernel estimator
+#' 
+#' The bandwidth is selected by minimizing the MISE using the Frank copula as
+#' the reference family. The copula parameter is set by inversion of Kendall's
+#' tau. See Nagler (2014) for details.
+#'
+#' @param udata data
+#'
+#' @return bandwidth
+#' 
+#' @details
+#' To speed things up, optimal bandwidths have been precalculated on a grid of
+#' tau values.
+#' 
+#' @references 
+#' Nagler, T. (2014). 
+#' Kernel Methods for Vine Copula Estimation.
+#' Master's Thesis, Technische Universitaet Muenchen,
+#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
+#' 
+#' @importFrom stats cor
+#' @export
 bw_beta <- function(udata) {
-    # optimal bandwidth depends only on |tau| 
     tau <- abs(cor(udata, method="kendall")[1L, 2L])
     precalc_bw_beta(tau) * nrow(udata)^(-1/3)
 }
@@ -214,20 +256,83 @@ precalc_bw_beta <- function(tau) {
     
 }
 
-## transformation kernel -----------------------------
+#' Bandwidth selection for the transformation kernel estimator
+#' 
+#' The bandwidth is selected by a rule of thumb. It approximately minimizes
+#' the MISE of the Gaussian copula on the transformed domain. The usual normal
+#' reference matrix is multiplied by 1.25 to account for the higher variance
+#' on the copula level.#' 
+#'
+#' @param udata data
+#'
+#' @return bandwidth matrix
+#' 
+#' @details
+#' The formula is
+#' \deqn{1.25  n^{-1 / 6}  \hat{\Sigma}^{1/2},}
+#' where \eqn{\hat{Sigma}} is empirical covariance matrix of the transformed
+#' random vector.
+#'   
+#' @references 
+#' Nagler, T. (2014). 
+#' Kernel Methods for Vine Copula Estimation.
+#' Master's Thesis, Technische Universitaet Muenchen,
+#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
+#' 
+#' @export
 bw_t <- function(udata) {
-    ## normal reference rule
     n <- nrow(udata)
     1.25 * n^(-1 / 6) * t(chol(cov(qnorm(udata))))
 }
 
-## transformation local likelihood -------------------
+#' Bandwidth selection for the transformation local likelihood estimator
+#' 
+#' The bandwidth is selected by a rule of thumb similar to \code{\link{bw_t}}. 
+#'
+#' @param udata data
+#' @param deg degree of the polynomial
+#' 
+#' @return bandwidth matrix
+#' 
+#' @details
+#' The formula is
+#' \deqn{5  n^{-1 / (4q + 2)}  \hat{\Sigma}^{1/2},}
+#' where \eqn{\hat{Sigma}} is empirical covariance matrix of the transformed
+#' random vector and \eqn{q = 1} for \code{TLL1} and \eqn{q = 2} for 
+#' \code{TLL2}.
+#' 
+#' @importFrom stats qnorm cov
+#' @export
 bw_tll <- function(udata, deg) {
     n <- nrow(udata)
     5 * n^(-1 / (4 * deg + 2)) * t(chol(cov(qnorm(udata))))
 }
 
-bw_tllnn <- function(udata, deg) {
+#' Nearest-neighbor bandwidth selection for the transformation local likelihood
+#' estimator
+#' 
+#' The smoothing parameters is selected by the method of Geenens et al. (2014). 
+#'
+#' @param udata data
+#' @param deg degree of the polynomial
+#'
+#' @return A list with entires:
+#' \describe{
+#'   \item{\code{B}}{rotation matrix,}
+#'   \item{\code{alpha}}{nearest neighbor fraction,}
+#'   \item{\code{kappa}}{correction factor,}
+#' }
+#' see Geenens et al. (2014).
+#' 
+#' @references 
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+#' Probit transformation for nonparametric kernel estimation of the copula
+#' density.
+#' arXiv:1404.4414 [stat.ME]. 
+#' 
+#' @importFrom stats princomp
+#' @export
+bw_tll_nn <- function(udata, deg) {
     zdata <- qnorm(udata)
     n <- nrow(zdata)
     d <- ncol(zdata)
@@ -262,17 +367,36 @@ bw_tllnn <- function(udata, deg) {
     list(B = B, alpha = alpha, kappa = kappa)
 }
 
-## tapered transformation estimator ------------------
-bw_tt_plugin <- function(obs, rho.add = T) {
+#' Nearest-neighbor bandwidth selection for the tapered transformation estimator
+#' 
+#' The smoothing parameters are selected by the method of Wen and Wu (2015). 
+#'
+#' @param udata data
+#' @param rho.add logical; whether a rotation (correlation) parameter shall be
+#' included.
+#'
+#' @return bandwidth matrix
+#' 
+#' @author Kuangyu Wen
+#' 
+#' @references 
+#' Wen, K. and Wu, X. (2015).
+#' Transformation-Kernel Estimation of the Copula Density,
+#' Working paper,
+#' \url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
+#' 
+#' @importFrom stats princomp sd
+#' @export
+bw_tt_plugin <- function(udata, rho.add = TRUE) {
     # This function uses the plug in method to select
     # the optimal smoothing parameters.  rho.add = T
     # indicates using the bandwidth matrix H = h^2 *
     # h^2 * (1, rho \\ rho, 1).  rho.add = F
     # indicates using the bandwidth matrix H= h^2 * (1,
     # 0 \\ 0, 1), namely the product kernel.
-    n <- dim(obs)[1]
-    Si <- qnorm(obs[, 1])
-    Ti <- qnorm(obs[, 2])
+    n <- dim(udata)[1]
+    Si <- qnorm(udata[, 1])
+    Ti <- qnorm(udata[, 2])
     # standardization is asymptotically negligble, but prevents invalid choices
     # of the bandwidth parameters when pre_rho^2 > 1
     Si <- Si / sd(Si)
@@ -359,13 +483,16 @@ bw_tt_plugin <- function(obs, rho.add = T) {
     c(h, rho, theta)
 }
 
-bw_tt_pcv <- function(obs, rho.add = T) {
+#' @rdname bw_tt_plugin
+#' @importFrom stats sd dnorm pnorm optim
+#' @export
+bw_tt_pcv <- function(udata, rho.add = T) {
     # This function uses the profile cross validation
     # method to select the optimal smoothing
     # parameters.
-    n <- dim(obs)[1]
-    Si <- qnorm(obs[, 1])
-    Ti <- qnorm(obs[, 2])
+    n <- dim(udata)[1]
+    Si <- qnorm(udata[, 1])
+    Ti <- qnorm(udata[, 2])
     # standardization is asymptotically negligble, but prevents invalid choices
     # of the bandwidth parameters when pre_rho^2 > 1
     Si <- Si / sd(Si)
@@ -439,11 +566,11 @@ bw_tt_pcv <- function(obs, rho.add = T) {
         
         part2 <- sum(sapply(1:n,
                             function(index)
-                                as.numeric(eval_tt(matrix(obs[index, ], ncol = 2),
-                                                   obs[-index, ],
+                                as.numeric(eval_tt(matrix(udata[index, ], ncol = 2),
+                                                   udata[-index, ],
                                                    c(h, rho, theta))) *
-                                dnorm(qnorm(obs[index, 1])) *
-                                dnorm(qnorm(obs[index, 2]))
+                                dnorm(qnorm(udata[index, 1])) *
+                                dnorm(qnorm(udata[index, 2]))
         )
         )
         part1 - 2 * part2/n
