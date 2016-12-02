@@ -7,8 +7,8 @@ bw_select <- function(udata, method) {
            "TLL2nn" = bw_tll_nn(udata, deg = 2),
            "TLL1"   = bw_tll(udata, deg = 1),
            "TLL2"   = bw_tll(udata, deg = 2),
-           "TTPI"   = bw_tt_plugin(udata),
-           "TTCV"   = bw_tt_pcv(udata),
+           "TTPI"   = bw_tt_pi(udata),
+           "TTCV"   = bw_tt_cv(udata),
            "bern"   = bw_bern(udata))
 }
 
@@ -387,7 +387,7 @@ bw_tll_nn <- function(udata, deg) {
 #' 
 #' @importFrom stats princomp sd
 #' @export
-bw_tt_plugin <- function(udata, rho.add = TRUE) {
+bw_tt_pi <- function(udata, rho.add = TRUE) {
     # This function uses the plug in method to select
     # the optimal smoothing parameters.  rho.add = T
     # indicates using the bandwidth matrix H = h^2 *
@@ -483,10 +483,10 @@ bw_tt_plugin <- function(udata, rho.add = TRUE) {
     c(h, rho, theta)
 }
 
-#' @rdname bw_tt_plugin
+#' @rdname bw_tt_pi
 #' @importFrom stats sd dnorm pnorm optim
 #' @export
-bw_tt_pcv <- function(udata, rho.add = T) {
+bw_tt_cv <- function(udata, rho.add = T) {
     # This function uses the profile cross validation
     # method to select the optimal smoothing
     # parameters.
