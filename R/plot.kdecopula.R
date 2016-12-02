@@ -225,6 +225,13 @@ contour.kdecopula <- function(x, margins = "norm", size = 100L, ...) {
     plot(x, type = "contour", margins = margins, size = size, ...)
 }
 
+#' Tint a given color
+#'
+#' @param x color (as input to col2rgb)
+#' @param fac tinting factor
+#' @param alpha opacity value
+#' 
+#' @noRd
 tint <- function(x, fac, alpha = 1) {
     x <- c(col2rgb(x))
     x <- (x + (255 - x) * fac) / 255
