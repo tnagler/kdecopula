@@ -1,11 +1,11 @@
-# Custom function for local likelihood fitting
-#
-# @param udata data
-# @param B bandwidth specification
-# @param deg degree of the polynomial
-#
-# @return a fitted locfit object
-# 
+#' Custom function for local likelihood fitting
+#'
+#' @param udata data
+#' @param B bandwidth specification
+#' @param deg degree of the polynomial
+#'
+#' @return a fitted locfit object
+#' @noRd
 #' @import locfit
 my_locfit <- function(udata, B, deg) {
     if (is.list(B))
@@ -53,13 +53,14 @@ my_locfitnn <- function(udata, B, alpha, kappa, deg) {
     suppressWarnings(do.call(locfit, lf.lst))
 }
 
-# Evaluate the density of the transformation log likelihood estimator
-#
-# @param uev 
-# @param lfit 
-# @param B 
-#
-# @return copula density evalauted at \code{uev}.
+#' Evaluate the density of the transformation log likelihood estimator
+#'
+#' @param uev 
+#' @param lfit 
+#' @param B 
+#'
+#' @return copula density evalauted at \code{uev}.
+#' @noRd
 #' @importFrom stats predict
 eval_tll <- function(uev, lfit, B) {
     uev <- as.matrix(uev)

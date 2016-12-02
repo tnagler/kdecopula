@@ -1,19 +1,21 @@
-# Calculates a Bernstein polynomial
-#
-# @param x vector of evaluation points
-# @param k index of the Bernstein polynomial
-# @param m order of the Bernstein polynomial
+#' Calculates a Bernstein polynomial
+#'
+#' @param x vector of evaluation points
+#' @param k index of the Bernstein polynomial
+#' @param m order of the Bernstein polynomial
+#' @noRd
 bern_poly <- function(x, k, m) {
     (choose(m, k) * x^k * (1 - x)^(m - k)) * (m + 1)
 }
 
-# Calculates basis coefficients fo the Bernstein estimator
-#
-# The method of Weiss and Scheffer (2016) is used to adjust the coefficients
-# to uniform margins.
-#
-# @param u data
-# @param m order of the Bernstein polynomial
+#' Calculates basis coefficients fo the Bernstein estimator
+#'
+#' The method of Weiss and Scheffer (2016) is used to adjust the coefficients
+#' to uniform margins.
+#'
+#' @param u data
+#' @param m order of the Bernstein polynomial
+#' @noRd
 #' @importFrom quadprog solve.QP
 bern_coefs <- function(u, m) {
     # initialize coefficients with empirical frequencies
@@ -42,12 +44,13 @@ bern_coefs <- function(u, m) {
     matrix(sol, m, m)
 }
 
-# Fit a Bernstein copula to the data
-#
-# @param u data
-# @param m order of the Bernstein copula
-#
-# @return berncop object
+#' Fit a Bernstein copula to the data
+#'
+#' @param u data
+#' @param m order of the Bernstein copula
+#'
+#' @return berncop object
+#' @noRd
 berncop <- function(u, m = 10) {
     out <- list(coefs = bern_coefs(u, m),  m = m)
     class(out) <- "berncop"
@@ -55,12 +58,13 @@ berncop <- function(u, m = 10) {
 }
 
 
-# Evaluate the density of a berncop object
-#
-# @param unew data
-# @param object berncop object
-#
-# @return Bernstein copula density evaluated at uev.
+#' Evaluate the density of a berncop object
+#'
+#' @param unew data
+#' @param object berncop object
+#'
+#' @return Bernstein copula density evaluated at uev.
+#' @noRd
 dberncop <- function(uev, object) {
     list2env(object)
     summand <- function(i, j) {

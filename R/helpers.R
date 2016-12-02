@@ -1,12 +1,13 @@
-# Calculate the effective number of parameters of a fitted kdecopula
-#
-# @param udata data
-# @param likvalues liklihood values for each observation
-# @param b bandwidth
-# @param method estimation method
-# @param lfit locfit object (only for TLL methods)
-# 
-# Does not work for methods "bern", "TTPI", "TTCV".
+#' Calculate the effective number of parameters of a fitted kdecopula
+#'
+#' @param udata data
+#' @param likvalues liklihood values for each observation
+#' @param b bandwidth
+#' @param method estimation method
+#' @param lfit locfit object (only for TLL methods)
+#' 
+#' Does not work for methods "bern", "TTPI", "TTCV".
+#' @noRd
 #' @importFrom stats dbeta
 eff_num_par <- function(udata, likvalues, b, method, lfit) {
     if (method %in% c("TLL1", "TLL2", "TLL1nn", "TLL2nn")) {
@@ -45,9 +46,10 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
     effp
 }
 
-# Get evaluation function for given estimation method
-#
-# @param method estimation method
+#' Get evaluation function for given estimation method
+#'
+#' @noRd
+#' @param method estimation method
 eval_func <- function(method) {
     switch(method,
            "MR"   = function(uev, obj)
