@@ -310,7 +310,7 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
                          sqrt(1 - rho^2))^(1/6))
     theta <- as.vector(-h^2/2 * solve(C1) %*% C2)
 
-    c(h, rho, theta)
+    c(h = h, rho = rho, theta1 = theta[1], theta2 = theta[2])
 }
 
 #' @rdname bw_tt_pi
@@ -439,7 +439,8 @@ bw_tt_cv <- function(udata, rho.add = T) {
     opt_C2 <- matrix(C21 + C22 + 2 * opt_rho * C23, dim(B)[1], 1)
     opt_theta <- as.vector(solve(C1) %*% opt_C2) * (-opt_h^2/2)
     opt_theta[1] <- max(opt_theta[1], 0)
-    c(opt_h, opt_rho, opt_theta)
+    c(h = opt_h, rho = opt_rho, theta1 = opt_theta[1], theta2 = opt_theta[2])
+    
 }
 
 #' Bandwidth selection for the mirror-reflection estimator
