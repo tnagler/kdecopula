@@ -232,7 +232,7 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
     Si <- Si / sd(Si)
     Ti <- Ti / sd(Ti)
 
-    pre_rho <- mean(Si * Ti)
+    pre_rho <- max(-0.99, min(0.99, mean(Si * Ti)))
     b <- (32 * (1 - pre_rho^2)^3 * sqrt(1 - pre_rho^2)/(9 * pre_rho^2 + 6)/n)^(1/8)
     
     Xi <- rep(Si, each = n)
@@ -328,7 +328,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
     Si <- Si / sd(Si)
     Ti <- Ti / sd(Ti)
     
-    pre_rho <- mean(Si * Ti)
+    pre_rho <- max(-0.99, min(0.99, mean(Si * Ti)))
     a2 <- 19/4/pi^2
     a3 <- (48 * pre_rho^2 + 57)/32/pi^2/(pre_rho^2 -
                                              1)^3/sqrt(1 - pre_rho^2)
