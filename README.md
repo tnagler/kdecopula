@@ -99,20 +99,19 @@ summary(kde.fit)
 #> Variables:    mean radius -- mean concavity 
 #> Observations: 569 
 #> Method:       Transformation local likelihood, log-quadratic ('TLL2') 
-#> Bandwidth:    alpha = 0.353621
-#>               B = matrix(c(0.71, 0.7, -1.09, 1.09), 2, 2)
+#> Bandwidth:    matrix(c(2.63, 1.67, 0, 2.01), 2, 2)
 #> ---
-#> logLik: 197.28    AIC: -360.19    cAIC: -359.06    BIC: -285.56 
-#> Effective number of parameters: 17.18
+#> logLik: 192.41    AIC: -363.13    cAIC: -362.67    BIC: -316.03 
+#> Effective number of parameters: 10.84
 ```
 
 The output of the function `kdecop` is an object of class `kdecopula` that contains all information collected during the estimation process and summary statistics such as *AIC* or the *effective number of parameters/degrees of freedom*. These can also be accessed directly, e.g.
 
 ``` r
 logLik(kde.fit)
-#> 'log Lik.' 197.2755 (df=17.18016)
+#> 'log Lik.' 192.4111 (df=10.84394)
 AIC(kde.fit)
-#> [1] -360.1907
+#> [1] -363.1344
 ```
 
 #### Plotting bivariate copula densities
@@ -162,9 +161,9 @@ The density and *cdf* can be computed easily:
 
 ``` r
 dkdecop(c(0.1, 0.2), kde.fit)  # estimated copula density
-#> [1] 1.690376
+#> [1] 1.766521
 pkdecop(cbind(c(0.1, 0.9), c(0.1, 0.9)), kde.fit) # corresponding copula cdf
-#> [1] 0.03254441 0.85154412
+#> [1] 0.03415951 0.84975138
 ```
 
 Furthermore, we can simulate synthetic data from the estimated density:
