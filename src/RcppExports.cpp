@@ -7,41 +7,41 @@
 using namespace Rcpp;
 
 // eval_mr
-arma::vec eval_mr(const arma::mat& uev, /* evaluation points */                   const arma::mat& dat, /* cpoula data       */                   const double& b);
+arma::vec eval_mr(const arma::mat& uev, const arma::mat& dat, const double& b);
 RcppExport SEXP kdecopula_eval_mr(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< /* evaluation points */                   const arma::mat& >::type dat(datSEXP);
-    Rcpp::traits::input_parameter< /* cpoula data       */                   const double& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type dat(datSEXP);
+    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(eval_mr(uev, dat, b));
     return rcpp_result_gen;
 END_RCPP
 }
 // eval_beta
-arma::vec eval_beta(const arma::mat& uev, /* evaluation points */                     const arma::mat& dat, /* cpoula data       */                     double b);
+arma::vec eval_beta(const arma::mat& uev, const arma::mat& dat, double b);
 RcppExport SEXP kdecopula_eval_beta(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< /* evaluation points */                     const arma::mat& >::type dat(datSEXP);
-    Rcpp::traits::input_parameter< /* cpoula data       */                     double >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type dat(datSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(eval_beta(uev, dat, b));
     return rcpp_result_gen;
 END_RCPP
 }
-// eval_trafo
-arma::vec eval_trafo(const arma::mat& uev, /* evaluation points */                      const arma::mat& dat, /* cpoula data       */                      const arma::mat& B);
-RcppExport SEXP kdecopula_eval_trafo(SEXP uevSEXP, SEXP datSEXP, SEXP BSEXP) {
+// eval_t
+arma::vec eval_t(const arma::mat& uev, const arma::mat& dat, const arma::mat& B);
+RcppExport SEXP kdecopula_eval_t(SEXP uevSEXP, SEXP datSEXP, SEXP BSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type uev(uevSEXP);
-    Rcpp::traits::input_parameter< /* evaluation points */                      const arma::mat& >::type dat(datSEXP);
-    Rcpp::traits::input_parameter< /* cpoula data       */                      const arma::mat& >::type B(BSEXP);
-    rcpp_result_gen = Rcpp::wrap(eval_trafo(uev, dat, B));
+    Rcpp::traits::input_parameter< const arma::mat& >::type dat(datSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type B(BSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_t(uev, dat, B));
     return rcpp_result_gen;
 END_RCPP
 }

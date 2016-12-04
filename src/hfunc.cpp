@@ -5,7 +5,16 @@
 #include <hfunc.h>
 using namespace Rcpp;
 
-//// evaluate h-function via integration
+//' Evaluate an h-function corresponding to a copula density estimate
+//' 
+//' @param uev mx2 matrix of evaluation points
+//' @param cond_var either 1 or 2; the variable to condition on.
+//' @param vals matrix of density estimate evaluated on a kxk grid.
+//' @param grid the grid points (1-dim) on which vals has been computed.
+//' 
+//' @return H-function estimate evaluated at uev.
+//' 
+//' @noRd
 // [[Rcpp::export]]
 Rcpp::NumericVector eval_hfunc_2d(const Rcpp::NumericMatrix& uev,
                                   const int& cond_var, 
@@ -40,7 +49,17 @@ Rcpp::NumericVector eval_hfunc_2d(const Rcpp::NumericMatrix& uev,
     return out;
 }
 
-//// invert h-function
+//' Evaluate the inverse of an h-function corresponding to a copula density 
+//' estimate
+//' 
+//' @param uev mx2 matrix of evaluation points
+//' @param cond_var either 1 or 2; the variable to condition on.
+//' @param vals matrix of density estimate evaluated on a kxk grid.
+//' @param grid the grid points (1-dim) on which vals has been computed.
+//' 
+//' @return Inverse h-function estimate evaluated at uev.
+//' 
+//' @noRd
 // [[Rcpp::export]]
 Rcpp::NumericVector inv_hfunc(const Rcpp::NumericMatrix& uev,
                                const int& cond_var,
@@ -145,7 +164,17 @@ Rcpp::NumericVector inv_hfunc(const Rcpp::NumericMatrix& uev,
 }
 
 
-// full d-dimensional integrals (copula cdf)
+//' Evaluate the cdf corresponding to a copula density estimate
+//' 
+//' @param uev mx2 matrix of evaluation points
+//' @param vals vector of density estimate evaluated on a grid.
+//' @param grid the grid points (1-dim) on which vals has been computed.
+//' @param helpgrid auxiliary grid; see body of pkdecop.
+//' @param helpind auxiliary indicators; see body of pkdecop.
+//' 
+//' @return Copula cdf estimate evaluated at uev.
+//' 
+//' @noRd
 // [[Rcpp::export]]
 Rcpp::NumericVector eval_cdf(const Rcpp::NumericMatrix& uev, 
                              const Rcpp::NumericVector& vals,

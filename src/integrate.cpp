@@ -4,7 +4,15 @@
 using namespace Rcpp;
 
 
-//// integrate an interpolated function for values on a grid
+//' Integrate a spline interpolant
+//' 
+//' @param upr upper limit of integration (lower is 0).
+//' @param vals vector of values to be interpolated and integrated.
+//' @param grid vector of grid points on which vals has been computed.
+//' 
+//' @return Integral of interpolation spline defined by (vals, grid).
+//' 
+//' @noRd
 // [[Rcpp::export]]
 double int_on_grid(const double& upr, 
                    const Rcpp::NumericVector& vals,
@@ -60,7 +68,15 @@ double int_on_grid(const double& upr,
     return tmpint;
 }
 
-//// inverse of the integral of an interpolated function for values on a grid
+//' Inverse of the integral of a spline interpolant
+//' 
+//' @param qq argument of the inverse integral (the 'quantile').
+//' @param vals vector of values to be interpolated and integrated.
+//' @param grid vector of grid points on which vals has been computed.
+//' 
+//' @return Integral of interpolation spline defined by (vals, grid).
+//' 
+//' @noRd
 // [[Rcpp::export]]
 double inv_int_on_grid(const double& qq, 
                        const Rcpp::NumericVector& vals,

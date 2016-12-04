@@ -57,7 +57,7 @@ eval_func <- function(method) {
            "beta" = function(uev, obj)
                eval_beta(uev, obj$udata, obj$bw),
            "T"    = function(uev, obj)
-               eval_trafo(uev, obj$udata, obj$bw),
+               eval_t(uev, obj$udata, obj$bw),
            "TLL1" = function(uev, obj)
                eval_tll(uev, obj$lfit, obj$bw),
            "TLL2" = function(uev, obj)

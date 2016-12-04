@@ -4,11 +4,21 @@
 #include <renorm.h>
 using namespace Rcpp;
 
-//// renormalize a subset of an array
+//' Renormalize a subset of an array
+//' 
+//' The subset is given as a concatenated vector of d-1 sequences of length m 
+//' (grid size). The renormalized sequence corresponds to a spline interpolant 
+//' that integrates to one.
+//' 
+//' @param vals concatenated vector of function values.
+//' @param grid vector of (univariate) grid points.
+//' @param d dimension of the array.
+//' 
+//' @noRd
 // [[Rcpp::export]]
 Rcpp::NumericVector ren_subs(const Rcpp::NumericVector& vals, 
-                       const Rcpp::NumericVector& grid, 
-                       const int& d) 
+                             const Rcpp::NumericVector& grid, 
+                             const int& d) 
 {
     int m = grid.size();
     int N = vals.size();
@@ -33,8 +43,15 @@ Rcpp::NumericVector ren_subs(const Rcpp::NumericVector& vals,
     return out;
 }
 
-//// rescale d-dimensional copula density
-// the matrix 'helpind' is the (d-1)-dimensional expanded sequence 0:(knots-1) 
+//' Renormalize a d-dimensional copula density
+//' 
+//' 
+//' @param x concatenated vector of function values.
+//' @param grid vector of (univariate) grid points.
+//' @param times iterations of the renormalization procedure.
+//' @param helpind the (d-1)-dimensional expanded sequence 0:(knots-1).
+//' 
+//' @noRd
 // [[Rcpp::export]]
 Rcpp::NumericVector renorm(const Rcpp::NumericVector& x,
                            const Rcpp::NumericVector& grid, 

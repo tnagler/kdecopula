@@ -3,7 +3,12 @@
 using namespace Rcpp;
 
 
-//// evaluate a cubic polynomial with given coefficents
+//' Evaluate a cubic polynomial
+//' 
+//' @param x evaluation point.
+//' @param a vector of polynomial coefficients.
+//' 
+//' @noRd
 double cubic_poly(const double& x, 
                   const Rcpp::NumericVector& a) 
 {
@@ -12,7 +17,12 @@ double cubic_poly(const double& x,
     return a[0] + a[1]*x + a[2]*x2 + a[3]*x3;
 }
 
-//// indefinite integral of cubic polynomial
+//' Indefinite integral of cubic polynomial
+//' 
+//' @param x evaluation point.
+//' @param a vector of polynomial coefficients.
+//' 
+//' @noRd
 double cubic_indef_integral(const double& x,
                             const Rcpp::NumericVector& a) 
 {
@@ -22,7 +32,13 @@ double cubic_indef_integral(const double& x,
     return a[0]*x + a[1]/2.0*x2 + a[2]/3.0*x3 + a[3]/4.0*x4;
 }
 
-//// integral of cubic polynomial from lowr to upr
+//' Compute integral of cubic polynomial given upper and lower limits
+//' 
+//' @param lowr lower limit of the integral.
+//' @param upr upper limit of the integral.
+//' @param a vector of polynomial coefficients.
+//' 
+//' @noRd
 double cubic_integral(const double& lowr,
                       const double& upr, 
                       const Rcpp::NumericVector& a) 
@@ -30,22 +46,17 @@ double cubic_integral(const double& lowr,
     return cubic_indef_integral(upr, a) - cubic_indef_integral(lowr, a);
 }
 
-//// numerically invert a cubic integral (with 0 as lower bound)
-// -> maximum of 500 search iterations
+//' Numerically invert a cubic integral (with 0 as lower bound)
+//' 
+//' @param q evaluation point (a 'quantile').
+//' @param a vector of polynomial coefficients.
+//' 
+//' @details The inverse is found by the bisection method with a maximum of 20 
+//' iterations.
+//' 
+//' @noRd
 double inv_cubic_integral(const double& q,
                           const Rcpp::NumericVector& a) 
-// {
-//     double x = fabs(q);
-//     double qtest, tmpint, sign;
-//     for (int i = 0; i < 100; ++i) {
-//         tmpint = cubic_integral(0.0, x, a);
-//         if (tmpint > 0) sign = 1; else sign = -1;
-//         qtest = fabs(tmpint) - q;
-//         if (fabs(qtest) < 1e-20) break;
-//         x += - sign * qtest / cubic_poly(x, a);
-//     }
-//     return x;
-// }
 {
     double x0, x1, ql, qh, ans, val;
     ans = 0.0, val = 0.0; x0 = 0.0; x1 = 1.0;
@@ -92,7 +103,13 @@ double inv_cubic_integral(const double& q,
 }
 
 
-//// calculate coefficients for cubic splines (input must have length 4)
+//' Calculate coefficients for cubic splines
+//' 
+//' @param vals length 4 vector of function values.
+//' @param grid length 4 vector of grid points.
+//' @param a vector of polynomial coefficients.
+//' 
+//' @noRd
 Rcpp::NumericVector coef(const Rcpp::NumericVector& vals,
                          const Rcpp::NumericVector& grid,
                          Rcpp::NumericVector a) 
@@ -123,7 +140,14 @@ Rcpp::NumericVector coef(const Rcpp::NumericVector& vals,
     return a;
 } 
 
-//// interpolate in one dimension (inputs must have length 4)
+//' Interpolate in one dimension
+//' 
+//' @param x evaluation point.
+//' @param vals length 4 vector of function values.
+//' @param grid length 4 vector of grid points.
+//' @param a vector of polynomial coefficients.
+//' 
+//' @noRd
 double interp_on_grid(const double& x,
                       const Rcpp::NumericVector& vals, 
                       const Rcpp::NumericVector& grid,
@@ -133,7 +157,14 @@ double interp_on_grid(const double& x,
     return cubic_poly(xev, a);
 }
 
-//// interpolate in two dimensions
+//' Interpolate in two dimensions
+//' 
+//' @param x mx2 matrix of evaluation points.
+//' @param vals function values on a kxk grid.
+//' @param grid the grid points (1-dim) on which vals has been computed.
+//' @param a vector of polynomial coefficients.
+//' 
+//' @noRd
 // [[Rcpp::export]]
 Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, 
                               const Rcpp::NumericMatrix& vals, 
@@ -194,7 +225,12 @@ Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x,
     return out;
 }
 
-// subset array in C++
+//' Subset a vector as if it were a multi-dimensional array
+//' 
+//' @param ind mxd matrix of indices
+//' @param vector dimensions of the implicit array; a vector of length d.
+//' 
+//' @noRd
 Rcpp::IntegerVector get(const Rcpp::IntegerMatrix& ind, 
                         const Rcpp::IntegerVector& dims) 
 {
@@ -215,7 +251,14 @@ Rcpp::IntegerVector get(const Rcpp::IntegerMatrix& ind,
     return out;
 } 
 
-//// interpolate on an array with more than two dimensions
+//' Interpolate on an array with more than two dimensions
+//' 
+//' @param x mxd matrix of evaluation points.
+//' @param vals function values on a d-dimensional grid.
+//' @param grid the grid points (1-dim) on which vals has been computed.
+//' @param helpind a matrix of auxiliary indices (see function pkdecop).
+//' 
+//' @noRd
 // [[Rcpp::export]]
 Rcpp::NumericVector interp(const Rcpp::NumericMatrix& x,
                            const Rcpp::NumericVector& vals, 
