@@ -34,7 +34,8 @@
 #' bandwidths (Wu and Wen, 2015), \cr
 #' \code{"MR"}: mirror-reflection estimator (Gijbels and Mielniczuk, 1990), \cr 
 #' \code{"beta"}: beta kernel estimator (Charpentier et al., 2006), \cr
-#' \code{"bern"}: Bernstein copula estimator (Sanchetta and Satchell, 2004).
+#' \code{"bern"}: Bernstein copula estimator (Sanchetta and Satchell, 2004); the
+#' coefficients are adjusted by the method of Weiss and Scheffer (2012).
 #' @param knots integer; number of knots in each dimension for the spline
 #' approximation.
 #' @param renorm.iter integer; number of iterations for the renormalization
@@ -108,6 +109,10 @@
 #' The estimation of copulas: Theory and practice. 
 #' In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
 #' \cr \cr 
+#' Weiss, G. and Scheffer, M. (2012).
+#' Smooth Nonparametric Bernstein Vine Copulas.
+#' arXiv:1210.2043 [q-fin.RM]
+#' \cr \cr
 #' Nagler, T. (2014). 
 #' Kernel Methods for Vine Copula Estimation.
 #' Master's Thesis, Technische Universitaet Muenchen,
