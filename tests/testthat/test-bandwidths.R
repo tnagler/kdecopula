@@ -28,16 +28,16 @@ test_that("selection works for methods 'TLLxnn'", {
     bw1 <- kdecopula:::bw_tll_nn(u1, 1)
     expect_equal(names(bw1), c("B", "alpha", "kappa"))
     expect_equal(dim(bw1$B), c(2, 2))
-    expect_equal(length(bw1$alpha), 1)
-    expect_equal(length(bw1$kappa), 2)
+    expect_length(bw1$alpha, 1)
+    expect_length(bw1$kappa, 2)
     expect_gt(bw1$alpha, 0)
     expect_gt(min(bw1$kappa), 0)
 
     bw2 <- kdecopula:::bw_tll_nn(u3, 2)
     expect_equal(names(bw2), c("B", "alpha", "kappa"))
     expect_equal(dim(bw2$B), c(2, 2))
-    expect_equal(length(bw2$alpha), 1)
-    expect_equal(length(bw2$kappa), 2)
+    expect_length(bw2$alpha, 1)
+    expect_length(bw2$kappa, 2)
     expect_gt(bw2$alpha, 0)
     expect_gt(min(bw2$kappa), 0)
     
@@ -48,8 +48,8 @@ test_that("selection works for methods 'TLLxnn'", {
 })
 
 test_that("selection works for method 'TTPI'", {
-    expect_equal(length(kdecopula:::bw_tt_pi(u1)), 4)
-    expect_equal(length(kdecopula:::bw_tt_pi(u1, rho.add = FALSE)), 4)
+    expect_length(kdecopula:::bw_tt_pi(u1), 4)
+    expect_length(kdecopula:::bw_tt_pi(u1, rho.add = FALSE), 4)
     
     expect_equal(kdecopula:::bw_tt_pi(u1, rho.add = FALSE)["rho"], c(rho = 0))
     
@@ -78,7 +78,7 @@ test_that("selection works for method 'MR'", {
 })
 
 test_that("selection works for method 'beta'", {
-    expect_equal(length(kdecopula:::bw_beta(u1)), 1)
+    expect_length(kdecopula:::bw_beta(u1), 1)
     
     expect_gt0 <- function(bw) expect_gt(bw, 0) 
     expect_gt0(kdecopula:::bw_beta(u1)) 
@@ -88,7 +88,7 @@ test_that("selection works for method 'beta'", {
 })
 
 test_that("selection works for method 'bern'", {
-    expect_equal(length(kdecopula:::bw_bern(u1)), 1)
+    expect_length(kdecopula:::bw_bern(u1), 1)
     
     expect_gte1 <- function(bw) expect_gte(bw, 1) 
     expect_gte1(kdecopula:::bw_bern(u1)) 
