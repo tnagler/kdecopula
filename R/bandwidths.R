@@ -62,14 +62,17 @@ multiply_bw <- function(bw, mult, method, d) {
 #' @noRd
 check_bw <- function(bw, method) {
     if (method %in% c("TLL1nn", "TLL2nn")) {
-        if (is.null(bw$B) | is.null(bw$alpha))
+        if (is.null(bw$B) | is.null(bw$alpha) | is.null(bw$kappa))
             stop(paste0("For methods 'TLL1/2nn', you have to provide a list",
                         "'bw = list(B = <your.B>,  alpha = <your.alpha>, ",
                         "kappa = <your.kappa>)'."))
         if (bw$alpha <= 0)
             stop("Nearest neighbor fraction 'bw$alpha' has to be positive.")
-    }
-    if (method %in% c("T", "TLL1", "TLL2", "TLL1nn", "TLL2nn")) {
+        if (length(bw$kappa) != 2)
+            stop("bw$kappa has to be a numeric vector of length 2.")
+        if (det(bw$B) <= 0)
+            stop("Bandwidth matrix has to be positive definite.")
+        } else if (method %in% c("T", "TLL1", "TLL2")) {
         if (det(bw) <= 0)
             stop("Bandwidth matrix has to be positive definite.")
     } else if (method %in% c("TTPI", "TTCV")) {
