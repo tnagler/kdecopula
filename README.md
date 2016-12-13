@@ -35,7 +35,7 @@ You can install:
 -   the stable release on CRAN:
 
     ``` r
-    install.pacakges("kdecopula")
+    install.packages("kdecopula")
     ```
 
 -   the latest development version:
