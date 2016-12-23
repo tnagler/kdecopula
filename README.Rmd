@@ -55,12 +55,12 @@ You can install:
 * the stable release on CRAN:
 ``` r
 install.packages("kdecopula")
-````
+```
 
 * the latest development version:
 ``` r
 devtools::install_github("tnagler/kdecopula")
-````
+```
 
 ## Functions
 
