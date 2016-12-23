@@ -65,7 +65,7 @@ The package provides the following functions:
 
     -   `logLik`, `AIC`, `BIC`: Extracts fit statistics.
 
-Please look up the package documentation for more details on arguments and options.
+See the [package documentation](https://cran.r-project.org/web/packages/kdecopula/kdecopula.pdf) for more details on arguments and options.
 
 ------------------------------------------------------------------------
 
