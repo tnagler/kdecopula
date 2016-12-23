@@ -1,8 +1,8 @@
 Package: kdecopula
 Type: Package
 Title: Kernel Smoothing for Bivariate Copula Densities
-Version: 0.7.1
-Date: 2016-11-26
+Version: 0.8.0
+Date: 2016-12-23
 Authors@R: c(
     person("Thomas", "Nagler", , "thomas.nagler@tum.de", c("aut", "cre")),
     person("Kuangyu", "Wen",, role = "ctb")
