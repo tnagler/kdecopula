@@ -12,9 +12,9 @@ my_locfit <- function(udata, B, deg) {
         return(my_locfitnn(udata, B$B, B$alpha, B$kappa, deg))
     # transform data
     zdata <- qnorm(udata)
-    qrs  <- zdata %*% solve(B)
+    qrs  <- t(solve(B) %*% t(zdata))
     gr <- do.call(expand.grid, lapply(1:ncol(qrs), function(i) c(-4, 4)))
-    qgr <- as.matrix(gr) %*% solve(B)
+    qgr <- t(solve(B) %*% t(as.matrix(gr)))
     lims <- apply(qgr, 2L, range)
     
     ## fit model
@@ -34,9 +34,9 @@ my_locfit <- function(udata, B, deg) {
 my_locfitnn <- function(udata, B, alpha, kappa, deg) {
     # transform data
     zdata <- qnorm(udata)
-    qrs  <- zdata %*% solve(B)
+    qrs  <- t(solve(B) %*% t(zdata))
     gr <- do.call(expand.grid, lapply(1:ncol(qrs), function(i) c(-4, 4)))
-    qgr <- as.matrix(gr) %*% solve(B)
+    qgr <-  t(solve(B) %*% t(as.matrix(gr)))
     lims <- apply(qgr, 2L, range)
     
     ## fit model
@@ -64,12 +64,12 @@ my_locfitnn <- function(udata, B, alpha, kappa, deg) {
 #' @importFrom stats predict
 eval_tll <- function(uev, lfit, B) {
     uev <- as.matrix(uev)
-    if(ncol(uev) == 1L) 
+    if (ncol(uev) == 1L) 
         uev <- matrix(uev, 1L, nrow(uev))
     d <- ncol(uev)
     zev <- qnorm(uev)
-    ev  <- zev %*% solve(B)
+    ev  <- t(solve(B) %*% t(zev))
     
-    rescale <- pmax(apply(dnorm(zev), 1L, prod), 10^(- 2 * d)) * abs(det(B))
+    rescale <- pmax(apply(dnorm(zev), 1L, prod), 10^(-2 * d)) * abs(det(B))
     suppressWarnings(as.numeric(predict(lfit, ev) / rescale))
 }
