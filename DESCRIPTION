@@ -1,7 +1,7 @@
 Package: kdecopula
 Type: Package
 Title: Kernel Smoothing for Bivariate Copula Densities
-Version: 0.8.1.9990
+Version: 0.8.1
 Authors@R: c(
     person("Thomas", "Nagler", , "thomas.nagler@tum.de", c("aut", "cre")),
     person("Kuangyu", "Wen",, role = "ctb")
@@ -31,4 +31,4 @@ Suggests:
     testthat
 VignetteBuilder: R.rsp
 License: GPL-3
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

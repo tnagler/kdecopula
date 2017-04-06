@@ -41,11 +41,10 @@ hkdecop(c(0.123, 0.321), dens.est, cond.var = 2)
 hkdecop(c(0.123, 0.321), dens.est, cond.var = 2, inverse = TRUE) 
 
 }
-\author{
-Thomas Nagler
-}
 \seealso{
 \code{\link[kdecopula:kdecop]{kdecop}},
 \code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}
 }
-
+\author{
+Thomas Nagler
+}

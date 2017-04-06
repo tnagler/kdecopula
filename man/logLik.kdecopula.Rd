@@ -32,12 +32,11 @@ AIC(dens.est)
 BIC(dens.est)
 
 }
-\author{
-Thomas Nagler
-}
 \seealso{
 \code{\link[stats:logLik]{logLik}},
 \code{\link[stats:AIC]{AIC}},
 \code{\link[stats:BIC]{BIC}}
 }
-
+\author{
+Thomas Nagler
+}

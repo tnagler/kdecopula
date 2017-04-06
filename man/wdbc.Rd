@@ -9,7 +9,7 @@ indicates wether the sample is classified as benign (\code{B}) or malignant
 (\code{M}). The remaining columns contain measurements for 30 features.}
 \source{
 \url{http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)}
-\cr \cr 
+\cr \cr
 Bache, K. & Lichman, M. (2013).
 UCI Machine Learning Repository.
 Irvine, CA: University of California, School of Information and Computer
@@ -65,4 +65,3 @@ of two linearly inseparable sets",\cr Optimization Methods and Software 1,
 1992, 23-34 (Gordon & Breach Science Publishers).
 }
 \keyword{datasets}
-

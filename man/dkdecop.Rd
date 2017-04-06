@@ -4,6 +4,8 @@
 \alias{dkdecop}
 \alias{pkdecop}
 \alias{rkdecop}
+\alias{pkdecop}
+\alias{rkdecop}
 \title{Working with \code{kdecopula} objects}
 \usage{
 dkdecop(u, obj, stable = FALSE)
@@ -57,9 +59,6 @@ pkdecop(c(0.123, 0.321), dens.est)
 rkdecop(500, dens.est)
 
 }
-\author{
-Thomas Nagler
-}
 \references{
 Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
 Probit transformation for nonparametric kernel estimation of the copula
@@ -80,4 +79,6 @@ arXiv:1508.03483 [stat.CO]
 \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
 \code{\link[qrng:ghalton]{ghalton}}
 }
-
+\author{
+Thomas Nagler
+}

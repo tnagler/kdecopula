@@ -120,9 +120,6 @@ plot(rkdecop(500, est), quasi = TRUE)  # quasi-random
 
 
 }
-\author{
-Thomas Nagler
-}
 \references{
 Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
 Probit transformation for nonparametric kernel estimation of the copula
@@ -158,4 +155,6 @@ Master's Thesis, Technische Universitaet Muenchen,
 \code{\link[kdecopula:pkdecop]{pkdecop}},
 \code{\link[kdecopula:rkdecop]{rkdecop}}
 }
-
+\author{
+Thomas Nagler
+}

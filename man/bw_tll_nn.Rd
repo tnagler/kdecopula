@@ -30,4 +30,3 @@ Probit transformation for nonparametric kernel estimation of the copula
 density.
 arXiv:1404.4414 [stat.ME].
 }
-

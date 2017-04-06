@@ -30,4 +30,3 @@ Kernel Methods for Vine Copula Estimation.
 Master's Thesis, Technische Universitaet Muenchen,
 \url{https://mediatum.ub.tum.de/node?id=1231221}
 }
-

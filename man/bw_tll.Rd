@@ -24,4 +24,3 @@ where \eqn{\hat{Sigma}} is empirical covariance matrix of the transformed
 random vector and \eqn{q = 1} for \code{TLL1} and \eqn{q = 2} for 
 \code{TLL2}.
 }
-

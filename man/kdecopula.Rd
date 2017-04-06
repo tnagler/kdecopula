@@ -2,9 +2,9 @@
 % Please edit documentation in R/kdecopula-package.R
 \docType{package}
 \name{kdecopula}
-\alias{VineCopula}
-\alias{VineCopula-package}
 \alias{kdecopula}
+\alias{kdevine-package}
+\alias{kdevine}
 \alias{kdecopula-package}
 \title{Kernel Smoothing for Bivariate Copula Densities}
 \description{
@@ -15,12 +15,12 @@ further used for flexible nonparametric estimation of copula densities
 and resampling.
 }
 \details{
-The function \code{\link{kdecop}} can be used to estimate a copula density 
+The function \code{\link{kdecop}} can be used to estimate a copula density
 with a number of popular kernel estimators. The density estimate can be
-evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}}; 
-the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic 
+evaluated on arbitrary points with \code{\link[kdecopula:dkdecop]{dkdecop}};
+the cdf with \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic
 data can be simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and
-several plot options are provided by 
+several plot options are provided by
 \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}.
 }
 \examples{
@@ -31,43 +31,42 @@ udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
 
 ## estimation of copula density of variables 5 and 6
 dens.est <- kdecop(udat[, 5:6])
-plot(dens.est) 
+plot(dens.est)
 
 ## evaluate density estimate at (u1,u2)=(0.123,0.321)
-dkdecop(c(0.123, 0.321), dens.est) 
+dkdecop(c(0.123, 0.321), dens.est)
 
 ## evaluate cdf estimate at (u1,u2)=(0.123,0.321)
-pkdecop(c(0.123, 0.321), dens.est) 
+pkdecop(c(0.123, 0.321), dens.est)
 
 ## simulate 500 samples from density estimate
 rkdecop(500, dens.est)
 
 }
-\author{
-Thomas Nagler
-}
 \references{
 Gijbels, I. and Mielniczuk, J. (1990).
 Estimating the density of a copula function.
-Communications in Statistics - Theory and Methods, 19(2):445-464. 
-\cr \cr 
+Communications in Statistics - Theory and Methods, 19(2):445-464.
+\cr \cr
 Charpentier, A., Fermanian, J.-D., and Scaillet, O. (2006).
-The estimation of copulas: Theory and practice. 
+The estimation of copulas: Theory and practice.
 In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
 \cr \cr
-Geenens, G., Charpentier, A., and Paindaveine, D. (2014). 
+Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
 Probit transformation for nonparametric kernel estimation of the copula density.
-arXiv:1404.4414 [stat.ME]. 
-\cr \cr 
+arXiv:1404.4414 [stat.ME].
+\cr \cr
 Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.
 Master's Thesis, Technische Universitaet Muenchen,
 \url{https://mediatum.ub.tum.de/node?id=1231221}
-\cr \cr 
+\cr \cr
 Wen, K. and Wu, X. (2015).
 Transformation-Kernel Estimation of the Copula Density,
 Working paper,
 \url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
 }
+\author{
+Thomas Nagler
+}
 \keyword{package}
-
