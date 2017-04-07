@@ -1,6 +1,13 @@
-kdecopula (under development)
+kdecopula 0.8.1
 -------------------------------
 
+NEW FEATURES
+
+   * stabilized bandwidth matrix transformation.
+   
+   * faster builds (removed unnecessarily included headers).
+   
+   * updated documentation.
 
 
 kdecopula 0.8.0
