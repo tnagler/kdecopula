@@ -1,6 +1,5 @@
 #include <RcppArmadillo.h>
 #include <kernels.h>
-#include <interp.h>
 using namespace Rcpp;
 using namespace arma;
 

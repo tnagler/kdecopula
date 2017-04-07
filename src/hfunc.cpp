@@ -1,5 +1,4 @@
 #include <RcppArmadillo.h>
-#include <kernels.h>
 #include <interp.h>
 #include <integrate.h>
 #include <hfunc.h>

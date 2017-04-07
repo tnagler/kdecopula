@@ -2,8 +2,6 @@
 #define _kdecopula_HFUNC_H
 
 #include <RcppArmadillo.h>
-#include <interp.h>
-#include <integrate.h>
 
 Rcpp::NumericVector eval_hfunc_2d(const Rcpp::NumericMatrix& uev,
                                   const int& cond_var, 
