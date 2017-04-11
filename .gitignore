@@ -10,5 +10,4 @@
 src/kdecopula.dll
 *.o
 *.dll
-*.html
 .directory
