@@ -20,10 +20,10 @@ bw_select <- function(udata, method) {
 }
 
 #' Add multiplier to given bandwidth specification
-#' 
+#'
 #' Allows to further control the degree of smoothing.
 #'
-#' @param bw full bandwidth specification as returned by 
+#' @param bw full bandwidth specification as returned by
 #' \code{\link{bw_select}}.
 #' @param mult the multiplier, a positive real number.
 #' @param method estimation method.
@@ -49,7 +49,7 @@ multiply_bw <- function(bw, mult, method, d) {
     } else if (method == "bern") {
         bw <- max(1, round(bw * mult))
     }
-    
+
     bw
 }
 
@@ -57,7 +57,7 @@ multiply_bw <- function(bw, mult, method, d) {
 #'
 #' @param bw bandwidth specification.
 #' @param method estimation method.
-#' 
+#'
 #' @return throws an error if invalid; returns nothing otherwise.
 #' @noRd
 check_bw <- function(bw, method) {
@@ -89,7 +89,7 @@ check_bw <- function(bw, method) {
 }
 
 #' Bandwidth selection for the transformation kernel estimator
-#' 
+#'
 #' The bandwidth is selected by a rule of thumb. It approximately minimizes
 #' the MISE of the Gaussian copula on the transformed domain. The usual normal
 #' reference matrix is multiplied by 1.25 to account for the higher variance
@@ -98,19 +98,19 @@ check_bw <- function(bw, method) {
 #' @param udata data.
 #'
 #' @return optimal bandwidth matrix.
-#' 
+#'
 #' @details
 #' The formula is
 #' \deqn{1.25  n^{-1 / 6}  \hat{\Sigma}^{1/2},}
 #' where \eqn{\hat{Sigma}} is empirical covariance matrix of the transformed
 #' random vector.
-#'   
-#' @references 
-#' Nagler, T. (2014). 
+#'
+#' @references
+#' Nagler, T. (2014).
 #' Kernel Methods for Vine Copula Estimation.
 #' Master's Thesis, Technische Universitaet Muenchen,
-#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
-#' 
+#' \url{https://mediatum.ub.tum.de/node?id=1231221}
+#'
 #' @export
 bw_t <- function(udata) {
     n <- nrow(udata)
@@ -118,21 +118,21 @@ bw_t <- function(udata) {
 }
 
 #' Bandwidth selection for the transformation local likelihood estimator
-#' 
-#' The bandwidth is selected by a rule of thumb similar to \code{\link{bw_t}}. 
+#'
+#' The bandwidth is selected by a rule of thumb similar to \code{\link{bw_t}}.
 #'
 #' @param udata data.
 #' @param deg degree of the polynomial.
-#' 
+#'
 #' @return optimal bandwidth matrix.
-#' 
+#'
 #' @details
 #' The formula is
 #' \deqn{5  n^{-1 / (4q + 2)}  \hat{\Sigma}^{1/2},}
 #' where \eqn{\hat{Sigma}} is empirical covariance matrix of the transformed
-#' random vector and \eqn{q = 1} for \code{TLL1} and \eqn{q = 2} for 
+#' random vector and \eqn{q = 1} for \code{TLL1} and \eqn{q = 2} for
 #' \code{TLL2}.
-#' 
+#'
 #' @importFrom stats qnorm cov
 #' @export
 bw_tll <- function(udata, deg) {
@@ -142,8 +142,8 @@ bw_tll <- function(udata, deg) {
 
 #' Nearest-neighbor bandwidth selection for the transformation local likelihood
 #' estimator
-#' 
-#' The smoothing parameters is selected by the method of Geenens et al. (2014). 
+#'
+#' The smoothing parameters is selected by the method of Geenens et al. (2014).
 #'
 #' @param udata data.
 #' @param deg degree of the polynomial.
@@ -155,13 +155,13 @@ bw_tll <- function(udata, deg) {
 #'   \item{\code{kappa}}{correction factor,}
 #' }
 #' see Geenens et al. (2014).
-#' 
-#' @references 
+#'
+#' @references
 #' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
 #' Probit transformation for nonparametric kernel estimation of the copula
 #' density.
-#' arXiv:1404.4414 [stat.ME]. 
-#' 
+#' arXiv:1404.4414 [stat.ME].
+#'
 #' @importFrom stats princomp
 #' @export
 bw_tll_nn <- function(udata, deg) {
@@ -173,19 +173,19 @@ bw_tll_nn <- function(udata, deg) {
     B <- unclass(pca$loadings)
     B <- B * sign(diag(B))
     qrs <- unclass(pca$scores)
-    
+
     ## find optimal alpha in for each principal component
     alphsq <- seq(nrow(zdata)^(-1/5), 1, l = 50)
     opt <- function(i) {
-        val <- lscvplot(~qrs[, i], 
-                        alpha  = alphsq, 
-                        deg    = deg, 
-                        kern   = "gauss", 
+        val <- lscvplot(~qrs[, i],
+                        alpha  = alphsq,
+                        deg    = deg,
+                        kern   = "gauss",
                         maxk   = 512)$value
         mean(alphsq[which.min(val)])
     }
     alpha.vec <- sapply(1:d, opt)
-    
+
     ## adjustments for multivariate estimation and transformation
     kappa <- alpha.vec[1]/alpha.vec
     dimnames(B) <- NULL
@@ -194,14 +194,14 @@ bw_tll_nn <- function(udata, deg) {
     } else {
         alpha <- n^(1/9 - d/(8 + d)) * alpha.vec[1]
     }
-    
+
     ## return results
     list(B = B, alpha = alpha, kappa = kappa)
 }
 
 #' Nearest-neighbor bandwidth selection for the tapered transformation estimator
-#' 
-#' The smoothing parameters are selected by the method of Wen and Wu (2015). 
+#'
+#' The smoothing parameters are selected by the method of Wen and Wu (2015).
 #'
 #' @param udata data.
 #' @param rho.add logical; whether a rotation (correlation) parameter shall be
@@ -209,15 +209,15 @@ bw_tll_nn <- function(udata, deg) {
 #'
 #' @return optimal smoothing parameters as in Wen and Wu (2015): a numeric
 #' vector of length 4; entries are \eqn{(h, \rho, \theta_1, \theta_2)}.
-#'  
+#'
 #' @author Kuangyu Wen
-#' 
-#' @references 
+#'
+#' @references
 #' Wen, K. and Wu, X. (2015).
 #' Transformation-Kernel Estimation of the Copula Density,
 #' Working paper,
 #' \url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
-#' 
+#'
 #' @importFrom stats princomp sd
 #' @export
 bw_tt_pi <- function(udata, rho.add = TRUE) {
@@ -237,17 +237,17 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
 
     pre_rho <- max(-0.99, min(0.99, mean(Si * Ti)))
     b <- (32 * (1 - pre_rho^2)^3 * sqrt(1 - pre_rho^2)/(9 * pre_rho^2 + 6)/n)^(1/8)
-    
+
     Xi <- rep(Si, each = n)
     Yi <- rep(Ti, each = n)
     Xj <- rep(Si, times = n)
     Yj <- rep(Ti, times = n)
-    
+
     B <- rbind(2 - Xi^2 - Yi^2, mean(Si * Ti) - Xi *
                    Yi)
     pseudoB <- rbind(2 - Si^2 - Ti^2, mean(Si * Ti) -
                          Si * Ti)
-    
+
     C1 <- ((B %*% (t(B) * matrix(rep(dnorm((Xi - Xj)/b) *  dnorm((Yi - Yj)/b), dim(B)[1]),
                                  n^2,
                                  dim(B)[1]))) - pseudoB %*% t(pseudoB) *
@@ -260,14 +260,14 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
                                           dnorm((Yi - Yj)/b),  dim(B)[1]),
                                   n^2,
                                   dim(B)[1])) + rowSums(dnorm(0)^2 * pseudoB))/n/(n - 1)/b^4
-    
+
     phi40 <- sum((((Xi - Xj)/b)^4 - 6 * ((Xi - Xj)/b)^2 + 3) *
                      dnorm((Xi - Xj)/b) * dnorm((Yi - Yj)/b))/n^2/b^6
     phi04 <- sum((((Yi - Yj)/b)^4 - 6 * ((Yi - Yj)/b)^2 + 3) *
                      dnorm((Xi - Xj)/b) * dnorm((Yi - Yj)/b))/n^2/b^6
     phi22 <- sum((((Xi - Xj)/b)^2 - 1) * (((Yi - Yj)/b)^2 -  1) *
                      dnorm((Xi - Xj)/b) * dnorm((Yi - Yj)/b))/n^2/b^6
-    
+
     if (rho.add) {
         phi31 <- sum((((Xi - Xj)/b)^3 - 3 * ((Xi -  Xj)/b)) * ((Yi - Yj)/b) *
                          dnorm((Xi - Xj)/b) * dnorm((Yi - Yj)/b))/n^2/b^6
@@ -276,7 +276,7 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
     } else {
         phi31 <- phi13 <- 0
     }
-    
+
     if (rho.add) {
         C23 <- (colSums(t(B) * matrix(rep(((Yi - Yj) * (Xi - Xj)/b^2) *  dnorm((Xi - Xj)/b) *
                                               dnorm((Yi -   Yj)/b), dim(B)[1]),
@@ -285,7 +285,7 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
     } else {
         C23 <- matrix(rep(0, dim(B)[1]), dim(B)[1], 1)
     }
-    
+
     if (rho.add) {
         M <- function(param) {
             rho <- 2 * pnorm(param) - 1
@@ -293,7 +293,7 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
             C3 <- phi40 + phi04 + (4 * rho^2 + 2) *  phi22 + 4 * rho * (phi31 + phi13)
             (C3 - t(C2) %*% solve(C1) %*% C2)/(1 - rho^2)
         }
-        
+
         rho_optimization <- optim(0,
                                   M,
                                   method = "BFGS",
@@ -301,7 +301,7 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
         if (rho_optimization$convergence != 0) {
             stop("Check the optimization in choosing rho.")
         }
-        
+
         rho <- 2 * pnorm(rho_optimization$par) - 1
     } else {
         rho <- 0
@@ -330,7 +330,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
     # of the bandwidth parameters when pre_rho^2 > 1
     Si <- Si / sd(Si)
     Ti <- Ti / sd(Ti)
-    
+
     pre_rho <- max(-0.99, min(0.99, mean(Si * Ti)))
     a2 <- 19/4/pi^2
     a3 <- (48 * pre_rho^2 + 57)/32/pi^2/(pre_rho^2 -
@@ -338,17 +338,17 @@ bw_tt_cv <- function(udata, rho.add = T) {
     a4 <- (18 * pre_rho^6 + 360 * pre_rho^4 + 576 *
                pre_rho^2 + 171)/(256 * pi^2 * (1 - pre_rho^2)^7)
     b <- (6 * a2/(sqrt(a3^2 + 3 * a2 * a4) - a3)/n)^(1/8)
-    
+
     Xi <- rep(Si, each = n)
     Yi <- rep(Ti, each = n)
     Xj <- rep(Si, times = n)
     Yj <- rep(Ti, times = n)
-    
+
     B <- rbind(2 - Xi^2 - Yi^2, mean(Si * Ti) - Xi *
                    Yi)
     pseudoB <- rbind(2 - Si^2 - Ti^2, mean(Si * Ti) -
                          Si * Ti)
-    
+
     C1 <- ((B %*% (t(B) * matrix(rep(dnorm((Xi - Xj)/b) *
                                          dnorm((Yi - Yj)/b), dim(B)[1]), n^2, dim(B)[1]))) -
                pseudoB %*% t(pseudoB) * dnorm(0)^2)/n/(n -
@@ -362,7 +362,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
     C23 <- (colSums(t(B) * matrix(rep(((Yi - Yj) * (Xi - Xj)/b^2) *
                                           dnorm((Xi - Xj)/b) * dnorm((Yi -  Yj)/b), dim(B)[1]), n^2, dim(B)[1])) +
                 rowSums(dnorm(0)^2 * pseudoB))/n/(n - 1)/b^4
-    
+
     phi40 <- sum((((Xi - Xj)/b)^4 - 6 * ((Xi - Xj)/b)^2 +
                       3) * dnorm((Xi - Xj)/b) * dnorm((Yi - Yj)/b))/n^2/b^6
     phi04 <- sum((((Yi - Yj)/b)^4 - 6 * ((Yi - Yj)/b)^2 +
@@ -373,7 +373,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
                      dnorm((Xi - Xj)/b) * dnorm((Yi - Yj)/b))/n^2/b^6
     phi13 <- sum((((Yi - Yj)/b)^3 - 3 * ((Yi - Yj)/b)) * ((Xi - Xj)/b) *
                      dnorm((Xi - Xj)/b) * dnorm((Yi -  Yj)/b))/n^2/b^6
-    
+
     wcv <- function(h, rho) {
         C2 <- matrix(C21 + C22 + 2 * rho * C23, dim(B)[1], 1)
         theta <- as.vector(solve(C1) %*% C2) * (-h^2/2)
@@ -383,20 +383,20 @@ bw_tt_cv <- function(udata, rho.add = T) {
                               (Si^2 + Ti^2) +  (2 * rho * h^2 * theta[2]^2 - 8 * rho *
                                                     h^2 * theta[1]^2 + 2 * theta[2]) * Si * Ti)/
                             2/delta^2))/delta
-        
+
         alpha1 <- -2 * h^4 * (1 - rho^2) * (4 * theta[1]^2 -  theta[2]^2) +
             2 * h^2 * ((rho^2 - 3) * theta[1] - rho * theta[2]) - 1
         alpha2 <- 4 * h^4 * (1 - rho^2) * (4 * theta[1]^2 -  theta[2]^2) +
             2 * h^2 * (4 * rho * theta[1] + (3 * rho^2 - 1) * theta[2]) + 2 * rho
         alpha3 <- -2 * h^2 * (4 * rho * theta[1] + (1 + rho^2) * theta[2]) - 2 * rho
         alpha4 <- 4 * h^2 * ((1 + rho^2) * theta[1] + rho * theta[2]) + 2
-        
+
         part1 <- mean(exp((alpha1 * (Xi^2 + Xj^2 + Yi^2 + Yj^2) +
                                alpha2 * (Xi * Yi + Xj * Yj) +
                                alpha3 * (Xi * Yj + Xj * Yi) + alpha4 *
                                (Xi * Xj + Yi * Yj))/4/h^2/(1 - rho^2)/delta^2))/
             4/pi/eta^2/h^2/delta/sqrt(1 - rho^2)
-        
+
         part2 <- sum(sapply(1:n,
                             function(index)
                                 as.numeric(eval_tt(matrix(udata[index, ], ncol = 2),
@@ -408,7 +408,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
         )
         part1 - 2 * part2/n
     }
-    
+
     if (rho.add) {
         M <- function(param) {
             rho <- 2 * pnorm(param) - 1
@@ -418,7 +418,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
                 phi22 + 4 * rho * (phi31 + phi13)
             (C3 - t(C2) %*% solve(C1) %*% C2)/(1 - rho^2)
         }
-        
+
         rho_optimization <- optim(0,
                                   M,
                                   method = "BFGS",
@@ -443,11 +443,11 @@ bw_tt_cv <- function(udata, rho.add = T) {
     opt_theta <- as.vector(solve(C1) %*% opt_C2) * (-opt_h^2/2)
     opt_theta[1] <- max(opt_theta[1], 0)
     c(h = opt_h, rho = opt_rho, theta1 = opt_theta[1], theta2 = opt_theta[2])
-    
+
 }
 
 #' Bandwidth selection for the mirror-reflection estimator
-#' 
+#'
 #' The bandwidth is selected by minimizing the MISE using the Frank copula as
 #' the reference family. The copula parameter is set by inversion of Kendall's
 #' tau. See Nagler (2014) for details.
@@ -455,19 +455,19 @@ bw_tt_cv <- function(udata, rho.add = T) {
 #' @param udata data.
 #'
 #' @return optimal bandwidth parameter.
-#' 
+#'
 #' @details
 #' To speed things up, optimal bandwidths have been precalculated on a grid of
 #' tau values.
-#' 
-#' @references 
-#' Nagler, T. (2014). 
+#'
+#' @references
+#' Nagler, T. (2014).
 #' Kernel Methods for Vine Copula Estimation.
 #' Master's Thesis, Technische Universitaet Muenchen,
-#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
-#' 
+#' \url{https://mediatum.ub.tum.de/node?id=1231221}
+#'
 #' @export
-#' 
+#'
 #' @importFrom stats cor
 bw_mr <- function(udata) {
     tau <- abs(cor(udata, method = "kendall")[1L, 2L])
@@ -479,7 +479,7 @@ precalc_bw_mr <- function(tau) {
     # ## constants for kernel
     # sigma_K <- sqrt(1/5)
     # d_K     <- 3/5
-    # 
+    #
     # ## parameter for frank copula by inversion of Kendall's tau
     # family <- 5
     # if (abs(tau) < 1e-2) {
@@ -488,13 +488,13 @@ precalc_bw_mr <- function(tau) {
     # } else {
     #     par <- BiCopTau2Par(family, tau = tau)
     # }
-    # 
+    #
     # ## short handles for copula density and derivatives
     # c_uu <- function(u,v)
     #     BiCopDeriv2(u, v, family, par, deriv = "u1")
     # c_vv <- function(u,v)
     #     BiCopDeriv2(u, v, family, par, deriv = "u2")
-    # 
+    #
     # ## integrals
     # require(cubature)
     # bet <- function(w) (c_uu(w[1L], w[2L]) + c_vv(w[1L], w[2L]))^2
@@ -503,10 +503,10 @@ precalc_bw_mr <- function(tau) {
     #                         upperLimit = c(1, 1),
     #                         tol = 5e-3)$integral
     # gamma <- 1
-    # 
+    #
     # ## result
     # (2*d_K^2/sigma_K^4*gamma/beta)^(1/6)
-    
+
     ## the above calculations were done on a grid for Kendall's tau.
     v <- c(Inf, Inf, Inf, Inf, Inf, 9.38981068252189, 7.36254398988451,
            5.9934473841143, 5.01438723715381, 4.28489907652576, 3.72151713690116,
@@ -528,7 +528,7 @@ precalc_bw_mr <- function(tau) {
 
 
 #' Bandwidth selection for the beta kernel estimator
-#' 
+#'
 #' The bandwidth is selected by minimizing the MISE using the Frank copula as
 #' the reference family. The copula parameter is set by inversion of Kendall's
 #' tau. See Nagler (2014) for details.
@@ -536,17 +536,17 @@ precalc_bw_mr <- function(tau) {
 #' @param udata data.
 #'
 #' @return optimal bandwidth parameter.
-#' 
+#'
 #' @details
 #' To speed things up, optimal bandwidths have been precalculated on a grid of
 #' tau values.
-#' 
-#' @references 
-#' Nagler, T. (2014). 
+#'
+#' @references
+#' Nagler, T. (2014).
 #' Kernel Methods for Vine Copula Estimation.
 #' Master's Thesis, Technische Universitaet Muenchen,
-#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
-#' 
+#' \url{https://mediatum.ub.tum.de/node?id=1231221}
+#'
 #' @importFrom stats cor
 #' @export
 bw_beta <- function(udata) {
@@ -563,7 +563,7 @@ precalc_bw_beta <- function(tau) {
     # } else {
     #     par <- BiCopTau2Par(family, tau = tau)
     # }
-    # 
+    #
     # ## short handles for copula density and derivatives
     # cd   <- function(u,v)
     #     BiCopPDF(u, v, family, par)
@@ -575,7 +575,7 @@ precalc_bw_beta <- function(tau) {
     #     BiCopDeriv2(u, v, family, par, deriv = "u1")
     # c_vv <- function(u,v)
     #     BiCopDeriv2(u, v, family, par, deriv = "u2")
-    # 
+    #
     # ## short handles for integrands
     # x <- function(w) {
     #     u <- w[1L]
@@ -588,7 +588,7 @@ precalc_bw_beta <- function(tau) {
     #     v <- w[2L]
     #     cd(u,v) / sqrt(u*(1-u)*v*(1-v))
     # }
-    # 
+    #
     # ## integrations
     # require(cubature)
     # xi   <- adaptIntegrate(x,
@@ -601,10 +601,10 @@ precalc_bw_beta <- function(tau) {
     #                        upperLimit = c(1, 1),
     #                        tol = 5e-3,
     #                        maxEval = 10^3)$integral
-    # 
+    #
     # ## result
     # (zeta/(8*pi*xi))^(1/3)
-    
+
     ## the above calculations were done on a grid for Kendall's tau.
     v <- c(Inf, Inf, Inf, Inf, Inf, 4.69204254128018, 3.67817865896611,
            2.99306705888, 2.50600489245533, 2.14070935782172, 1.85882498366308,
@@ -622,23 +622,23 @@ precalc_bw_beta <- function(tau) {
     ## is closest to the empirical one.
     tausq <- seq(0, 0.98, l = 50)^2
     v[which.min(abs(tau - tausq))]
-    
+
 }
 
 #' Bandwidth selection for the Bernstein copula estimator
-#' 
+#'
 #' The optimal size of knots is chosen by a rule of thumb adapted from
-#' Rose (2015). 
+#' Rose (2015).
 #'
 #' @param udata data.
-#' 
-#' @details 
-#' The formula is 
+#'
+#' @details
+#' The formula is
 #' \deqn{max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1))),}
 #' where \eqn{\rho} is the empirical Spearman's rho of the data.
 #'
 #' @return optimal order of the Bernstein polynimals.
-#' 
+#'
 bw_bern <- function(udata) {
     n <- nrow(udata)
     rho <- cor(udata)[1, 2]

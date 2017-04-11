@@ -22,7 +22,7 @@ To speed things up, optimal bandwidths have been precalculated on a grid of
 tau values.
 }
 \references{
-Nagler, T. (2014). 
+Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.
 Master's Thesis, Technische Universitaet Muenchen,
 \url{https://mediatum.ub.tum.de/node?id=1231221}

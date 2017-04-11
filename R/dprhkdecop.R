@@ -56,7 +56,7 @@
 #' pkdecop(c(0.123, 0.321), dens.est) 
 #' 
 #' ## simulate 500 samples from density estimate
-#' rkdecop(500, dens.est)
+#' plot(rkdecop(500, dens.est))
 #'
 #' @export
 dkdecop <- function(u, obj, stable = FALSE) {

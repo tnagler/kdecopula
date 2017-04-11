@@ -25,7 +25,7 @@ where \eqn{\hat{Sigma}} is empirical covariance matrix of the transformed
 random vector.
 }
 \references{
-Nagler, T. (2014). 
+Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.
 Master's Thesis, Technische Universitaet Muenchen,
 \url{https://mediatum.ub.tum.de/node?id=1231221}

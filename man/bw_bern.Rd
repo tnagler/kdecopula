@@ -17,7 +17,7 @@ The optimal size of knots is chosen by a rule of thumb adapted from
 Rose (2015).
 }
 \details{
-The formula is 
+The formula is
 \deqn{max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1))),}
 where \eqn{\rho} is the empirical Spearman's rho of the data.
 }

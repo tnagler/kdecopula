@@ -1,0 +1,20 @@
+reference:
+  - title: Kernel estimation
+    contents:
+    - ends_with("kdecop")
+  - title: Utilities
+    contents:
+    - ends_with("kdecopula")
+  - title: Bandwidth selection
+    contents:
+    - starts_with("bw_")
+
+navbar:
+  left:
+  - text: Intro
+    href: index.html
+  - text: Reference
+    href: reference/index.html
+
+articles:
+
