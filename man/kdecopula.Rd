@@ -3,8 +3,7 @@
 \docType{package}
 \name{kdecopula}
 \alias{kdecopula}
-\alias{kdevine-package}
-\alias{kdevine}
+\alias{kdecopula-package}
 \alias{kdecopula-package}
 \title{Kernel Smoothing for Bivariate Copula Densities}
 \description{

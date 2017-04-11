@@ -88,32 +88,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// int_on_grid
-double int_on_grid(const double& upr, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid);
-RcppExport SEXP kdecopula_int_on_grid(SEXP uprSEXP, SEXP valsSEXP, SEXP gridSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const double& >::type upr(uprSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
-    rcpp_result_gen = Rcpp::wrap(int_on_grid(upr, vals, grid));
-    return rcpp_result_gen;
-END_RCPP
-}
-// inv_int_on_grid
-double inv_int_on_grid(const double& qq, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid);
-RcppExport SEXP kdecopula_inv_int_on_grid(SEXP qqSEXP, SEXP valsSEXP, SEXP gridSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const double& >::type qq(qqSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
-    rcpp_result_gen = Rcpp::wrap(inv_int_on_grid(qq, vals, grid));
-    return rcpp_result_gen;
-END_RCPP
-}
 // interp_2d
 Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid, Rcpp::NumericVector tmpgrid, Rcpp::NumericVector tmpvals);
 RcppExport SEXP kdecopula_interp_2d(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP tmpgridSEXP, SEXP tmpvalsSEXP) {
@@ -143,31 +117,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// kern_epan_1d
-arma::vec kern_epan_1d(const arma::vec& x, const double& b);
-RcppExport SEXP kdecopula_kern_epan_1d(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(kern_epan_1d(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// kern_epan_2d
-arma::vec kern_epan_2d(const arma::vec& x, const arma::vec& y, const double& b);
-RcppExport SEXP kdecopula_kern_epan_2d(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(kern_epan_2d(x, y, b));
-    return rcpp_result_gen;
-END_RCPP
-}
 // kern_epan
 arma::vec kern_epan(const arma::mat& x, const arma::vec& b);
 RcppExport SEXP kdecopula_kern_epan(SEXP xSEXP, SEXP bSEXP) {
@@ -177,18 +126,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(kern_epan(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// kern_gauss_1d
-arma::vec kern_gauss_1d(const arma::vec& x, const double& b);
-RcppExport SEXP kdecopula_kern_gauss_1d(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(kern_gauss_1d(x, b));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -202,31 +139,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const double& >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(kern_gauss_2d(x, y, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// kern_gauss
-arma::vec kern_gauss(const arma::mat& x, const arma::vec& b);
-RcppExport SEXP kdecopula_kern_gauss(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(kern_gauss(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// ren_subs
-Rcpp::NumericVector ren_subs(const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid, const int& d);
-RcppExport SEXP kdecopula_ren_subs(SEXP valsSEXP, SEXP gridSEXP, SEXP dSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
-    Rcpp::traits::input_parameter< const int& >::type d(dSEXP);
-    rcpp_result_gen = Rcpp::wrap(ren_subs(vals, grid, d));
     return rcpp_result_gen;
 END_RCPP
 }

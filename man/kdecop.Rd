@@ -116,7 +116,7 @@ pkdecop(c(0.123, 0.321), est)
 
 ## simulate 500 samples from density estimate
 plot(rkdecop(500, est))  # pseudo-random
-plot(rkdecop(500, est), quasi = TRUE)  # quasi-random
+plot(rkdecop(500, est, quasi = TRUE))  # quasi-random
 
 
 }
