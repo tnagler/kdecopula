@@ -1,12 +1,22 @@
 context("S3 generics")
 
-data(wdbc)
-u <- VineCopula::pobs(wdbc[1:20, 6:7])
+u <- VineCopula::BiCopSim(10, 3, 3)
 est <- kdecop(u, method = "TLL1nn")
 
 test_that("print and summary work without error", {
-    expect_output(print(est))
-    expect_output(summary(est))
+    methods_to_test <- c("MR", "beta", "TLL1", "T", "TTPI")
+    for (method in methods_to_test) {
+        est <- kdecop(u, method = method)
+        expect_output(print(est))
+        expect_output(summary(est))
+    }
+})
+
+test_that("logLik works with and without precomputed info", {
+    # checks if it runs and df is properly set
+    expect_gt(attr(logLik(est), "df"), 0)
+    est <- kdecop(u, method = "bern", info = FALSE)
+    expect_gt(attr(logLik(est), "df"), 0)
 })
 
 test_that("predict calls correct (d/p/h)kdecop function", {
