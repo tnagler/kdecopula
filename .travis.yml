@@ -12,14 +12,15 @@ apt_packages:
   - libgsl0ldbl
   - libcurl4-openssl-dev
   - libxml2-dev
-  - r-cran-vinecopula
   - r-cran-rcpp
   - r-cran-rcpparmadillo
-  - r-cran-covr
-  - r-cran-testthat
   - r-cran-locfit
   - r-cran-qrng
   - r-cran-quadprog
+  - r-cran-vinecopula
+  - r-cran-r.rsp
+  - r-cran-covr
+  - r-cran-testthat
 
 before_install:
   - sudo add-apt-repository ppa:marutter/c2d4u -y
@@ -28,8 +29,6 @@ before_install:
 repos:
   CRAN: http://cran.rstudio.com
 
-r_github_packages:
-  - jimhester/covr
 
 after_success:
   - Rscript -e 'covr::codecov()'
