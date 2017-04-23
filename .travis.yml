@@ -12,7 +12,18 @@ apt_packages:
   - libgsl0ldbl
   - libcurl4-openssl-dev
   - libxml2-dev
+  - r-cran-vinecopula
+  - r-cran-rcpp
+  - r-cran-rcpparmadillo
+  - r-cran-covr
+  - r-cran-testthat
+  - r-cran-locfit
+  - r-cran-qrng
+  - r-cran-quadprog
 
+before_install:
+  - sudo add-apt-repository ppa:marutter/c2d4u -y
+  - sudo apt-get update -q
 
 repos:
   CRAN: http://cran.rstudio.com
