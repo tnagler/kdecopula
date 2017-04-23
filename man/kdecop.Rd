@@ -4,7 +4,7 @@
 \alias{kdecop}
 \title{Bivariate kernel copula density estimation}
 \usage{
-kdecop(udata, bw = NA, mult = 1, method = "TLL2", knots = 30,
+kdecop(udata, bw = NA, mult = 1, method = "TLL2nn", knots = 30,
   renorm.iter = 3L, info = TRUE)
 }
 \arguments{
@@ -141,7 +141,7 @@ In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
 \cr \cr
 Weiss, G. and Scheffer, M. (2012).
 Smooth Nonparametric Bernstein Vine Copulas.
-arXiv:1210.2043 \link{q-fin.RM}
+arXiv:1210.2043
 \cr \cr
 Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.

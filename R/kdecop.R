@@ -111,7 +111,7 @@
 #' \cr \cr 
 #' Weiss, G. and Scheffer, M. (2012).
 #' Smooth Nonparametric Bernstein Vine Copulas.
-#' arXiv:1210.2043 [q-fin.RM]
+#' arXiv:1210.2043
 #' \cr \cr
 #' Nagler, T. (2014). 
 #' Kernel Methods for Vine Copula Estimation.

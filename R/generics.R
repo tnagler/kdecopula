@@ -234,7 +234,12 @@ fitted.kdecopula <- function(object, what = "pdf", ...) {
 #' @return Simulated data from the fitted `kdecopula` model.
 #'
 #' @examples
+#' data(wdbc)
+#' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
+#' est <- kdecop(udat[, 5:6])
+#' plot(simulate(est, 500))
 #' 
+#' @importFrom stats simulate
 #' @export 
 simulate.kdecopula <- function(object, nsim = 1, seed = NULL, quasi = FALSE, ...) {
     if (!is.null(seed))
