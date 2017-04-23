@@ -276,7 +276,7 @@ with_fit_info <- function(res, info, lfit) {
         # log-likelihood
         likvalues <- dkdecop(res$udata, res)
         loglik <- sum(log(likvalues))
-        if (!(res$method %in% c("TTPI", "TTCV", "bern"))) {
+        if (!(res$method %in% c("TTPI", "TTCV"))) {
             # effective number of parameters
             effp <- eff_num_par(res$udata,
                                 likvalues, 

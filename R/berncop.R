@@ -19,8 +19,8 @@ bern_poly <- function(x, k, m) {
 #' @importFrom quadprog solve.QP
 bern_coefs <- function(u, m) {
     # initialize coefficients with empirical frequencies
-    ucut <- apply(u, 2, function(x) cut(x, 0:(m + 1) / (m + 1)))
-    cf0 <- table(ucut[, 1], ucut[, 2]) / nrow(u)
+    ucut <- lapply(1:2, function(i) cut(u[, i], 0:(m + 1) / (m + 1)))
+    cf0 <- table(ucut[[1]], ucut[[2]]) / nrow(u)
     
     # set up quadratic programming problem
     m <- m + 1
@@ -66,6 +66,8 @@ berncop <- function(u, m = 10) {
 #' @return Bernstein copula density evaluated at uev.
 #' @noRd
 dberncop <- function(uev, object) {
+    if (NCOL(uev) == 1)
+        uev <- matrix(uev, ncol = 2)
     list2env(object)
     summand <- function(i, j) {
         P1 <- bern_poly(uev[, 1], i, object$m)
@@ -75,7 +77,10 @@ dberncop <- function(uev, object) {
     
     est <- 0
     for (i in 0:object$m) {
-        est <- est + rowSums(sapply(0:object$m, function(j) summand(i, j)))
+        phi_i <- sapply(0:object$m, function(j) summand(i, j))
+        if (NCOL(phi_i) == 1)
+            phi_i <- t(phi_i)
+        est <- est + rowSums(phi_i)
     }
     est
 }

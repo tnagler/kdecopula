@@ -1,6 +1,6 @@
 #' @export
 print.kdecopula <- function(x, ...) {
-    cat("Kernel copula density estimate")
+    cat("Kernel copula density estimate '", x$method, "'", sep = "")
     ## add variable names if available
     nms <- colnames(x$udata)
     if (length(nms) == 2) {
