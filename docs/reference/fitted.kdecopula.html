@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandwidth selection for the transformation kernel estimator — bw_t • kdecopula</title>
+<title>Extract fitted values from a <code>kdecop()</code> fits. — fitted.kdecopula • kdecopula</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,58 +76,54 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandwidth selection for the transformation kernel estimator</h1>
+    <h1>Extract fitted values from a <code>kdecop()</code> fits.</h1>
     </div>
 
     
-    <p>The bandwidth is selected by a rule of thumb. It approximately minimizes
-the MISE of the Gaussian copula on the transformed domain. The usual normal
-reference matrix is multiplied by 1.25 to account for the higher variance
-on the copula level.</p>
+    <p>Simply calls <code>predict(object, object$udata, what)</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>bw_t</span>(<span class='no'>udata</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for kdecopula</span>
+<span class='fu'>fitted</span>(<span class='no'>object</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"pdf"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>udata</th>
-      <td><p>data.</p></td>
+      <th>object</th>
+      <td><p>an object of class <code>kdecopula</code>.</p></td>
+    </tr>
+    <tr>
+      <th>what</th>
+      <td><p>what to predict, one of <code>c("pdf", "cdf", "hfunc1", "hfunc2", "hinv1", "hinv2")</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>optimal bandwidth matrix.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The formula is
-$$1.25  n^{-1 / 6}  \hat{\Sigma}^{1/2},$$
-where \(\hat{Sigma}\) is empirical covariance matrix of the transformed
-random vector.</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Nagler, T. (2014).
-Kernel Methods for Vine Copula Estimation.
-Master's Thesis, Technische Universitaet Muenchen,
-<a href = 'https://mediatum.ub.tum.de/node?id=1231221'>https://mediatum.ub.tum.de/node?id=1231221</a></p>
+    <p><code>predict.kdecopula()</code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>wdbc</span>)
+<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>)/(<span class='fu'>length</span>(<span class='no'>x</span>)+<span class='fl'>1</span>))
+<span class='no'>est</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
+
+<span class='fu'>all.equal</span>(<span class='fu'>fitted</span>(<span class='no'>est</span>), <span class='fu'>predict</span>(<span class='no'>est</span>, <span class='no'>est</span>$<span class='no'>udata</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-          </ul>
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

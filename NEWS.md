@@ -1,3 +1,15 @@
+kdecopula (under development
+-------------------------------
+
+NEW FEATURES
+
+   * improved bandwidth selection.
+   
+   * `predict()`, `fitted()`, and `simulate()` generics.
+   
+   * method `TLL2nn` is the default method again.
+
+
 kdecopula 0.8.1
 -------------------------------
 

@@ -2,17 +2,11 @@
 kdecopula
 =========
 
-[![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula) [![Build status Windows](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva/branch/master?svg=true)](https://ci.appveyor.com/project/tnagler/kdecopula) [![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=master)](https://codecov.io/github/tnagler/kdecopula?branch=master) [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/package=kdecopula) [![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)](https://cran.r-project.org/package=kdecopula)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+[![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula) [![Build status Windows](https://ci.appveyor.com/api/projects/status/github/tnagler/kdecopula?branch=master&svg=true)](https://ci.appveyor.com/project/tnagler/kdecopula) [![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=master)](https://codecov.io/github/tnagler/kdecopula?branch=master) [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/package=kdecopula) [![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)](https://cran.r-project.org/package=kdecopula) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 This package provides fast implementations of kernel estimators for the copula density. Due to its several plotting options it is particularly useful for the exploratory analysis of dependence structures. It can be further used for flexible nonparametric estimation of copula densities and resampling.
 
-A detailed package description is available in the package vignette:
-
-``` r
-library("kdecopula")
-vignette("kdecopula")
-```
+For detailed documentation, see the [package vignette](https://arxiv.org/pdf/1603.04229.pdf) and the [API documentation](https://tnagler.github.io/kdecopula/reference/index.html).
 
 Table of contents
 -----------------

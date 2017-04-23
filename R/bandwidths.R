@@ -137,7 +137,7 @@ bw_t <- function(udata) {
 #' @export
 bw_tll <- function(udata, deg) {
     n <- nrow(udata)
-    deg^2 * n^(-1 / (4 * deg + 2)) * t(chol(cov(qnorm(udata))))
+    (1 + deg)^(5/4) * n^(-1 / (4 * deg + 2)) * t(chol(cov(qnorm(udata))))
 }
 
 #' Nearest-neighbor bandwidth selection for the transformation local likelihood

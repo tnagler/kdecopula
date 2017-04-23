@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandwidth selection for the transformation kernel estimator — bw_t • kdecopula</title>
+<title>Prediction method for <code>kdecop()</code> fits — predict.kdecopula • kdecopula</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,46 +76,55 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandwidth selection for the transformation kernel estimator</h1>
+    <h1>Prediction method for <code>kdecop()</code> fits</h1>
     </div>
 
     
-    <p>The bandwidth is selected by a rule of thumb. It approximately minimizes
-the MISE of the Gaussian copula on the transformed domain. The usual normal
-reference matrix is multiplied by 1.25 to account for the higher variance
-on the copula level.</p>
+    <p>Predicts the pdf, cdf, or (inverse) h-functions by calling <code>dkdecop()</code>,
+<code>pkdecop()</code>, or <code>hkdecop()</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>bw_t</span>(<span class='no'>udata</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for kdecopula</span>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='no'>newdata</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"pdf"</span>, <span class='kw'>stable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>udata</th>
-      <td><p>data.</p></td>
+      <th>object</th>
+      <td><p>an object of class <code>kdecopula</code>.</p></td>
+    </tr>
+    <tr>
+      <th>newdata</th>
+      <td><p>evaluation point(s), a length two vector or a matrix with
+two columns.</p></td>
+    </tr>
+    <tr>
+      <th>what</th>
+      <td><p>what to predict, one of <code>c("pdf", "cdf", "hfunc1", "hfunc2", "hinv1", "hinv2")</code>.</p></td>
+    </tr>
+    <tr>
+      <th>stable</th>
+      <td><p>only used for <code>what = "pdf"</code>, see <code>dkdecop()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>optimal bandwidth matrix.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The formula is
-$$1.25  n^{-1 / 6}  \hat{\Sigma}^{1/2},$$
-where \(\hat{Sigma}\) is empirical covariance matrix of the transformed
-random vector.</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Nagler, T. (2014).
-Kernel Methods for Vine Copula Estimation.
-Master's Thesis, Technische Universitaet Muenchen,
-<a href = 'https://mediatum.ub.tum.de/node?id=1231221'>https://mediatum.ub.tum.de/node?id=1231221</a></p>
+    <p>A numeric vector of predictions.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>wdbc</span>)
+<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>)/(<span class='fu'>length</span>(<span class='no'>x</span>)+<span class='fl'>1</span>))
+<span class='no'>est</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
+
+<span class='fu'>all.equal</span>(<span class='fu'>predict</span>(<span class='no'>est</span>, <span class='fu'>c</span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>)), <span class='fu'><a href='dkdecop.html'>dkdecop</a></span>(<span class='fu'>c</span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>), <span class='no'>est</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='fu'>predict</span>(<span class='no'>est</span>, <span class='no'>udat</span>, <span class='st'>"hfunc1"</span>), <span class='fu'><a href='hkdecop.html'>hkdecop</a></span>(<span class='no'>udat</span>, <span class='no'>est</span>, <span class='kw'>cond.var</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -123,11 +132,9 @@ Master's Thesis, Technische Universitaet Muenchen,
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
