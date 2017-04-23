@@ -19,24 +19,24 @@ and \code{kappa}, \cr
 \rho, \theta_1, \theta_2)}, c.f. Wen and Wu (2015), \cr
 \code{"MR", "beta"}: a positive real number.}
 
-\item{mult}{bandwidth multiplier, has to be positive; useful for making 
+\item{mult}{bandwidth multiplier, has to be positive; useful for making
 estimates more/less smooth manually.}
 
-\item{method}{\code{"T"}: transformation estimator based on classical bivariate kernel 
-estimation (e.g., Geenenens et al., 2014), \cr 
+\item{method}{\code{"T"}: transformation estimator based on classical bivariate kernel
+estimation (e.g., Geenenens et al., 2014), \cr
 \code{"TLL1"}: transformation estimator with log-linear local likelihood
-estimation (Geenenens et al., 2014), \cr 
+estimation (Geenenens et al., 2014), \cr
 \code{"TLL2"}: transformation estimator with log-quadradtic local likelihood
-estimation (Geenenens et al., 2014), \cr 
+estimation (Geenenens et al., 2014), \cr
 \code{"TLL1nn"}: transformation estimator with log-linear local likelihood
-estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr 
-\code{"TLL2nn"}: transformation estimator with log-quadradtic local likelihood 
+estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
+\code{"TLL2nn"}: transformation estimator with log-quadradtic local likelihood
 estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
 \code{"TTPI"}: tapered transformation estimator with plug-in bandwidths
 (Wu and Wen, 2015), \cr
 \code{"TTCV"}: tapered transformation estimator with profile cross-validation
 bandwidths (Wu and Wen, 2015), \cr
-\code{"MR"}: mirror-reflection estimator (Gijbels and Mielniczuk, 1990), \cr 
+\code{"MR"}: mirror-reflection estimator (Gijbels and Mielniczuk, 1990), \cr
 \code{"beta"}: beta kernel estimator (Charpentier et al., 2006), \cr
 \code{"bern"}: Bernstein copula estimator (Sanchetta and Satchell, 2004); the
 coefficients are adjusted by the method of Weiss and Scheffer (2012).}
@@ -56,15 +56,15 @@ object of class \code{kdecopula} that contains all information necessary for
 evaluation of the estimator. If no bandwidth was provided in the function
 call, the automatically selected value can be found in the variable
 \code{object$bw}. If \code{info=TRUE}, also the following will be available
-under \code{object$info}: 
-\item{likvalues}{Estimator evaluated in sample points} 
-\item{loglik}{Log likelihood} 
-\item{effp}{Effective number of parameters} 
+under \code{object$info}:
+\item{likvalues}{Estimator evaluated in sample points}
+\item{loglik}{Log likelihood}
+\item{effp}{Effective number of parameters}
 \item{AIC}{Akaike information criterion}
 \item{cAIC}{Bias-corrected version of Akaike information criterion}
-\item{BIC}{Bayesian information criterion.} \cr 
-The density estimate can be evaluated on arbitrary points with 
-\code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with 
+\item{BIC}{Bayesian information criterion.} \cr
+The density estimate can be evaluated on arbitrary points with
+\code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with
 \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be
 simulated with \code{\link[kdecopula:rkdecop]{rkdecop}}, and several plotting
 options are available with \code{\link[kdecopula:plot.kdecopula]{plot}}
@@ -74,17 +74,17 @@ and \code{\link[kdecopula:contour.kdecopula]{contour}}.
 Based on samples from a bivariate copula, the copula density is estimated.
 The user can choose between different methods. If no bandwidth is provided
 by the user, it will be set by a method-specific automatic selection
-procedure. The related (d/p/r)kdecop functions evaluate the density and cdf 
+procedure. The related (d/p/r)kdecop functions evaluate the density and cdf
 or simulate synthetic data, respectively.
 }
 \details{
-We use a Gaussian product kernel function for all methods 
-except the beta kernel and Bernstein estimators. For details on bandwidth 
-selection for a specific method, see: \code{\link{bw_t}}, 
-\code{\link{bw_tll}}, \code{\link{bw_tll_nn}}, \code{\link{bw_tt_pi}}, 
-\code{\link{bw_tt_cv}}, \code{\link{bw_mr}}, \code{\link{bw_beta}}, 
+We use a Gaussian product kernel function for all methods
+except the beta kernel and Bernstein estimators. For details on bandwidth
+selection for a specific method, see: \code{\link{bw_t}},
+\code{\link{bw_tll}}, \code{\link{bw_tll_nn}}, \code{\link{bw_tt_pi}},
+\code{\link{bw_tt_cv}}, \code{\link{bw_mr}}, \code{\link{bw_beta}},
 \code{\link{bw_bern}}.
-\cr 
+\cr
 
 Kernel estimates are usually no proper copula densities. In particular, the
 estimated marginal densities are not uniform. We mitigate this issue by
@@ -93,7 +93,7 @@ renormalization algorithm can be specified with the \code{renorm.iter}
 argument. Typically, a very small number of iterations is sufficient. \cr
 }
 \note{
-The implementation of the tapered transformation estimator ("TTPI"/"TTCV") 
+The implementation of the tapered transformation estimator ("TTPI"/"TTCV")
 was kindly provided by Kuangyu Wen.
 }
 \examples{
@@ -121,10 +121,10 @@ plot(rkdecop(500, est), quasi = TRUE)  # quasi-random
 
 }
 \references{
-Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 Probit transformation for nonparametric kernel estimation of the copula
 density.
-arXiv:1404.4414 [stat.ME]. 
+Bernoulli, 23(3), 1848-1873.
 \cr \cr
 Wen, K. and Wu, X. (2015).
 Transformation-Kernel Estimation of the Copula Density,
@@ -133,17 +133,17 @@ Working paper,
 \cr \cr
 Gijbels, I. and Mielniczuk, J. (1990).
 Estimating the density of a copula function.
-Communications in Statistics - Theory and Methods, 19(2):445-464. 
-\cr \cr 
+Communications in Statistics - Theory and Methods, 19(2):445-464.
+\cr \cr
 Charpentier, A., Fermanian, J.-D., and Scaillet, O. (2006).
-The estimation of copulas: Theory and practice. 
+The estimation of copulas: Theory and practice.
 In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
-\cr \cr 
+\cr \cr
 Weiss, G. and Scheffer, M. (2012).
 Smooth Nonparametric Bernstein Vine Copulas.
-arXiv:1210.2043 [q-fin.RM]
+arXiv:1210.2043 \link{q-fin.RM}
 \cr \cr
-Nagler, T. (2014). 
+Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.
 Master's Thesis, Technische Universitaet Muenchen,
 \url{https://mediatum.ub.tum.de/node?id=1231221}

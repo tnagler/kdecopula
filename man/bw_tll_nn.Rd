@@ -15,9 +15,9 @@ bw_tll_nn(udata, deg)
 \value{
 A list with entires:
 \describe{
-  \item{\code{B}}{rotation matrix,}
-  \item{\code{alpha}}{nearest neighbor fraction,}
-  \item{\code{kappa}}{correction factor,}
+\item{\code{B}}{rotation matrix,}
+\item{\code{alpha}}{nearest neighbor fraction,}
+\item{\code{kappa}}{correction factor,}
 }
 see Geenens et al. (2014).
 }
@@ -25,8 +25,8 @@ see Geenens et al. (2014).
 The smoothing parameters is selected by the method of Geenens et al. (2014).
 }
 \references{
-Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 Probit transformation for nonparametric kernel estimation of the copula
 density.
-arXiv:1404.4414 [stat.ME].
+Bernoulli, 23(3), 1848-1873.
 }

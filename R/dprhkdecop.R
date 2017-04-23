@@ -1,6 +1,6 @@
 #' Working with \code{kdecopula} objects
 #'
-#' The function \code{\link{kdecop}} stores it's result in ojbect of class
+#' The function \code{\link{kdecop}} stores it's result in object of class
 #' \code{kdecopula}. The density estimate can be evaluated on arbitrary points
 #' with \code{\link[kdecopula:dkdecop]{dkdecop}}; the cdf with
 #' \code{\link[kdecopula:pkdecop]{pkdecop}}. Furthermore, synthetic data can be
@@ -24,10 +24,10 @@
 #' \code{\link[qrng:ghalton]{ghalton}}
 #' 
 #' @references 
-#' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 #' Probit transformation for nonparametric kernel estimation of the copula
 #' density.
-#' arXiv:1404.4414 [stat.ME]. 
+#' Bernoulli, 23(3), 1848-1873. 
 #' \cr \cr 
 #' Nagler, T. (2014). 
 #' Kernel Methods for Vine Copula Estimation.
@@ -36,7 +36,7 @@
 #' \cr \cr 
 #' Cambou, T., Hofert, M., Lemieux, C. (2015).
 #' A primer on quasi-random numbers for copula models, 
-#' arXiv:1508.03483 [stat.CO]
+#' arXiv:1508.03483
 #' 
 #' 
 #' @examples

@@ -21,6 +21,6 @@ The bandwidth is selected by a rule of thumb similar to \code{\link{bw_t}}.
 The formula is
 \deqn{5  n^{-1 / (4q + 2)}  \hat{\Sigma}^{1/2},}
 where \eqn{\hat{Sigma}} is empirical covariance matrix of the transformed
-random vector and \eqn{q = 1} for \code{TLL1} and \eqn{q = 2} for 
+random vector and \eqn{q = 1} for \code{TLL1} and \eqn{q = 2} for
 \code{TLL2}.
 }

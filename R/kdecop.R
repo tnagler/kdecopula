@@ -91,10 +91,10 @@
 #' \code{\link[kdecopula:rkdecop]{rkdecop}}
 #' 
 #' @references 
-#' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 #' Probit transformation for nonparametric kernel estimation of the copula
 #' density.
-#' arXiv:1404.4414 [stat.ME]. 
+#' Bernoulli, 23(3), 1848-1873. 
 #' \cr \cr
 #' Wen, K. and Wu, X. (2015).
 #' Transformation-Kernel Estimation of the Copula Density,
