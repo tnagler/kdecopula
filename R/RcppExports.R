@@ -97,19 +97,6 @@ int_on_grid <- function(upr, vals, grid) {
     .Call('kdecopula_int_on_grid', PACKAGE = 'kdecopula', upr, vals, grid)
 }
 
-#' Inverse of the integral of a spline interpolant
-#' 
-#' @param qq argument of the inverse integral (the 'quantile').
-#' @param vals vector of values to be interpolated and integrated.
-#' @param grid vector of grid points on which vals has been computed.
-#' 
-#' @return Integral of interpolation spline defined by (vals, grid).
-#' 
-#' @noRd
-inv_int_on_grid <- function(qq, vals, grid) {
-    .Call('kdecopula_inv_int_on_grid', PACKAGE = 'kdecopula', qq, vals, grid)
-}
-
 #' Evaluate a cubic polynomial
 #' 
 #' @param x evaluation point.
@@ -131,17 +118,6 @@ NULL
 #' @param lowr lower limit of the integral.
 #' @param upr upper limit of the integral.
 #' @param a vector of polynomial coefficients.
-#' 
-#' @noRd
-NULL
-
-#' Numerically invert a cubic integral (with 0 as lower bound)
-#' 
-#' @param q evaluation point (a 'quantile').
-#' @param a vector of polynomial coefficients.
-#' 
-#' @details The inverse is found by the bisection method with a maximum of 20 
-#' iterations.
 #' 
 #' @noRd
 NULL

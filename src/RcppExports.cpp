@@ -101,19 +101,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// inv_int_on_grid
-double inv_int_on_grid(const double& qq, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid);
-RcppExport SEXP kdecopula_inv_int_on_grid(SEXP qqSEXP, SEXP valsSEXP, SEXP gridSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const double& >::type qq(qqSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type vals(valsSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type grid(gridSEXP);
-    rcpp_result_gen = Rcpp::wrap(inv_int_on_grid(qq, vals, grid));
-    return rcpp_result_gen;
-END_RCPP
-}
 // interp_2d
 Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid, Rcpp::NumericVector tmpgrid, Rcpp::NumericVector tmpvals);
 RcppExport SEXP kdecopula_interp_2d(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP tmpgridSEXP, SEXP tmpvalsSEXP) {
