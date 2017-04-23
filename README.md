@@ -1,9 +1,8 @@
 kdecopula
 =========
 
-> Kernel smoothing for bivariate copula densities
-
-[![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula) [![Build status Windows](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva/branch/master?svg=true)](https://ci.appveyor.com/project/tnagler/kdecopula) [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/package=kdecopula) [![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)](https://cran.r-project.org/package=kdecopula)
+[![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula) [![Build status Windows](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva/branch/master?svg=true)](https://ci.appveyor.com/project/tnagler/kdecopula) [![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=master)](https://codecov.io/github/tnagler/kdecopula?branch=master) [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/package=kdecopula) [![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)](https://cran.r-project.org/package=kdecopula)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 This package provides fast implementations of kernel estimators for the copula density. Due to its several plotting options it is particularly useful for the exploratory analysis of dependence structures. It can be further used for flexible nonparametric estimation of copula densities and resampling.
 
@@ -98,20 +97,21 @@ summary(kde.fit)
 #> ------------------------------
 #> Variables:    mean radius -- mean concavity 
 #> Observations: 569 
-#> Method:       Transformation local likelihood, log-quadratic ('TLL2') 
-#> Bandwidth:    matrix(c(2.63, 1.67, 0, 2.01), 2, 2)
+#> Method:       Transformation local likelihood, log-quadratic (nearest-neighbor, 'TLL2nn') 
+#> Bandwidth:    alpha = 0.3519647
+#>               B = matrix(c(0.71, 0.7, -0.7, 0.71), 2, 2)
 #> ---
-#> logLik: 192.41    AIC: -363.13    cAIC: -362.67    BIC: -316.03 
-#> Effective number of parameters: 10.84
+#> logLik: 201.22    AIC: -367.97    cAIC: -366.83    BIC: -293.11 
+#> Effective number of parameters: 17.23
 ```
 
 The output of the function `kdecop` is an object of class `kdecopula` that contains all information collected during the estimation process and summary statistics such as *AIC* or the *effective number of parameters/degrees of freedom*. These can also be accessed directly, e.g.
 
 ``` r
 logLik(kde.fit)
-#> 'log Lik.' 192.4111 (df=10.84394)
+#> 'log Lik.' 201.2196 (df=17.23373)
 AIC(kde.fit)
-#> [1] -363.1344
+#> [1] -367.9718
 ```
 
 #### Plotting bivariate copula densities
@@ -161,9 +161,9 @@ The density and *cdf* can be computed easily:
 
 ``` r
 dkdecop(c(0.1, 0.2), kde.fit)  # estimated copula density
-#> [1] 1.766521
+#> [1] 1.691764
 pkdecop(cbind(c(0.1, 0.9), c(0.1, 0.9)), kde.fit) # corresponding copula cdf
-#> [1] 0.03415951 0.84975138
+#> [1] 0.0327257 0.8505370
 ```
 
 Furthermore, we can simulate synthetic data from the estimated density:

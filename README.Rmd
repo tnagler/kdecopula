@@ -14,13 +14,13 @@ knitr::opts_chunk$set(
 
 kdecopula
 =========
-> Kernel smoothing for bivariate copula densities
 
 [![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula)
 [![Build status Windows](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva/branch/master?svg=true)](https://ci.appveyor.com/project/tnagler/kdecopula)
+[![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=master)](https://codecov.io/github/tnagler/kdecopula?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)]( https://cran.r-project.org/package=kdecopula)
 [![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)]( https://cran.r-project.org/package=kdecopula)  
-
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 This package provides fast implementations of kernel estimators for the copula 
 density. Due to its several plotting options it is particularly useful for the 
