@@ -147,7 +147,7 @@
 #' 
 #' @export
 #' 
-kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30, 
+kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2nn", knots = 30, 
                    renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
     n <- NROW(udata)

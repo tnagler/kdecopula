@@ -10,6 +10,10 @@ test_that("print and summary work without error", {
         expect_output(print(est))
         expect_output(summary(est))
     }
+    colnames(u) <- c("V1", "V2") 
+    est <- kdecop(u)
+    expect_output(print(est))
+    expect_output(summary(est))
 })
 
 test_that("logLik works with and without precomputed info", {
