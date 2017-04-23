@@ -51,9 +51,10 @@ Charpentier, A., Fermanian, J.-D., and Scaillet, O. (2006).
 The estimation of copulas: Theory and practice.
 In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
 \cr \cr
-Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
-Probit transformation for nonparametric kernel estimation of the copula density.
-arXiv:1404.4414 [stat.ME].
+Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
+Probit transformation for nonparametric kernel estimation of the copula
+density.
+Bernoulli, 23(3), 1848-1873.
 \cr \cr
 Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.

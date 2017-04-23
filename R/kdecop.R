@@ -82,19 +82,19 @@
 #' was kindly provided by Kuangyu Wen.
 #'
 #' @author Thomas Nagler
-#'
-#' @seealso
-#' \code{\link{kdecopula}},
-#' \code{\link{plot.kdecopula}},
-#' \code{\link{dkdecop}},
-#' \code{\link{pkdecop}},
-#' \code{\link{rkdecop}}
-#'
-#' @references
-#' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+#' 
+#' @seealso 
+#' \code{\link[kdecopula:kdecopula]{kdecopula}},
+#' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
+#' \code{\link[kdecopula:dkdecop]{dkdecop}},
+#' \code{\link[kdecopula:pkdecop]{pkdecop}},
+#' \code{\link[kdecopula:rkdecop]{rkdecop}}
+#' 
+#' @references 
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 #' Probit transformation for nonparametric kernel estimation of the copula
 #' density.
-#' arXiv:1404.4414 [stat.ME].
+#' Bernoulli, 23(3), 1848-1873. 
 #' \cr \cr
 #' Wen, K. and Wu, X. (2015).
 #' Transformation-Kernel Estimation of the Copula Density,
@@ -111,7 +111,7 @@
 #' \cr \cr
 #' Weiss, G. and Scheffer, M. (2012).
 #' Smooth Nonparametric Bernstein Vine Copulas.
-#' arXiv:1210.2043 [q-fin.RM]
+#' arXiv:1210.2043
 #' \cr \cr
 #' Nagler, T. (2014).
 #' Kernel Methods for Vine Copula Estimation.
@@ -146,7 +146,8 @@
 #' @importFrom graphics contour plot
 #'
 #' @export
-kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2", knots = 30,
+#' 
+kdecop <- function(udata, bw = NA, mult = 1, method = "TLL2nn", knots = 30, 
                    renorm.iter = 3L, info = TRUE) {
     udata <- as.matrix(udata)
     n <- NROW(udata)
@@ -275,7 +276,7 @@ with_fit_info <- function(res, info, lfit) {
         # log-likelihood
         likvalues <- dkdecop(res$udata, res)
         loglik <- sum(log(likvalues))
-        if (!(res$method %in% c("TTPI", "TTCV", "bern"))) {
+        if (!(res$method %in% c("TTPI", "TTCV"))) {
             # effective number of parameters
             effp <- eff_num_par(res$udata,
                                 likvalues,

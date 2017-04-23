@@ -1,3 +1,5 @@
+dist: trusty
+ 
 language: R
 warnings_are_errors: true
 
@@ -10,7 +12,23 @@ apt_packages:
   - libgsl0ldbl
   - libcurl4-openssl-dev
   - libxml2-dev
+  - r-cran-rcpp
+  - r-cran-rcpparmadillo
+  - r-cran-locfit
+  - r-cran-qrng
+  - r-cran-quadprog
+  - r-cran-vinecopula
+  - r-cran-r.rsp
+  - r-cran-covr
+  - r-cran-testthat
 
+before_install:
+  - sudo add-apt-repository ppa:marutter/c2d4u -y
+  - sudo apt-get update -q
 
 repos:
   CRAN: http://cran.rstudio.com
+
+
+after_success:
+  - Rscript -e 'covr::codecov()'

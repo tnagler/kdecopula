@@ -16,7 +16,6 @@ extern SEXP kdecopula_eval_t(SEXP, SEXP, SEXP);
 extern SEXP kdecopula_interp(SEXP, SEXP, SEXP, SEXP);
 extern SEXP kdecopula_interp_2d(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP kdecopula_inv_hfunc(SEXP, SEXP, SEXP, SEXP);
-extern SEXP kdecopula_kern_epan(SEXP, SEXP);
 extern SEXP kdecopula_kern_gauss_2d(SEXP, SEXP, SEXP);
 extern SEXP kdecopula_renorm(SEXP, SEXP, SEXP, SEXP);
 
@@ -29,7 +28,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"kdecopula_interp",        (DL_FUNC) &kdecopula_interp,        4},
     {"kdecopula_interp_2d",     (DL_FUNC) &kdecopula_interp_2d,     5},
     {"kdecopula_inv_hfunc",     (DL_FUNC) &kdecopula_inv_hfunc,     4},
-    {"kdecopula_kern_epan",     (DL_FUNC) &kdecopula_kern_epan,     2},
     {"kdecopula_kern_gauss_2d", (DL_FUNC) &kdecopula_kern_gauss_2d, 3},
     {"kdecopula_renorm",        (DL_FUNC) &kdecopula_renorm,        4},
     {NULL, NULL, 0}

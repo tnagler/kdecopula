@@ -63,13 +63,12 @@ my_locfitnn <- function(udata, B, alpha, kappa, deg) {
 #' @noRd
 #' @importFrom stats predict
 eval_tll <- function(uev, lfit, B) {
-    uev <- as.matrix(uev)
-    if (ncol(uev) == 1L) 
-        uev <- matrix(uev, 1L, nrow(uev))
+    if (NCOL(uev) == 1) 
+        uev <- matrix(uev, ncol = 2)
     d <- ncol(uev)
     zev <- qnorm(uev)
     ev  <- t(solve(B) %*% t(zev))
     
-    rescale <- pmax(apply(dnorm(zev), 1L, prod), 10^(-2 * d)) * abs(det(B))
+    rescale <- pmax(apply(dnorm(zev), 1, prod), 10^(-2 * d)) * abs(det(B))
     suppressWarnings(as.numeric(predict(lfit, ev) / rescale))
 }

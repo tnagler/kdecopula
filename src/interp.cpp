@@ -40,66 +40,13 @@ double cubic_integral(const double& lowr,
     return cubic_indef_integral(upr, a) - cubic_indef_integral(lowr, a);
 }
 
-// Numerically invert a cubic integral (with 0 as lower bound)
-//
-// @param q evaluation point (a 'quantile').
-// @param a vector of polynomial coefficients.
-//
-// @details The inverse is found by the bisection method with a maximum of 20
-// iterations.
-double inv_cubic_integral(const double& q,
-                          const Rcpp::NumericVector& a)
-{
-    double x0, x1, ql, qh, ans, val;
-    ans = 0.0, val = 0.0; x0 = 0.0; x1 = 1.0;
-    ql = 0.0;
-    qh = cubic_integral(0.0, x1, a);
-    int br = 0;
-    double tol = ::fmax(1e-10 * (x1 - x0), 1e-10);
-
-    // check if already close enough (or 1.0 is exceeded)
-    ql = ql - q;
-    qh = qh - q;
-    if (::fabs(ql) <= tol) {
-        ans = x0;
-        br = 1;
-    }
-    if ((::fabs(qh) <= tol) | (qh < 0)) {
-        ans = x1;
-        br = 1;
-    }
-
-    for (int it = 0; it < 20; ++it) {
-        ans = (x0 + x1) / 2.0;
-        val = cubic_integral(0.0, ans, a);
-        val = val - q;
-        // stop if values become too close (avoid infinite loop)
-        if (::fabs(val) <= tol)
-            br = 1;
-        if (::fabs(x0 - x1) <= tol)
-            br = 1;
-        // check which of x0, x1 is closer
-        if (val > 0.0) {
-            x1 = ans;
-            qh = val;
-        } else {
-            x0 = ans;
-            ql = val;
-        }
-        // stop if convergence
-        if (br == 1)
-            break;
-    }
-
-    return ans;
-}
-
-
-// Calculate coefficients for cubic splines
-//
-// @param vals length 4 vector of function values.
-// @param grid length 4 vector of grid points.
-// @param a vector of polynomial coefficients.
+//' Calculate coefficients for cubic splines
+//' 
+//' @param vals length 4 vector of function values.
+//' @param grid length 4 vector of grid points.
+//' @param a vector of polynomial coefficients.
+//' 
+//' @noRd
 Rcpp::NumericVector coef(const Rcpp::NumericVector& vals,
                          const Rcpp::NumericVector& grid,
                          Rcpp::NumericVector a)
@@ -311,3 +258,62 @@ Rcpp::NumericVector interp(const Rcpp::NumericMatrix& x,
 
     return out;
 }
+
+
+// The following was used in previous versions but is deprecated for now.
+//
+// //' Numerically invert a cubic integral (with 0 as lower bound)
+// //' 
+// //' @param q evaluation point (a 'quantile').
+// //' @param a vector of polynomial coefficients.
+// //' 
+// //' @details The inverse is found by the bisection method with a maximum of 20 
+// //' iterations.
+// //' 
+// //' @noRd
+// double inv_cubic_integral(const double& q,
+//                           const Rcpp::NumericVector& a) 
+// {
+//     double x0, x1, ql, qh, ans, val;
+//     ans = 0.0, val = 0.0; x0 = 0.0; x1 = 1.0;
+//     ql = 0.0;
+//     qh = cubic_integral(0.0, x1, a);
+//     int br = 0;
+//     double tol = ::fmax(1e-10 * (x1 - x0), 1e-10);
+//     
+//     // check if already close enough (or 1.0 is exceeded)
+//     ql = ql - q;
+//     qh = qh - q;
+//     if (::fabs(ql) <= tol) {
+//         ans = x0;
+//         br = 1;
+//     }
+//     if ((::fabs(qh) <= tol) | (qh < 0)) {
+//         ans = x1;
+//         br = 1;
+//     }
+//     
+//     for (int it = 0; it < 20; ++it) {
+//         ans = (x0 + x1) / 2.0;
+//         val = cubic_integral(0.0, ans, a);
+//         val = val - q;
+//         // stop if values become too close (avoid infinite loop)
+//         if (::fabs(val) <= tol)
+//             br = 1;
+//         if (::fabs(x0 - x1) <= tol)
+//             br = 1;
+//         // check which of x0, x1 is closer
+//         if (val > 0.0) {
+//             x1 = ans;
+//             qh = val;
+//         } else {
+//             x0 = ans;
+//             ql = val;
+//         }
+//         // stop if convergence 
+//         if (br == 1)
+//             break;
+//     }
+//     
+//     return ans;
+// }

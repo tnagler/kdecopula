@@ -114,7 +114,7 @@ check_bw <- function(bw, method) {
 #' @export
 bw_t <- function(udata) {
     n <- nrow(udata)
-    1.25 * n^(-1 / 6) * t(chol(cov(qnorm(udata))))
+    n^(-1 / 6) * t(chol(cov(qnorm(udata))))
 }
 
 #' Bandwidth selection for the transformation local likelihood estimator
@@ -137,7 +137,7 @@ bw_t <- function(udata) {
 #' @export
 bw_tll <- function(udata, deg) {
     n <- nrow(udata)
-    5 * n^(-1 / (4 * deg + 2)) * t(chol(cov(qnorm(udata))))
+    deg^2 * n^(-1 / (4 * deg + 2)) * t(chol(cov(qnorm(udata))))
 }
 
 #' Nearest-neighbor bandwidth selection for the transformation local likelihood
@@ -155,13 +155,13 @@ bw_tll <- function(udata, deg) {
 #'   \item{\code{kappa}}{correction factor,}
 #' }
 #' see Geenens et al. (2014).
-#'
-#' @references
-#' Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+#' 
+#' @references 
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 #' Probit transformation for nonparametric kernel estimation of the copula
 #' density.
-#' arXiv:1404.4414 [stat.ME].
-#'
+#' Bernoulli, 23(3), 1848-1873. 
+#' 
 #' @importFrom stats princomp
 #' @export
 bw_tll_nn <- function(udata, deg) {
@@ -470,7 +470,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
 #'
 #' @importFrom stats cor
 bw_mr <- function(udata) {
-    tau <- abs(cor(udata, method = "kendall")[1L, 2L])
+    tau <- max(abs(cor(udata, method = "kendall")[1L, 2L]), 0.2)
     res <- precalc_bw_mr(tau) * nrow(udata)^(-1/6)
     if (res > 1) 1 else res
 }
@@ -550,7 +550,7 @@ precalc_bw_mr <- function(tau) {
 #' @importFrom stats cor
 #' @export
 bw_beta <- function(udata) {
-    tau <- abs(cor(udata, method="kendall")[1L, 2L])
+    tau <- max(abs(cor(udata, method = "kendall")[1L, 2L]), 0.2)
     precalc_bw_beta(tau) * nrow(udata)^(-1/3)
 }
 

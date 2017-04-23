@@ -34,29 +34,13 @@ arma::vec kern_epan_2d(const arma::vec& x, const arma::vec& y, const double& b)
     return kern_epan_1d(x, b) % kern_epan_1d(y, b);
 }
 
-// Epanechnikov product kernel (arbitray dimension)
-//
-// @param x mxd matrix of evaluation points.
-// @param b length d vector of bandwidth parameters.
-//
-// @noRd
+//' Gaussian kernel (univariate)
+//' 
+//' @param x vector of evaluation points.
+//' @param b bandwidth parameter.
+//' 
+//' @noRd
 // [[Rcpp::export]]
-arma::vec kern_epan(const arma::mat& x, const arma::vec& b)
-{
-    vec out(x.n_rows);
-    int d = x.n_cols;
-
-    out = kern_epan_1d(x.col(0), b[0]);
-    for (int j = 1; j < d; ++j) {
-        out = out % kern_epan_1d(x.col(j), b[j]);
-    }
-    return out;
-}
-
-// Gaussian kernel (univariate)
-//
-// @param x vector of evaluation points.
-// @param b bandwidth parameter.
 arma::vec kern_gauss_1d(const arma::vec& x, const double& b)
 {
     vec out(x);

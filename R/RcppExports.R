@@ -84,6 +84,26 @@ eval_cdf <- function(uev, vals, grid, helpgrid, helpind) {
     .Call('kdecopula_eval_cdf', PACKAGE = 'kdecopula', uev, vals, grid, helpgrid, helpind)
 }
 
+#' Integrate a spline interpolant
+#'
+#' @param upr upper limit of integration (lower is 0).
+#' @param vals vector of values to be interpolated and integrated.
+#' @param grid vector of grid points on which vals has been computed.
+#'
+#' @return Integral of interpolation spline defined by (vals, grid).
+#'
+#' @noRd
+NULL
+
+#' Calculate coefficients for cubic splines
+#' 
+#' @param vals length 4 vector of function values.
+#' @param grid length 4 vector of grid points.
+#' @param a vector of polynomial coefficients.
+#' 
+#' @noRd
+NULL
+
 interp_2d <- function(x, vals, grid, tmpgrid, tmpvals) {
     .Call('kdecopula_interp_2d', PACKAGE = 'kdecopula', x, vals, grid, tmpgrid, tmpvals)
 }
@@ -92,8 +112,14 @@ interp <- function(x, vals, grid, helpind) {
     .Call('kdecopula_interp', PACKAGE = 'kdecopula', x, vals, grid, helpind)
 }
 
-kern_epan <- function(x, b) {
-    .Call('kdecopula_kern_epan', PACKAGE = 'kdecopula', x, b)
+#' Gaussian kernel (univariate)
+#' 
+#' @param x vector of evaluation points.
+#' @param b bandwidth parameter.
+#' 
+#' @noRd
+kern_gauss_1d <- function(x, b) {
+    .Call('kdecopula_kern_gauss_1d', PACKAGE = 'kdecopula', x, b)
 }
 
 #' Gaussian product kernel (bivariate)

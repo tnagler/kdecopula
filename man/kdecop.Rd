@@ -4,7 +4,7 @@
 \alias{kdecop}
 \title{Bivariate kernel copula density estimation}
 \usage{
-kdecop(udata, bw = NA, mult = 1, method = "TLL2", knots = 30,
+kdecop(udata, bw = NA, mult = 1, method = "TLL2nn", knots = 30,
   renorm.iter = 3L, info = TRUE)
 }
 \arguments{
@@ -121,10 +121,10 @@ plot(rkdecop(500, est, quasi = TRUE))  # quasi-random
 
 }
 \references{
-Geenens, G., Charpentier, A., and Paindaveine, D. (2014).
+Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 Probit transformation for nonparametric kernel estimation of the copula
 density.
-arXiv:1404.4414 [stat.ME].
+Bernoulli, 23(3), 1848-1873.
 \cr \cr
 Wen, K. and Wu, X. (2015).
 Transformation-Kernel Estimation of the Copula Density,
@@ -141,7 +141,7 @@ In Rank, J., editor, Copulas: From theory to application in finance. Risk Books.
 \cr \cr
 Weiss, G. and Scheffer, M. (2012).
 Smooth Nonparametric Bernstein Vine Copulas.
-arXiv:1210.2043 [q-fin.RM]
+arXiv:1210.2043
 \cr \cr
 Nagler, T. (2014).
 Kernel Methods for Vine Copula Estimation.
@@ -149,11 +149,11 @@ Master's Thesis, Technische Universitaet Muenchen,
 \url{https://mediatum.ub.tum.de/node?id=1231221}
 }
 \seealso{
-\code{\link{kdecopula}},
-\code{\link{plot.kdecopula}},
-\code{\link{dkdecop}},
-\code{\link{pkdecop}},
-\code{\link{rkdecop}}
+\code{\link[kdecopula:kdecopula]{kdecopula}},
+\code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
+\code{\link[kdecopula:dkdecop]{dkdecop}},
+\code{\link[kdecopula:pkdecop]{pkdecop}},
+\code{\link[kdecopula:rkdecop]{rkdecop}}
 }
 \author{
 Thomas Nagler
