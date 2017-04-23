@@ -196,16 +196,6 @@ kern_epan_2d <- function(x, y, b) {
     .Call('kdecopula_kern_epan_2d', PACKAGE = 'kdecopula', x, y, b)
 }
 
-#' Epanechnikov product kernel (arbitray dimension)
-#' 
-#' @param x mxd matrix of evaluation points.
-#' @param b length d vector of bandwidth parameters.
-#' 
-#' @noRd
-kern_epan <- function(x, b) {
-    .Call('kdecopula_kern_epan', PACKAGE = 'kdecopula', x, b)
-}
-
 #' Gaussian kernel (univariate)
 #' 
 #' @param x vector of evaluation points.

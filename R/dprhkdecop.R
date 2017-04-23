@@ -83,23 +83,11 @@ dkdecop <- function(u, obj, stable = FALSE) {
     ## evaluate density  (use faster algorithm for d = 2)
     if (stable)
         u <- pmin(pmax(u, 1e-3), 1 - 1e-3)
-    if (d == 2) {
-        out <- interp_2d(u,
-                         obj$estimate,
-                         obj$grid,
-                         numeric(4),
-                         numeric(4))
-    } else {
-        stop("d > 2 not implemented.")
-        # define help indicators
-        tmplst <- split(rep(seq(-1, 2, 1), d), ceiling(seq.int(4*d)/4))
-        helpind <- as.matrix(do.call(expand.grid, tmplst))
-        
-        out <- interp(u,
-                      obj$estimate,
-                      obj$grid,
-                      helpind)
-    }
+    out <- interp_2d(u,
+                     obj$estimate,
+                     obj$grid,
+                     numeric(4),
+                     numeric(4))
     
     ## stabilize output
     if (stable)

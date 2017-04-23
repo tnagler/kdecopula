@@ -4,16 +4,18 @@ u <- VineCopula::BiCopSim(10, 3, 3)
 est <- kdecop(u, method = "TLL1nn")
 
 test_that("print and summary work without error", {
+    # test TLL2nn
+    colnames(u) <- c("V1", "V2") 
+    est <- kdecop(u)
+    expect_output(print(est))
+    expect_output(summary(est))
+    
     methods_to_test <- c("MR", "beta", "TLL1", "T", "TTPI")
     for (method in methods_to_test) {
         est <- kdecop(u, method = method)
         expect_output(print(est))
         expect_output(summary(est))
     }
-    colnames(u) <- c("V1", "V2") 
-    est <- kdecop(u)
-    expect_output(print(est))
-    expect_output(summary(est))
 })
 
 test_that("logLik works with and without precomputed info", {
@@ -48,4 +50,24 @@ test_that("simulate equals rkdecop output", {
     simq <- rkdecop(500, est, quasi = TRUE)
     expect_equal(simulate(est, 500, seed = 1), sim)
     expect_equal(simulate(est, 500, seed = 1, quasi = TRUE), simq)
+})
+
+test_that("plotting functionality works", {
+    # default methods
+    plot(est)
+    contour(est)
+    
+    # parametrized methods
+    types <- c("surface", "contour")
+    margins <- c("norm", "unif", "exp", "flexp")
+    for (t in types) {
+        for(m in margins) {
+            plot(est, t, m)
+            contour(est, m)
+        }
+    }
+    expect_warning(plot(est, size = 2))
+    
+    # custom xlim
+    plot(est, xlim = seq(0.01, 0.99, l = 6))
 })

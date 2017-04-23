@@ -155,18 +155,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// kern_epan
-arma::vec kern_epan(const arma::mat& x, const arma::vec& b);
-RcppExport SEXP kdecopula_kern_epan(SEXP xSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(kern_epan(x, b));
-    return rcpp_result_gen;
-END_RCPP
-}
 // kern_gauss_1d
 arma::vec kern_gauss_1d(const arma::vec& x, const double& b);
 RcppExport SEXP kdecopula_kern_gauss_1d(SEXP xSEXP, SEXP bSEXP) {
