@@ -17,8 +17,6 @@ apt_packages:
   - libgsl0ldbl
   - libcurl4-openssl-dev
   - libxml2-dev
-  - r-cran-kdecopula
-  - r-cran-vinecopula
   - r-cran-r.rsp
   - r-cran-covr
   - r-cran-testthat
