@@ -3,6 +3,11 @@ dist: trusty
 language: R
 warnings_are_errors: true
 
+r:
+  - oldrel
+  - release
+  - devel
+
 sudo: required
 
 apt_packages:
@@ -12,11 +17,7 @@ apt_packages:
   - libgsl0ldbl
   - libcurl4-openssl-dev
   - libxml2-dev
-  - r-cran-rcpp
-  - r-cran-rcpparmadillo
-  - r-cran-locfit
-  - r-cran-qrng
-  - r-cran-quadprog
+  - r-cran-kdecopula
   - r-cran-vinecopula
   - r-cran-r.rsp
   - r-cran-covr

@@ -29,10 +29,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">Intro</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -139,17 +139,16 @@ u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class
 <span class="co">#&gt; ------------------------------</span>
 <span class="co">#&gt; Variables:    mean radius -- mean concavity </span>
 <span class="co">#&gt; Observations: 569 </span>
-<span class="co">#&gt; Method:       Transformation local likelihood, log-quadratic (nearest-neighbor, 'TLL2nn') </span>
-<span class="co">#&gt; Bandwidth:    alpha = 0.3519647</span>
-<span class="co">#&gt;               B = matrix(c(0.71, 0.7, -0.7, 0.71), 2, 2)</span>
+<span class="co">#&gt; Method:       Transformation local likelihood, log-quadratic ('TLL2') </span>
+<span class="co">#&gt; Bandwidth:    matrix(c(2.63, 1.67, 0, 2.01), 2, 2)</span>
 <span class="co">#&gt; ---</span>
-<span class="co">#&gt; logLik: 201.22    AIC: -367.97    cAIC: -366.83    BIC: -293.11 </span>
-<span class="co">#&gt; Effective number of parameters: 17.23</span></code></pre></div>
+<span class="co">#&gt; logLik: 192.56    AIC: -364.08    cAIC: -363.65    BIC: -318.4 </span>
+<span class="co">#&gt; Effective number of parameters: 10.52</span></code></pre></div>
 <p>The output of the function <code>kdecop</code> is an object of class <code>kdecopula</code> that contains all information collected during the estimation process and summary statistics such as <em>AIC</em> or the <em>effective number of parameters/degrees of freedom</em>. These can also be accessed directly, e.g.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">logLik</span>(kde.fit)
-<span class="co">#&gt; 'log Lik.' 201.2196 (df=17.23373)</span>
+<span class="co">#&gt; 'log Lik.' 192.5555 (df=10.51571)</span>
 <span class="kw">AIC</span>(kde.fit)
-<span class="co">#&gt; [1] -367.9718</span></code></pre></div>
+<span class="co">#&gt; [1] -364.0797</span></code></pre></div>
 </div>
 <div id="plotting-bivariate-copula-densities" class="section level4">
 <h4 class="hasAnchor">
@@ -176,9 +175,9 @@ u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class
 <a href="#working-with-a-kdecopula-object" class="anchor"></a>Working with a <code>kdecopula</code> object</h4>
 <p>The density and <em>cdf</em> can be computed easily:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/dkdecop.html">dkdecop</a></span>(<span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>), kde.fit)  <span class="co"># estimated copula density</span>
-<span class="co">#&gt; [1] 1.691764</span>
+<span class="co">#&gt; [1] 1.749972</span>
 <span class="kw"><a href="reference/dkdecop.html">pkdecop</a></span>(<span class="kw">cbind</span>(<span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>)), kde.fit) <span class="co"># corresponding copula cdf</span>
-<span class="co">#&gt; [1] 0.0327257 0.8505370</span></code></pre></div>
+<span class="co">#&gt; [1] 0.03348617 0.85141586</span></code></pre></div>
 <p>Furthermore, we can simulate synthetic data from the estimated density:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">unew &lt;-<span class="st"> </span><span class="kw"><a href="reference/dkdecop.html">rkdecop</a></span>(<span class="dv">655</span>, kde.fit)
 <span class="kw">plot</span>(unew)</code></pre></div>
