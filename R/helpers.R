@@ -39,7 +39,7 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
         effp <- mean(p/likvalues)
     } else if (method == "T") {
         scale <- dnorm(qnorm(udata)[, 1]) * dnorm(qnorm(udata)[, 2])
-        effp  <- mean((kern_gauss_2d(0, 0, 1) / (scale * det(b))) / likvalues)
+        effp  <- mean((kern_gauss_2d(0, 0, 1)[1] / (scale * det(b))) / likvalues)
     } else if (method == "bern") {
         effp <- apply(udata, 1, function(u) bern_edf_contrib(u, b))
         effp <- sum(effp / likvalues)
