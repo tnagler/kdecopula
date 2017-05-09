@@ -10,7 +10,7 @@ bw_bern(udata)
 \item{udata}{data.}
 }
 \value{
-optimal order of the Bernstein polynimals.
+optimal order of the Bernstein polynomials.
 }
 \description{
 The optimal size of knots is chosen by a rule of thumb adapted from

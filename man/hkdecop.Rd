@@ -2,7 +2,7 @@
 % Please edit documentation in R/dprhkdecop.R
 \name{hkdecop}
 \alias{hkdecop}
-\title{H-function and inverse of kdecopula object}
+\title{H-function and inverse of a kdecopula object}
 \usage{
 hkdecop(u, obj, cond.var, inverse = FALSE)
 }
@@ -12,9 +12,9 @@ hkdecop(u, obj, cond.var, inverse = FALSE)
 \item{obj}{\code{kdecopula} object.}
 
 \item{cond.var}{integer; \code{cond.var = 1} conditions on the first variable,
-\code{cond.var = 2} on the secon.}
+\code{cond.var = 2} on the second.}
 
-\item{inverse}{logical; indicates wether the h-function or its inverse shall be
+\item{inverse}{logical; indicates whether the h-function or its inverse shall be
 calculated.}
 }
 \value{

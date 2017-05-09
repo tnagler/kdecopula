@@ -143,18 +143,18 @@ bw_tll <- function(udata, deg) {
 #' Nearest-neighbor bandwidth selection for the transformation local likelihood
 #' estimator
 #'
-#' The smoothing parameters is selected by the method of Geenens et al. (2014).
+#' The smoothing parameters is selected by the method of Geenens et al. (2017).
 #'
 #' @param udata data.
 #' @param deg degree of the polynomial.
 #'
-#' @return A list with entires:
+#' @return A list with entries:
 #' \describe{
 #'   \item{\code{B}}{rotation matrix,}
 #'   \item{\code{alpha}}{nearest neighbor fraction,}
 #'   \item{\code{kappa}}{correction factor,}
 #' }
-#' see Geenens et al. (2014).
+#' see Geenens et al. (2017).
 #' 
 #' @references 
 #' Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
@@ -309,7 +309,7 @@ bw_tt_pi <- function(udata, rho.add = TRUE) {
 
     C2 <- matrix(C21 + C22 + 2 * rho * C23, dim(B)[1], 1)
     C3 <- phi40 + phi04 + (4 * rho^2 + 2) * phi22 + 4 * rho * (phi31 + phi13)
-    h <- as.numeric((1/2/pi/n/(C3 - t(C2) %*% solve(C1) %*%  C2)/
+    h <- as.numeric((1 / 2 / pi / n / (C3 - t(C2) %*% solve(C1) %*%  C2) /
                          sqrt(1 - rho^2))^(1/6))
     theta <- as.vector(-h^2/2 * solve(C1) %*% C2)
 
@@ -381,8 +381,8 @@ bw_tt_cv <- function(udata, rho.add = T) {
                           2 * h^2 * (2 * theta[1] + rho * theta[2]) + 1)
         eta <- mean(exp(-((4 * h^2 * theta[1]^2 - h^2 * theta[2]^2 + 2 * theta[1]) *
                               (Si^2 + Ti^2) +  (2 * rho * h^2 * theta[2]^2 - 8 * rho *
-                                                    h^2 * theta[1]^2 + 2 * theta[2]) * Si * Ti)/
-                            2/delta^2))/delta
+                                                    h^2 * theta[1]^2 + 2 * theta[2]) * Si * Ti) /
+                            2 / delta^2)) / delta
 
         alpha1 <- -2 * h^4 * (1 - rho^2) * (4 * theta[1]^2 -  theta[2]^2) +
             2 * h^2 * ((rho^2 - 3) * theta[1] - rho * theta[2]) - 1
@@ -394,7 +394,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
         part1 <- mean(exp((alpha1 * (Xi^2 + Xj^2 + Yi^2 + Yj^2) +
                                alpha2 * (Xi * Yi + Xj * Yj) +
                                alpha3 * (Xi * Yj + Xj * Yi) + alpha4 *
-                               (Xi * Xj + Yi * Yj))/4/h^2/(1 - rho^2)/delta^2))/
+                               (Xi * Xj + Yi * Yj))/4/h^2/(1 - rho^2)/delta^2)) /
             4/pi/eta^2/h^2/delta/sqrt(1 - rho^2)
 
         part2 <- sum(sapply(1:n,
@@ -457,7 +457,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
 #' @return optimal bandwidth parameter.
 #'
 #' @details
-#' To speed things up, optimal bandwidths have been precalculated on a grid of
+#' To speed things up, optimal bandwidths have been pre-calculated on a grid of
 #' tau values.
 #'
 #' @references
@@ -538,7 +538,7 @@ precalc_bw_mr <- function(tau) {
 #' @return optimal bandwidth parameter.
 #'
 #' @details
-#' To speed things up, optimal bandwidths have been precalculated on a grid of
+#' To speed things up, optimal bandwidths have been pre-calculated on a grid of
 #' tau values.
 #'
 #' @references
@@ -637,7 +637,7 @@ precalc_bw_beta <- function(tau) {
 #' \deqn{max(1, round(n^(1/3) * exp(abs(rho)^(1/n)) * (abs(rho) + 0.1))),}
 #' where \eqn{\rho} is the empirical Spearman's rho of the data.
 #'
-#' @return optimal order of the Bernstein polynimals.
+#' @return optimal order of the Bernstein polynomials.
 #'
 bw_bern <- function(udata) {
     n <- nrow(udata)

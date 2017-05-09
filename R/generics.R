@@ -107,8 +107,6 @@ expand_method <- function(method) {
 
 #' Log-Likelihood of a \code{kdecopula} object
 #'
-#' @method logLik kdecopula
-#'
 #' @param object an object of class \code{kdecopula}.
 #' @param ... not used.
 #'
@@ -219,11 +217,10 @@ fitted.kdecopula <- function(object, what = "pdf", ...) {
     predict(object, object$udata, what)
 }
 
-#' Simulate synthetic data from a `kdecop()` fits.
+#' Simulate data from a `kdecop()` fit.
 #' 
 #' See `rkdecop()`.
 #' 
-#'
 #' @param object an object of class `kdecopula`.
 #' @param nsim integer; number of observations.
 #' @param seed integer; `set.seed(seed)` will be called prior to `rkdecop()`.

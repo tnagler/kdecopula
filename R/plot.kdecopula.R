@@ -186,8 +186,6 @@ plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
 
         # define colors
         TUMblue   <- rgb(0, 103/255, 198/255)
-        TUMgreen  <- rgb(162/255, 173/255, 0)
-        TUMorange <- rgb(227/255, 114/255, 37/255)
 
         # set default parameters
         pars <- list(x = c ~ u * v,
@@ -201,11 +199,11 @@ plot.kdecopula <- function(x, type = "surface", margins, size, ...) {
                      zoom = 0.85,
                      par.settings = list(axis.line = list(col = "transparent")),
                      at = at,
-                     col.regions=
+                     col.regions =
                          c(colorRampPalette(c(tint(TUMblue, 0.5), "white"))(50),
                            rep("white", 50)),
                      xlab = list(xlab, rot = 20),
-                     ylab = list(ylab, rot = 30-90),
+                     ylab = list(ylab, rot = 30 - 90),
                      zlab = "",
                      zlim = switch(margins,
                                    "unif"  = c(0, max(3,   1.1 * max(lst$c))),

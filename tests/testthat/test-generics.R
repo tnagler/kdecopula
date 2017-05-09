@@ -61,7 +61,7 @@ test_that("plotting functionality works", {
     types <- c("surface", "contour")
     margins <- c("norm", "unif", "exp", "flexp")
     for (t in types) {
-        for(m in margins) {
+        for (m in margins) {
             plot(est, t, m)
             contour(est, m)
         }

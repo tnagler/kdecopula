@@ -5,7 +5,7 @@
 \alias{wdbc}
 \title{Wisconsin Diagnostic Breast Cancer (WDBC)}
 \format{\code{wdbc} is a \code{data.frame} with 31 columns. The first column
-indicates wether the sample is classified as benign (\code{B}) or malignant
+indicates whether the sample is classified as benign (\code{B}) or malignant
 (\code{M}). The remaining columns contain measurements for 30 features.}
 \source{
 \url{http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)}
@@ -16,10 +16,10 @@ Irvine, CA: University of California, School of Information and Computer
 Science.
 }
 \description{
-The data contain measurements on cells in suspicious lumps in a women's
+The data contain measurements on cells in suspicious lumps in a woman's
 breast. Features are computed from a digitized image of a fine needle
 aspirate (FNA) of a breast mass. They describe characteristics of the cell
-nuclei present in the image. All samples are classsified as either
+nuclei present in the image. All samples are classified as either
 \emph{benign} or \emph{malignant}.
 }
 \details{

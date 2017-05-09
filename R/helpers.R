@@ -32,8 +32,8 @@ eff_num_par <- function(udata, likvalues, b, method, lfit) {
         effp <- sum(S / likvalues) / n
     } else if (method == "beta") {
         bpkern <- function(x) {
-            dbeta(x[1L], x[1L]/b + 1, (1-x[1L])/b + 1) *
-                dbeta(x[2L], x[2L]/b + 1, (1-x[2L])/b + 1)
+            dbeta(x[1L], x[1L]/b + 1, (1 - x[1L]) / b + 1) *
+                dbeta(x[2L], x[2L]/b + 1, (1 - x[2L]) / b + 1)
         }
         p <- apply(udata, 1, bpkern)
         effp <- mean(p/likvalues)

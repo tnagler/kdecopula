@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{simulate.kdecopula}
 \alias{simulate.kdecopula}
-\title{Simulate synthetic data from a \code{kdecop()} fits.}
+\title{Simulate data from a \code{kdecop()} fit.}
 \usage{
 \method{simulate}{kdecopula}(object, nsim = 1, seed = NULL, quasi = FALSE,
   ...)

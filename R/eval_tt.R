@@ -35,8 +35,6 @@ eval_tt <- function(uev, udata, bw) {
     rho <- bw[2]
     theta <- bw[3:4]
     
-    n <- dim(udata)[1]
-    
     Si <- qnorm(udata[, 1])
     Ti <- qnorm(udata[, 2])
     s <- qnorm(u)

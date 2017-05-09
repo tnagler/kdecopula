@@ -13,16 +13,16 @@ bw_tll_nn(udata, deg)
 \item{deg}{degree of the polynomial.}
 }
 \value{
-A list with entires:
+A list with entries:
 \describe{
 \item{\code{B}}{rotation matrix,}
 \item{\code{alpha}}{nearest neighbor fraction,}
 \item{\code{kappa}}{correction factor,}
 }
-see Geenens et al. (2014).
+see Geenens et al. (2017).
 }
 \description{
-The smoothing parameters is selected by the method of Geenens et al. (2014).
+The smoothing parameters is selected by the method of Geenens et al. (2017).
 }
 \references{
 Geenens, G., Charpentier, A., and Paindaveine, D. (2017).

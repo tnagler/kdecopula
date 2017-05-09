@@ -105,12 +105,11 @@ pkdecop <- function(u, obj) {
     stopifnot(inherits(obj, "kdecopula"))
     ## define appropriately shaped u matrix
     u <- as.matrix(u)
-    if(ncol(u) == 1)
+    if (ncol(u) == 1)
         u <- matrix(u, 1L, nrow(u))
     # adjust for flipping option of kdevine package
-    if(!is.null(obj$flip)) {
+    if (!is.null(obj$flip)) {
         u <- matrix(u[, 2:1], nrow(u))
-        cond.var <- ifelse(cond.var == 1, 2, 1)
     }
     d <- ncol(u)
     
@@ -158,7 +157,7 @@ rkdecop <- function(n, obj, quasi = FALSE) {
     }
     
     # if independence copula is specified, return W
-    if("indep.copula" %in% class(obj))
+    if ("indep.copula" %in% class(obj))
         return(W)
     
     # invert h-function otherwise
@@ -173,7 +172,7 @@ rkdecop <- function(n, obj, quasi = FALSE) {
     out
 }
 
-#' H-function and inverse of kdecopula object
+#' H-function and inverse of a kdecopula object
 #' 
 #' Evaluates the h-function (or its inverse) corresponding to a \code{kdecopula}
 #' object. H-functions are conditional distribution functions obtained by
@@ -183,8 +182,8 @@ rkdecop <- function(n, obj, quasi = FALSE) {
 #' @param u \eqn{n x 2} matrix of evaluation points.
 #' @param obj \code{kdecopula} object.
 #' @param cond.var integer; \code{cond.var = 1} conditions on the first variable,
-#' \code{cond.var = 2} on the secon.
-#' @param inverse logical; indicates wether the h-function or its inverse shall be
+#' \code{cond.var = 2} on the second.
+#' @param inverse logical; indicates whether the h-function or its inverse shall be
 #' calculated.
 #' 
 #' @return A length \eqn{n} vector of the (inverse) h-function evaluated at
@@ -216,15 +215,14 @@ hkdecop <- function(u, obj, cond.var, inverse = FALSE) {
     stopifnot(all(cond.var %in% c(1, 2)))
     ## define appropriately shaped u matrix
     u <- as.matrix(u)
-    if(ncol(u) == 1)
+    if (ncol(u) == 1)
         u <- matrix(u, 1L, nrow(u))
     ## adjust for flipping option of kdevine package
-    if(!is.null(obj$flip)) {
+    if (!is.null(obj$flip)) {
         u <- matrix(u[, 2:1], nrow(u))
         cond.var <- ifelse(cond.var == 1, 2, 1)
     }
-    d <- ncol(u)
-    
+
     # if independence copula is specified, return the conditioned variable
     if ("indep.copula" %in% class(obj))
         return(u[, -cond.var])
@@ -235,24 +233,6 @@ hkdecop <- function(u, obj, cond.var, inverse = FALSE) {
                              as.integer(cond.var),
                              obj$estimate,
                              obj$grid)
-        # # define help objects
-        # tmplst <- split(rep(seq(-1, 2, 1), d), ceiling(seq.int(4*d)/4))
-        # helpind <- as.matrix(do.call(expand.grid, tmplst))
-        # tmplst <- lapply(1:d,
-        #                  prep_hfunc,
-        #                  cond.var = cond.var,
-        #                  grid = obj$grid,
-        #                  d = d)
-        # helpgrid <- as.matrix(do.call(expand.grid, tmplst))
-        # uncond.var <- seq.int(d)[-cond.var]
-        # # call routine
-        # out <- eval_hfunc(u,
-        #                   as.integer(cond.var),
-        #                   as.integer(uncond.var),
-        #                   obj$estimate,
-        #                   obj$grid,
-        #                   helpgrid,
-        #                   helpind)
     } else {
         # inverse h-function
         out <- inv_hfunc(u,

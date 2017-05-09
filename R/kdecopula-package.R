@@ -2,7 +2,7 @@
 #'
 #' This package provides fast implementations of kernel estimators for the
 #' copula density. Due to its several plotting options it is particularly
-#' useful for the exploratory analysis of dependece structures. It can be
+#' useful for the exploratory analysis of dependence structures. It can be
 #' further used for flexible nonparametric estimation of copula densities
 #' and resampling.
 #'
@@ -72,10 +72,10 @@ NULL
 
 #' Wisconsin Diagnostic Breast Cancer (WDBC)
 #'
-#' The data contain measurements on cells in suspicious lumps in a women's
+#' The data contain measurements on cells in suspicious lumps in a woman's
 #' breast. Features are computed from a digitized image of a fine needle
 #' aspirate (FNA) of a breast mass. They describe characteristics of the cell
-#' nuclei present in the image. All samples are classsified as either
+#' nuclei present in the image. All samples are classified as either
 #' \emph{benign} or \emph{malignant}.
 #'
 #' Ten real-valued features are computed for each cell nucleus: \cr
@@ -100,7 +100,7 @@ NULL
 #'
 #'
 #' @format \code{wdbc} is a \code{data.frame} with 31 columns. The first column
-#' indicates wether the sample is classified as benign (\code{B}) or malignant
+#' indicates whether the sample is classified as benign (\code{B}) or malignant
 #' (\code{M}). The remaining columns contain measurements for 30 features.
 #' @note This breast cancer database was obtained from the University of
 #' Wisconsin Hospitals, Madison from Dr. William H. Wolberg.

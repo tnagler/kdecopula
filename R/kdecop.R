@@ -22,11 +22,11 @@
 #' estimation (e.g., Geenenens et al., 2014), \cr
 #' \code{"TLL1"}: transformation estimator with log-linear local likelihood
 #' estimation (Geenenens et al., 2014), \cr
-#' \code{"TLL2"}: transformation estimator with log-quadradtic local likelihood
+#' \code{"TLL2"}: transformation estimator with log-quadratic local likelihood
 #' estimation (Geenenens et al., 2014), \cr
 #' \code{"TLL1nn"}: transformation estimator with log-linear local likelihood
 #' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
-#' \code{"TLL2nn"}: transformation estimator with log-quadradtic local likelihood
+#' \code{"TLL2nn"}: transformation estimator with log-quadratic local likelihood
 #' estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), \cr
 #' \code{"TTPI"}: tapered transformation estimator with plug-in bandwidths
 #' (Wu and Wen, 2015), \cr
@@ -86,6 +86,9 @@
 #' @seealso 
 #' \code{\link[kdecopula:kdecopula]{kdecopula}},
 #' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}},
+#' \code{\link[kdecopula:predict.kdecopula]{predict.kdecopula}},
+#' \code{\link[kdecopula:fitted.kdecopula]{fitted.kdecopula}},
+#' \code{\link[kdecopula:simulate.kdecopula]{simulate.kdecopula}},
 #' \code{\link[kdecopula:dkdecop]{dkdecop}},
 #' \code{\link[kdecopula:pkdecop]{pkdecop}},
 #' \code{\link[kdecopula:rkdecop]{rkdecop}}
@@ -253,8 +256,8 @@ renorm2unif <- function(vals, grid, renorm.iter) {
     if (renorm.iter > 0) {
         d <- NCOL(grid$expanded)
         knots <- length(grid$pnts)
-        tmplst <- split(rep(seq.int(knots)-1, d-1),
-                        ceiling(seq.int(knots*(d-1))/knots))
+        tmplst <- split(rep(seq.int(knots) - 1, d - 1),
+                        ceiling(seq.int(knots * (d - 1)) / knots))
         helpind <- as.matrix(do.call(expand.grid, tmplst))
         vals <- renorm(vals, grid$pnts, renorm.iter, helpind)
     }
@@ -284,10 +287,10 @@ with_fit_info <- function(res, info, lfit) {
                                 res$method,
                                 lfit)
             # information criteria
-            AIC  <- - 2 * loglik + 2 * effp
+            AIC  <- -2 * loglik + 2 * effp
             n <- nrow(res$udata)
             cAIC <- AIC + (2 * effp * (effp + 1)) / (n - effp - 1)
-            BIC  <- - 2 * loglik + log(n) * effp
+            BIC  <- -2 * loglik + log(n) * effp
         } else {
             effp <- AIC <- cAIC <- BIC <- NA
         }
