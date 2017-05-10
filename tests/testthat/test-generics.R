@@ -1,5 +1,6 @@
 context("S3 generics")
 
+set.seed(5)
 u <- VineCopula::BiCopSim(10, 3, 3)
 est <- kdecop(u, method = "TLL1nn")
 

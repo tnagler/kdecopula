@@ -27,8 +27,8 @@ See \code{rkdecop()}.
 }
 \examples{
 data(wdbc)
-udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
-est <- kdecop(udat[, 5:6])
-plot(simulate(est, 500))
+udat <- apply(wdbc[, -1], 2, function(x) rank(x) / (length(x) + 1))
+fit <- kdecop(udat[, 5:6])
+plot(simulate(fit, 500))
 
 }

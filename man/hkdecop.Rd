@@ -2,7 +2,7 @@
 % Please edit documentation in R/dprhkdecop.R
 \name{hkdecop}
 \alias{hkdecop}
-\title{H-function and inverse of a kdecopula object}
+\title{H-function and inverse of a \code{kdecop()} fit}
 \usage{
 hkdecop(u, obj, cond.var, inverse = FALSE)
 }
@@ -25,25 +25,21 @@ A length \eqn{n} vector of the (inverse) h-function evaluated at
 Evaluates the h-function (or its inverse) corresponding to a \code{kdecopula}
 object. H-functions are conditional distribution functions obtained by
 integrating the copula density w.r.t. to one of its arguments (see also
-\code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}).
+\code{\link[VineCopula:BiCopHfunc]{VineCopula::BiCopHfunc()}}.
 }
 \examples{
 ## load data and transform with empirical cdf
 data(wdbc)
-udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
+udat <- apply(wdbc[, -1], 2, function(x) rank(x) / (length(x) + 1))
 
 ## estimation of copula density of variables 5 and 6
-dens.est <- kdecop(udat[, 5:6])
-plot(dens.est) 
+fit <- kdecop(udat[, 5:6])
+plot(fit) 
 
 ## evaluate h-function estimate and its inverse at (u1|u2) = (0.123 | 0.321)
-hkdecop(c(0.123, 0.321), dens.est, cond.var = 2) 
-hkdecop(c(0.123, 0.321), dens.est, cond.var = 2, inverse = TRUE) 
+hkdecop(c(0.123, 0.321), fit, cond.var = 2) 
+hkdecop(c(0.123, 0.321), fit, cond.var = 2, inverse = TRUE) 
 
-}
-\seealso{
-\code{\link[kdecopula:kdecop]{kdecop}},
-\code{\link[VineCopula:BiCopHfunc]{BiCopHfunc}}
 }
 \author{
 Thomas Nagler

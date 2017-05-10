@@ -1,11 +1,13 @@
 #' @export
 print.kdecopula <- function(x, ...) {
     cat("Kernel copula density estimate '", x$method, "'", sep = "")
-    ## add variable names if available
+    # add variable names if available
     nms <- colnames(x$udata)
     if (length(nms) == 2) {
         cat(":", nms[1], "--", nms[2])
     }
+    # add Kendall's tau
+    cat(" (tau = ", formatC(dep_measures(x, "kendall"), 2), ")", sep = "")
     invisible(x)
 }
 
@@ -14,7 +16,8 @@ print.kdecopula <- function(x, ...) {
 #' @importFrom stats logLik
 #' @export
 summary.kdecopula <- function(object, ...) {
-    cat("Kernel copula density estimate\n")
+    cat("Kernel copula density estimate")
+    cat(" (tau = ", formatC(dep_measures(object, "kendall"), 2), ")\n", sep = "")
     cat("------------------------------\n")
 
     ## add variable names if available
@@ -87,6 +90,7 @@ summary.kdecopula <- function(object, ...) {
         cat("Effective number of parameters:",
             round(effp, 2))
     }
+    
     ## return with fit statistics
     invisible(object)
 }
@@ -123,15 +127,15 @@ expand_method <- function(method) {
 #' @examples
 #' ## load data and transform with empirical cdf
 #' data(wdbc)
-#' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
+#' udat <- apply(wdbc[, -1], 2, function(x) rank(x) / (length(x) + 1))
 #'
 #' ## estimation of copula density of variables 5 and 6
-#' dens.est <- kdecop(udat[, 5:6])
+#' fit <- kdecop(udat[, 5:6])
 #'
 #' ## compute fit statistics
-#' logLik(dens.est)
-#' AIC(dens.est)
-#' BIC(dens.est)
+#' logLik(fit)
+#' AIC(fit)
+#' BIC(fit)
 #'
 #' @export
 logLik.kdecopula <- function(object, ...) {
@@ -176,11 +180,11 @@ logLik.kdecopula <- function(object, ...) {
 #' 
 #' @examples
 #' data(wdbc)
-#' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
-#' est <- kdecop(udat[, 5:6])
+#' udat <- apply(wdbc[, -1], 2, function(x) rank(x) / (length(x) + 1))
+#' fit <- kdecop(udat[, 5:6])
 #' 
-#' all.equal(predict(est, c(0.1, 0.2)), dkdecop(c(0.1, 0.2), est))
-#' all.equal(predict(est, udat, "hfunc1"), hkdecop(udat, est, cond.var = 1))
+#' all.equal(predict(fit, c(0.1, 0.2)), dkdecop(c(0.1, 0.2), fit))
+#' all.equal(predict(fit, udat, "hfunc1"), hkdecop(udat, fit, cond.var = 1))
 #' @export
 #' @importFrom stats predict
 predict.kdecopula <- function(object, newdata, what = "pdf", stable = FALSE, ...) {
@@ -207,10 +211,10 @@ predict.kdecopula <- function(object, newdata, what = "pdf", stable = FALSE, ...
 #' @seealso `predict.kdecopula()`
 #' @examples
 #' data(wdbc)
-#' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
-#' est <- kdecop(udat[, 5:6])
+#' udat <- apply(wdbc[, -1], 2, function(x) rank(x) / (length(x) + 1))
+#' fit <- kdecop(udat[, 5:6])
 #' 
-#' all.equal(fitted(est), predict(est, est$udata))
+#' all.equal(fitted(fit), predict(fit, fit$udata))
 #' @export
 #' @importFrom stats fitted
 fitted.kdecopula <- function(object, what = "pdf", ...) {
@@ -232,9 +236,9 @@ fitted.kdecopula <- function(object, what = "pdf", ...) {
 #'
 #' @examples
 #' data(wdbc)
-#' udat <- apply(wdbc[, -1], 2, function(x) rank(x)/(length(x)+1))
-#' est <- kdecop(udat[, 5:6])
-#' plot(simulate(est, 500))
+#' udat <- apply(wdbc[, -1], 2, function(x) rank(x) / (length(x) + 1))
+#' fit <- kdecop(udat[, 5:6])
+#' plot(simulate(fit, 500))
 #' 
 #' @importFrom stats simulate
 #' @export 
