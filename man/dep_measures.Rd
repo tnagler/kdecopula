@@ -31,9 +31,9 @@ Monte Carlo integration.}
 \item{\code{"vd_waerden"}}{van der Waerden's coefficient, see Genest and Verret
 (2005); computed as the sample version of a quasi Monte Carlo sample.}
 \item{\code{"minfo"}}{mutual information, see Joe (1989); computed by quasi Monte
-Carlo integarion.}
+Carlo integration.}
 \item{\code{"linfoot"}}{Linfoot's correlation coefficient, see Joe (1989);
-computed by quasi Monte Carlo integarion.}
+computed by quasi Monte Carlo integration.}
 }
 }
 \description{

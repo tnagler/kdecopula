@@ -1,4 +1,4 @@
-#' Automatic bandwidth selection
+#' Internal: Automatic bandwidth selection
 #'
 #' @param udata data
 #' @param method estimation method.
@@ -19,7 +19,7 @@ bw_select <- function(udata, method) {
            "bern"   = bw_bern(udata))
 }
 
-#' Add multiplier to given bandwidth specification
+#' Internal: Add multiplier to given bandwidth specification
 #'
 #' Allows to further control the degree of smoothing.
 #'
@@ -53,12 +53,12 @@ multiply_bw <- function(bw, mult, method, d) {
     bw
 }
 
-#' Check if bandwidth specification is valid
+#' Internal: Check if bandwidth specification is valid
 #'
 #' @param bw bandwidth specification.
 #' @param method estimation method.
 #'
-#' @return throws an error if invalid; returns nothing otherwise.
+#' @return Throws an error if invalid; returns nothing otherwise.
 #' @noRd
 check_bw <- function(bw, method) {
     if (method %in% c("TLL1nn", "TLL2nn")) {
@@ -97,7 +97,7 @@ check_bw <- function(bw, method) {
 #'
 #' @param udata data.
 #'
-#' @return optimal bandwidth matrix.
+#' @return A `2 x 2` bandwidth matrix.
 #'
 #' @details
 #' The formula is
@@ -124,7 +124,7 @@ bw_t <- function(udata) {
 #' @param udata data.
 #' @param deg degree of the polynomial.
 #'
-#' @return optimal bandwidth matrix.
+#' @return A `2 x 2` bandwidth matrix.
 #'
 #' @details
 #' The formula is
@@ -144,6 +144,9 @@ bw_tll <- function(udata, deg) {
 #' estimator
 #'
 #' The smoothing parameters is selected by the method of Geenens et al. (2017).
+#' It uses principal components for the rotation matrix and selects the
+#' nearest neighbor fraction along each principal direction by approximate
+#' least-squares cross-validation.
 #'
 #' @param udata data.
 #' @param deg degree of the polynomial.
@@ -151,8 +154,10 @@ bw_tll <- function(udata, deg) {
 #' @return A list with entries:
 #' \describe{
 #'   \item{\code{B}}{rotation matrix,}
-#'   \item{\code{alpha}}{nearest neighbor fraction,}
-#'   \item{\code{kappa}}{correction factor,}
+#'   \item{\code{alpha}}{nearest neighbor fraction (this one is multiplied
+#'   with `mult` in [`kdecop()`]),}
+#'   \item{\code{kappa}}{correction factor for differences in roughness along
+#'   the axes,}
 #' }
 #' see Geenens et al. (2017).
 #' 
@@ -207,7 +212,7 @@ bw_tll_nn <- function(udata, deg) {
 #' @param rho.add logical; whether a rotation (correlation) parameter shall be
 #' included.
 #'
-#' @return optimal smoothing parameters as in Wen and Wu (2015): a numeric
+#' @return Optimal smoothing parameters as in Wen and Wu (2015): a numeric
 #' vector of length 4; entries are \eqn{(h, \rho, \theta_1, \theta_2)}.
 #'
 #' @author Kuangyu Wen
@@ -454,7 +459,7 @@ bw_tt_cv <- function(udata, rho.add = T) {
 #'
 #' @param udata data.
 #'
-#' @return optimal bandwidth parameter.
+#' @return A scalar bandwidth parameter.
 #'
 #' @details
 #' To speed things up, optimal bandwidths have been pre-calculated on a grid of
@@ -535,7 +540,7 @@ precalc_bw_mr <- function(tau) {
 #'
 #' @param udata data.
 #'
-#' @return optimal bandwidth parameter.
+#' @return A scalar bandwidth parameter.
 #'
 #' @details
 #' To speed things up, optimal bandwidths have been pre-calculated on a grid of

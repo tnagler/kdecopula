@@ -16,13 +16,18 @@ bw_tll_nn(udata, deg)
 A list with entries:
 \describe{
 \item{\code{B}}{rotation matrix,}
-\item{\code{alpha}}{nearest neighbor fraction,}
-\item{\code{kappa}}{correction factor,}
+\item{\code{alpha}}{nearest neighbor fraction (this one is multiplied
+with \code{mult} in \code{\link[=kdecop]{kdecop()}}),}
+\item{\code{kappa}}{correction factor for differences in roughness along
+the axes,}
 }
 see Geenens et al. (2017).
 }
 \description{
 The smoothing parameters is selected by the method of Geenens et al. (2017).
+It uses principal components for the rotation matrix and selects the
+nearest neighbor fraction along each principal direction by approximate
+least-squares cross-validation.
 }
 \references{
 Geenens, G., Charpentier, A., and Paindaveine, D. (2017).

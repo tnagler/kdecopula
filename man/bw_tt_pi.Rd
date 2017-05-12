@@ -16,7 +16,7 @@ bw_tt_cv(udata, rho.add = T)
 included.}
 }
 \value{
-optimal smoothing parameters as in Wen and Wu (2015): a numeric
+Optimal smoothing parameters as in Wen and Wu (2015): a numeric
 vector of length 4; entries are \eqn{(h, \rho, \theta_1, \theta_2)}.
 }
 \description{

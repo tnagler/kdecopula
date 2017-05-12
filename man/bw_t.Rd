@@ -10,7 +10,7 @@ bw_t(udata)
 \item{udata}{data.}
 }
 \value{
-optimal bandwidth matrix.
+A \code{2 x 2} bandwidth matrix.
 }
 \description{
 The bandwidth is selected by a rule of thumb. It approximately minimizes

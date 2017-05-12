@@ -24,9 +24,9 @@
 #' \item{`"vd_waerden"`}{van der Waerden's coefficient, see Genest and Verret 
 #' (2005); computed as the sample version of a quasi Monte Carlo sample.}
 #' \item{`"minfo"`}{mutual information, see Joe (1989); computed by quasi Monte
-#' Carlo integarion.}
+#' Carlo integration.}
 #' \item{`"linfoot"`}{Linfoot's correlation coefficient, see Joe (1989); 
-#' computed by quasi Monte Carlo integarion.}
+#' computed by quasi Monte Carlo integration.}
 #' }
 #' 
 #' @references 

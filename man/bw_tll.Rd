@@ -12,7 +12,7 @@ bw_tll(udata, deg)
 \item{deg}{degree of the polynomial.}
 }
 \value{
-optimal bandwidth matrix.
+A \code{2 x 2} bandwidth matrix.
 }
 \description{
 The bandwidth is selected by a rule of thumb similar to \code{\link{bw_t}}.

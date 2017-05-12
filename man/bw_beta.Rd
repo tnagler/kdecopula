@@ -10,7 +10,7 @@ bw_beta(udata)
 \item{udata}{data.}
 }
 \value{
-optimal bandwidth parameter.
+A scalar bandwidth parameter.
 }
 \description{
 The bandwidth is selected by minimizing the MISE using the Frank copula as
