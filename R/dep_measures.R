@@ -70,7 +70,7 @@ calculate_dep_measure <- function(measure, u, object) {
         "kendall"    = stats::cor(u, method = "kendall")[1, 2],
         "spearman"   = stats::cor(u, method = "spearman")[1, 2],
         "blomqvist"  = 4 * pkdecop(c(0.5, 0.5), object) - 1,
-        "gini"       = mean(abs(u[, 1] + u[, 2] - 1) - abs(u[, 1] - u[, 2])),
+        "gini"       = 2 * mean(abs(u[, 1] + u[, 2] - 1) - abs(u[, 1] - u[, 2])),
         "vd_waerden" = stats::cor(qnorm(u))[1, 2],
         "minfo"      = mean(log(dkdecop(u, object))),
         "linfoot"    = sqrt(1 - exp(-2 * mean(log(dkdecop(u, object)))))
