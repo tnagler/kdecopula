@@ -55,7 +55,7 @@ dep_measures <- function(object, measures = "all", n_qmc = 10^3, seed = 5) {
     # quasi Monte Carlo samples
     stopifnot(n_qmc >= 10)
     set.seed(seed)
-    u_qmc <- rkdecop(n_qmc, object)
+    u_qmc <- rkdecop(n_qmc, object, quasi = TRUE)
     
     # calculate measures
     sapply(measures, calculate_dep_measure, u = u_qmc, object = object)
