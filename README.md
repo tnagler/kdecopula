@@ -88,24 +88,25 @@ We start by estimating the copula density with the `kdecop` function. There is a
 ``` r
 kde.fit <- kdecop(u)  # kernel estimation (bandwidth selected automatically)
 summary(kde.fit)
-#> Kernel copula density estimate
+#> Kernel copula density estimate (tau = 0.47)
 #> ------------------------------
 #> Variables:    mean radius -- mean concavity 
 #> Observations: 569 
-#> Method:       Transformation local likelihood, log-quadratic ('TLL2') 
-#> Bandwidth:    matrix(c(2.63, 1.67, 0, 2.01), 2, 2)
+#> Method:       Transformation local likelihood, log-quadratic (nearest-neighbor, 'TLL2nn') 
+#> Bandwidth:    alpha = 0.3519647
+#>               B = matrix(c(0.71, 0.7, -0.7, 0.71), 2, 2)
 #> ---
-#> logLik: 192.56    AIC: -364.08    cAIC: -363.65    BIC: -318.4 
-#> Effective number of parameters: 10.52
+#> logLik: 201.22    AIC: -367.97    cAIC: -366.83    BIC: -293.11 
+#> Effective number of parameters: 17.23
 ```
 
 The output of the function `kdecop` is an object of class `kdecopula` that contains all information collected during the estimation process and summary statistics such as *AIC* or the *effective number of parameters/degrees of freedom*. These can also be accessed directly, e.g.
 
 ``` r
 logLik(kde.fit)
-#> 'log Lik.' 192.5555 (df=10.51571)
+#> 'log Lik.' 201.2196 (df=17.23373)
 AIC(kde.fit)
-#> [1] -364.0797
+#> [1] -367.9718
 ```
 
 #### Plotting bivariate copula densities
@@ -155,9 +156,9 @@ The density and *cdf* can be computed easily:
 
 ``` r
 dkdecop(c(0.1, 0.2), kde.fit)  # estimated copula density
-#> [1] 1.749972
+#> [1] 1.691764
 pkdecop(cbind(c(0.1, 0.9), c(0.1, 0.9)), kde.fit) # corresponding copula cdf
-#> [1] 0.03348617 0.85141586
+#> [1] 0.0327257 0.8505370
 ```
 
 Furthermore, we can simulate synthetic data from the estimated density:
