@@ -8,6 +8,9 @@ reference:
   - title: Bandwidth selection
     contents:
     - starts_with("bw_")
+  - title: Dependence measures
+    contents:
+    - starts_with("dep_")
   - title: Data sets
     contents:
     - starts_with("wdbc")

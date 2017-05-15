@@ -80,11 +80,10 @@
     </div>
 
     
-    <p>The function <code><a href='kdecop.html'>kdecop</a></code> stores it's result in object of class
-<code>kdecopula</code>. The density estimate can be evaluated on arbitrary points
-with <code>dkdecop</code>; the cdf with
-<code>pkdecop</code>. Furthermore, synthetic data can be
-simulated with <code>rkdecop</code>.</p>
+    <p>The function <code><a href='kdecop.html'>kdecop()</a></code> stores it's result in object of class <code>kdecopula</code>.
+The density estimate can be evaluated on arbitrary points with <code>dkdecop()</code>;
+the cdf with <code>pkdecop()</code>. Furthermore, synthetic data can be simulated with
+<code>rkdecop()</code>.</p>
     
 
     <pre class="usage"><span class='fu'>dkdecop</span>(<span class='no'>u</span>, <span class='no'>obj</span>, <span class='kw'>stable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -117,7 +116,7 @@ density is cut off at \(50\).</p></td>
       <th>quasi</th>
       <td><p>logical; the default (<code>FALSE</code>) returns pseudo-random
 numbers, use <code>TRUE</code> for quasi-random numbers (generalized Halton, see
-<code><a href='http://www.rdocumentation.org/packages/qrng/topics/qrng'>ghalton</a></code>).</p></td>
+<code><a href='http://www.rdocumentation.org/packages/qrng/topics/qrng'>qrng::ghalton()</a></code>).</p></td>
     </tr>
     </table>
     
@@ -128,16 +127,12 @@ simulated data.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
-Probit transformation for nonparametric kernel estimation of the copula
-density.
-Bernoulli, 23(3), 1848-1873.
-    Nagler, T. (2014).
-Kernel Methods for Vine Copula Estimation.
-Master's Thesis, Technische Universitaet Muenchen,
-<a href = 'https://mediatum.ub.tum.de/node?id=1231221'>https://mediatum.ub.tum.de/node?id=1231221</a>
-    Cambou, T., Hofert, M., Lemieux, C. (2015).
-A primer on quasi-random numbers for copula models,
+    <p>Geenens, G., Charpentier, A., and Paindaveine, D. (2017). Probit
+transformation for nonparametric kernel estimation of the copula density.
+Bernoulli, 23(3), 1848-1873.   Nagler, T. (2014). Kernel Methods for
+Vine Copula Estimation. Master's Thesis, Technische Universitaet Muenchen,
+<a href = 'https://mediatum.ub.tum.de/node?id=1231221'>https://mediatum.ub.tum.de/node?id=1231221</a>   Cambou, T., Hofert,
+M., Lemieux, C. (2015). A primer on quasi-random numbers for copula models,
 arXiv:1508.03483</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -151,17 +146,17 @@ arXiv:1508.03483</p>
     <pre class="examples"><div class='input'>
 <span class='co'>## load data and transform with empirical cdf</span>
 <span class='fu'>data</span>(<span class='no'>wdbc</span>)
-<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>)/(<span class='fu'>length</span>(<span class='no'>x</span>)+<span class='fl'>1</span>))
+<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>) / (<span class='fu'>length</span>(<span class='no'>x</span>) + <span class='fl'>1</span>))
 
 <span class='co'>## estimation of copula density of variables 5 and 6</span>
-<span class='no'>dens.est</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
-<span class='fu'>plot</span>(<span class='no'>dens.est</span>)</div><img src='dkdecop-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
+<span class='fu'>plot</span>(<span class='no'>fit</span>)</div><img src='dkdecop-2.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'>## evaluate density estimate at (u1,u2)=(0.123,0.321)</span>
-<span class='fu'>dkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>dens.est</span>)</div><div class='output co'>#&gt; [1] 1.28916</div><div class='input'>
+<span class='fu'>dkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 1.28916</div><div class='input'>
 <span class='co'>## evaluate cdf estimate at (u1,u2)=(0.123,0.321)</span>
-<span class='fu'>pkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>dens.est</span>)</div><div class='output co'>#&gt; [1] 0.09779868</div><div class='input'>
+<span class='fu'>pkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.09779868</div><div class='input'>
 <span class='co'>## simulate 500 samples from density estimate</span>
-<span class='fu'>plot</span>(<span class='fu'>rkdecop</span>(<span class='fl'>500</span>, <span class='no'>dens.est</span>))</div><img src='dkdecop-8.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>plot</span>(<span class='fu'>rkdecop</span>(<span class='fl'>500</span>, <span class='no'>fit</span>))</div><img src='dkdecop-8.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

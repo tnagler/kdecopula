@@ -114,13 +114,13 @@ likelihood, number of observations and effective number of parameters ("df").</p
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## load data and transform with empirical cdf</span>
 <span class='fu'>data</span>(<span class='no'>wdbc</span>)
-<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>)/(<span class='fu'>length</span>(<span class='no'>x</span>)+<span class='fl'>1</span>))
+<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>) / (<span class='fu'>length</span>(<span class='no'>x</span>) + <span class='fl'>1</span>))
 
 <span class='co'>## estimation of copula density of variables 5 and 6</span>
-<span class='no'>dens.est</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
 
 <span class='co'>## compute fit statistics</span>
-<span class='fu'>logLik</span>(<span class='no'>dens.est</span>)</div><div class='output co'>#&gt; 'log Lik.' 190.9658 (df=12.46581)</div><div class='input'><span class='fu'>AIC</span>(<span class='no'>dens.est</span>)</div><div class='output co'>#&gt; [1] -357</div><div class='input'><span class='fu'>BIC</span>(<span class='no'>dens.est</span>)</div><div class='output co'>#&gt; [1] -302.8501</div><div class='input'>
+<span class='fu'>logLik</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 'log Lik.' 190.9658 (df=12.46581)</div><div class='input'><span class='fu'>AIC</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] -357</div><div class='input'><span class='fu'>BIC</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] -302.8501</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

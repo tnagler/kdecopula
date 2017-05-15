@@ -119,11 +119,11 @@ estimates more/less smooth manually.</p></td>
 estimation (e.g., Geenenens et al., 2014), 
 <code>"TLL1"</code>: transformation estimator with log-linear local likelihood
 estimation (Geenenens et al., 2014), 
-<code>"TLL2"</code>: transformation estimator with log-quadradtic local likelihood
+<code>"TLL2"</code>: transformation estimator with log-quadratic local likelihood
 estimation (Geenenens et al., 2014), 
 <code>"TLL1nn"</code>: transformation estimator with log-linear local likelihood
 estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), 
-<code>"TLL2nn"</code>: transformation estimator with log-quadradtic local likelihood
+<code>"TLL2nn"</code>: transformation estimator with log-quadratic local likelihood
 estimation and nearest-neighbor bandwidths (Geenenens et al., 2014), 
 <code>"TTPI"</code>: tapered transformation estimator with plug-in bandwidths
 (Wu and Wen, 2015), 
@@ -232,11 +232,11 @@ Master's Thesis, Technische Universitaet Muenchen,
     <pre class="examples"><div class='input'>
 <span class='co'>## load data and transform with empirical cdf</span>
 <span class='fu'>data</span>(<span class='no'>wdbc</span>)
-<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>)/(<span class='fu'>length</span>(<span class='no'>x</span>)+<span class='fl'>1</span>))
+<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>) / (<span class='fu'>length</span>(<span class='no'>x</span>) + <span class='fl'>1</span>))
 
 <span class='co'>## estimation of copula density of variables 5 and 6</span>
-<span class='no'>est</span> <span class='kw'>&lt;-</span> <span class='fu'>kdecop</span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
-<span class='fu'>summary</span>(<span class='no'>est</span>)</div><div class='output co'>#&gt; Kernel copula density estimate
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>kdecop</span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
+<span class='fu'>summary</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Kernel copula density estimate (tau = 0.49)
 #&gt; ------------------------------
 #&gt; Variables:    mean smoothness -- mean compactness 
 #&gt; Observations: 569 
@@ -245,13 +245,13 @@ Master's Thesis, Technische Universitaet Muenchen,
 #&gt;               B = matrix(c(0.71, 0.71, -0.71, 0.71), 2, 2)
 #&gt; ---
 #&gt; logLik: 190.97    AIC: -357    cAIC: -356.4    BIC: -302.85 
-#&gt; Effective number of parameters: 12.47</div><div class='input'><span class='fu'>plot</span>(<span class='no'>est</span>)</div><img src='kdecop-4.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>contour</span>(<span class='no'>est</span>)</div><img src='kdecop-6.png' alt='' width='540' height='400' /><div class='input'>
+#&gt; Effective number of parameters: 12.47</div><div class='input'><span class='fu'>plot</span>(<span class='no'>fit</span>)</div><img src='kdecop-4.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>contour</span>(<span class='no'>fit</span>)</div><img src='kdecop-6.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'>## evaluate density estimate at (u1,u2)=(0.123,0.321)</span>
-<span class='fu'><a href='dkdecop.html'>dkdecop</a></span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>est</span>)</div><div class='output co'>#&gt; [1] 1.28916</div><div class='input'>
+<span class='fu'><a href='dkdecop.html'>dkdecop</a></span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 1.28916</div><div class='input'>
 <span class='co'>## evaluate cdf estimate at (u1,u2)=(0.123,0.321)</span>
-<span class='fu'><a href='dkdecop.html'>pkdecop</a></span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>est</span>)</div><div class='output co'>#&gt; [1] 0.09779868</div><div class='input'>
+<span class='fu'><a href='dkdecop.html'>pkdecop</a></span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.09779868</div><div class='input'>
 <span class='co'>## simulate 500 samples from density estimate</span>
-<span class='fu'>plot</span>(<span class='fu'><a href='dkdecop.html'>rkdecop</a></span>(<span class='fl'>500</span>, <span class='no'>est</span>))  <span class='co'># pseudo-random</span></div><img src='kdecop-12.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='fu'><a href='dkdecop.html'>rkdecop</a></span>(<span class='fl'>500</span>, <span class='no'>est</span>, <span class='kw'>quasi</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))  <span class='co'># quasi-random</span></div><img src='kdecop-14.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>plot</span>(<span class='fu'><a href='dkdecop.html'>rkdecop</a></span>(<span class='fl'>500</span>, <span class='no'>fit</span>))  <span class='co'># pseudo-random</span></div><img src='kdecop-12.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>plot</span>(<span class='fu'><a href='dkdecop.html'>rkdecop</a></span>(<span class='fl'>500</span>, <span class='no'>fit</span>, <span class='kw'>quasi</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))  <span class='co'># quasi-random</span></div><img src='kdecop-14.png' alt='' width='540' height='400' /><div class='input'>
 
 </div></pre>
   </div>

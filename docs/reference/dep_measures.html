@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prediction method for <code>kdecop()</code> fits — predict.kdecopula • kdecopula</title>
+<title>Dependence measures of a <code>kdecop()</code> fit — dep_measures • kdecopula</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,17 +76,16 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Prediction method for <code>kdecop()</code> fits</h1>
+    <h1>Dependence measures of a <code>kdecop()</code> fit</h1>
     </div>
 
     
-    <p>Predicts the pdf, cdf, or (inverse) h-functions by calling <code>dkdecop()</code>,
-<code>pkdecop()</code>, or <code>hkdecop()</code>.</p>
+    <p>Calculates several dependence measures derived from the copula density. All
+measures except <code>"blomqvist"</code> are computed by quasi Monte Carlo methods
+(see <code><a href='dkdecop.html'>rkdecop()</a></code>.</p>
     
 
-    <pre class="usage"><span class='co'># S3 method for kdecopula</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='no'>newdata</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"pdf"</span>, <span class='kw'>stable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dep_measures</span>(<span class='no'>object</span>, <span class='kw'>measures</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>n_qmc</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>3</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -96,35 +95,60 @@
       <td><p>an object of class <code>kdecopula</code>.</p></td>
     </tr>
     <tr>
-      <th>newdata</th>
-      <td><p>evaluation point(s), a length two vector or a matrix with
-two columns.</p></td>
+      <th>measures</th>
+      <td><p>which measures to compute, see <em>Details</em>.</p></td>
     </tr>
     <tr>
-      <th>what</th>
-      <td><p>what to predict, one of <code>c("pdf", "cdf", "hfunc1", "hfunc2", "hinv1", "hinv2")</code>.</p></td>
+      <th>n_qmc</th>
+      <td><p>the number of quasi Monte Carlo samples.</p></td>
     </tr>
     <tr>
-      <th>stable</th>
-      <td><p>only used for <code>what = "pdf"</code>, see <code>dkdecop()</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>unused.</p></td>
+      <th>seed</th>
+      <td><p>the seed for quasi Monte Carlo integration.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A numeric vector of predictions.</p>
+    <p>A named vector of dependence measures.</p>
+<p>The following measures are available:</p><dl class='dl-horizontal'>
+<dt><code>"kendall"</code></dt><dd><p>Kendall's \(\tau\), see Nelsen (2007); computed as the
+sample version of a quasi Monte Carlo sample.</p></dd>
+<dt><code>"spearman"</code></dt><dd><p>Spearman's \(\rho\), see Nelsen (2007); computed as the
+sample version of a quasi Monte Carlo sample.</p></dd>
+<dt><code>"blomqvist"</code></dt><dd><p>Blomqvist's \(\beta\), see Nelsen (2007); computed
+as \(4C(0.5, 0.5) - 1\).</p></dd>
+<dt><code>"gini"</code></dt><dd><p>Gini's \(\gamma\), see Nelsen (2007); computed by quasi
+Monte Carlo integration.</p></dd>
+<dt><code>"vd_waerden"</code></dt><dd><p>van der Waerden's coefficient, see Genest and Verret
+(2005); computed as the sample version of a quasi Monte Carlo sample.</p></dd>
+<dt><code>"minfo"</code></dt><dd><p>mutual information, see Joe (1989); computed by quasi Monte
+Carlo integration.</p></dd>
+<dt><code>"linfoot"</code></dt><dd><p>Linfoot's correlation coefficient, see Joe (1989);
+computed by quasi Monte Carlo integration.</p></dd>
+</dl>
+
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Nelsen, R. (2007). An introduction to copulas. Springer Science
+&amp; Business Media, 2007.</p>
+<p>Genest, C., and Verret, F. (2005). Locally most powerful rank tests of
+independence for copula models. Journal of Nonparametric Statistics, 17(5)</p>
+<p>Joe, H. (1989). Relative Entropy Measures of Multivariate Dependence.
+Journal of the American Statistical Association, 84(405)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>wdbc</span>)
+    <pre class="examples"><div class='input'><span class='co'>## load data and transform with empirical cdf</span>
+<span class='fu'>data</span>(<span class='no'>wdbc</span>)
 <span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>) / (<span class='fu'>length</span>(<span class='no'>x</span>) + <span class='fl'>1</span>))
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
 
-<span class='fu'>all.equal</span>(<span class='fu'>predict</span>(<span class='no'>fit</span>, <span class='fu'>c</span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>)), <span class='fu'><a href='dkdecop.html'>dkdecop</a></span>(<span class='fu'>c</span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>), <span class='no'>fit</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>all.equal</span>(<span class='fu'>predict</span>(<span class='no'>fit</span>, <span class='no'>udat</span>, <span class='st'>"hfunc1"</span>), <span class='fu'><a href='hkdecop.html'>hkdecop</a></span>(<span class='no'>udat</span>, <span class='no'>fit</span>, <span class='kw'>cond.var</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='co'>## estimate copula density and calculate dependence measures</span>
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
+<span class='fu'>dep_measures</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;    kendall   spearman  blomqvist       gini vd_waerden      minfo    linfoot 
+#&gt;  0.4928176  0.6814890  0.4883190  0.5505876  0.6967170  0.3153931  0.6839786 </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -132,6 +156,8 @@ two columns.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
