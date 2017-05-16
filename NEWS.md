@@ -1,14 +1,17 @@
-kdecopula (under development
+kdecopula 0.9.0
 -------------------------------
 
 NEW FEATURES
 
-   * improved bandwidth selection.
+   * user visible functions for bandwidth selection (`bw_xxx()`) with 
+     documentation.
    
    * `predict()`, `fitted()`, and `simulate()` generics.
    
-   * method `TLL2nn` is the default method again.
-
+   * make `TLL2nn` the default method.
+   
+   * new function `dep_measures()` for calculating dependence measures.
+   
 
 kdecopula 0.8.1
 -------------------------------

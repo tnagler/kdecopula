@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>H-function and inverse of kdecopula object — hkdecop • kdecopula</title>
+<title>H-function and inverse of a <code>kdecop()</code> fit — hkdecop • kdecopula</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,14 +76,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>H-function and inverse of kdecopula object</h1>
+    <h1>H-function and inverse of a <code>kdecop()</code> fit</h1>
     </div>
 
     
     <p>Evaluates the h-function (or its inverse) corresponding to a <code>kdecopula</code>
 object. H-functions are conditional distribution functions obtained by
 integrating the copula density w.r.t. to one of its arguments (see also
-<code><a href='http://www.rdocumentation.org/packages/VineCopula/topics/BiCopHfunc'>BiCopHfunc</a></code>).</p>
+<code><a href='http://www.rdocumentation.org/packages/VineCopula/topics/BiCopHfunc'>VineCopula::BiCopHfunc()</a></code>.</p>
     
 
     <pre class="usage"><span class='fu'>hkdecop</span>(<span class='no'>u</span>, <span class='no'>obj</span>, <span class='no'>cond.var</span>, <span class='kw'>inverse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -102,11 +102,11 @@ integrating the copula density w.r.t. to one of its arguments (see also
     <tr>
       <th>cond.var</th>
       <td><p>integer; <code>cond.var = 1</code> conditions on the first variable,
-<code>cond.var = 2</code> on the secon.</p></td>
+<code>cond.var = 2</code> on the second.</p></td>
     </tr>
     <tr>
       <th>inverse</th>
-      <td><p>logical; indicates wether the h-function or its inverse shall be
+      <td><p>logical; indicates whether the h-function or its inverse shall be
 calculated.</p></td>
     </tr>
     </table>
@@ -116,22 +116,17 @@ calculated.</p></td>
     <p>A length \(n\) vector of the (inverse) h-function evaluated at
 <code>u</code>.</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='kdecop.html'>kdecop</a></code>,
-<code><a href='http://www.rdocumentation.org/packages/VineCopula/topics/BiCopHfunc'>BiCopHfunc</a></code></p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## load data and transform with empirical cdf</span>
 <span class='fu'>data</span>(<span class='no'>wdbc</span>)
-<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>)/(<span class='fu'>length</span>(<span class='no'>x</span>)+<span class='fl'>1</span>))
+<span class='no'>udat</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>wdbc</span>[, -<span class='fl'>1</span>], <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>rank</span>(<span class='no'>x</span>) / (<span class='fu'>length</span>(<span class='no'>x</span>) + <span class='fl'>1</span>))
 
 <span class='co'>## estimation of copula density of variables 5 and 6</span>
-<span class='no'>dens.est</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
-<span class='fu'>plot</span>(<span class='no'>dens.est</span>)</div><img src='hkdecop-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
+<span class='fu'>plot</span>(<span class='no'>fit</span>)</div><img src='hkdecop-2.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'>## evaluate h-function estimate and its inverse at (u1|u2) = (0.123 | 0.321)</span>
-<span class='fu'>hkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>dens.est</span>, <span class='kw'>cond.var</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 0.116027</div><div class='input'><span class='fu'>hkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>dens.est</span>, <span class='kw'>cond.var</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>inverse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 0.1283875</div><div class='input'>
+<span class='fu'>hkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>fit</span>, <span class='kw'>cond.var</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] 0.116027</div><div class='input'><span class='fu'>hkdecop</span>(<span class='fu'>c</span>(<span class='fl'>0.123</span>, <span class='fl'>0.321</span>), <span class='no'>fit</span>, <span class='kw'>cond.var</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>inverse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 0.1283875</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -140,8 +135,6 @@ calculated.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

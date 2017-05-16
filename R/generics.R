@@ -1,13 +1,19 @@
 #' @export
 print.kdecopula <- function(x, ...) {
+    # Kendall's tau
+    tau <- dep_measures(x, "kendall")
+    
+    # Main text
     cat("Kernel copula density estimate '", x$method, "'", sep = "")
+    
     # add variable names if available
     nms <- colnames(x$udata)
     if (length(nms) == 2) {
         cat(":", nms[1], "--", nms[2])
     }
     # add Kendall's tau
-    cat(" (tau = ", formatC(dep_measures(x, "kendall"), 2), ")", sep = "")
+    cat(" (tau = ", formatC(tau, 2), ")", sep = "")
+    cat("\n")
     invisible(x)
 }
 
@@ -16,8 +22,9 @@ print.kdecopula <- function(x, ...) {
 #' @importFrom stats logLik
 #' @export
 summary.kdecopula <- function(object, ...) {
+    tau <- dep_measures(object, "kendall")
     cat("Kernel copula density estimate")
-    cat(" (tau = ", formatC(dep_measures(object, "kendall"), 2), ")\n", sep = "")
+    cat(" (tau = ", formatC(tau, 2), ")\n", sep = "")
     cat("------------------------------\n")
 
     ## add variable names if available
@@ -90,6 +97,7 @@ summary.kdecopula <- function(object, ...) {
         cat("Effective number of parameters:",
             round(effp, 2))
     }
+    cat("\n")
     
     ## return with fit statistics
     invisible(object)
