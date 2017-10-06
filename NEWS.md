@@ -1,3 +1,12 @@
+kdecopula 0.9.1
+-------------------------------
+
+BUG FIXES
+
+   * fix bug in interpolation near boundaries (interpolated in wrong cell, see
+     #2, #3).
+ 
+
 kdecopula 0.9.0
 -------------------------------
 
