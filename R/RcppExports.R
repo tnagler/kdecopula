@@ -11,7 +11,7 @@
 #' 
 #' @noRd
 eval_mr <- function(uev, dat, b) {
-    .Call('kdecopula_eval_mr', PACKAGE = 'kdecopula', uev, dat, b)
+    .Call(`_kdecopula_eval_mr`, uev, dat, b)
 }
 
 #' Evaluate the beta kernel estimator
@@ -24,7 +24,7 @@ eval_mr <- function(uev, dat, b) {
 #' 
 #' @noRd
 eval_beta <- function(uev, dat, b) {
-    .Call('kdecopula_eval_beta', PACKAGE = 'kdecopula', uev, dat, b)
+    .Call(`_kdecopula_eval_beta`, uev, dat, b)
 }
 
 #' Evaluate the transformation estimator 
@@ -37,7 +37,7 @@ eval_beta <- function(uev, dat, b) {
 #' 
 #' @noRd
 eval_t <- function(uev, dat, B) {
-    .Call('kdecopula_eval_t', PACKAGE = 'kdecopula', uev, dat, B)
+    .Call(`_kdecopula_eval_t`, uev, dat, B)
 }
 
 #' Evaluate an h-function corresponding to a copula density estimate
@@ -51,7 +51,7 @@ eval_t <- function(uev, dat, B) {
 #' 
 #' @noRd
 eval_hfunc_2d <- function(uev, cond_var, vals, grid) {
-    .Call('kdecopula_eval_hfunc_2d', PACKAGE = 'kdecopula', uev, cond_var, vals, grid)
+    .Call(`_kdecopula_eval_hfunc_2d`, uev, cond_var, vals, grid)
 }
 
 #' Evaluate the inverse of an h-function corresponding to a copula density 
@@ -66,7 +66,7 @@ eval_hfunc_2d <- function(uev, cond_var, vals, grid) {
 #' 
 #' @noRd
 inv_hfunc <- function(uev, cond_var, vals, grid) {
-    .Call('kdecopula_inv_hfunc', PACKAGE = 'kdecopula', uev, cond_var, vals, grid)
+    .Call(`_kdecopula_inv_hfunc`, uev, cond_var, vals, grid)
 }
 
 #' Evaluate the cdf corresponding to a copula density estimate
@@ -81,7 +81,7 @@ inv_hfunc <- function(uev, cond_var, vals, grid) {
 #' 
 #' @noRd
 eval_cdf <- function(uev, vals, grid, helpgrid, helpind) {
-    .Call('kdecopula_eval_cdf', PACKAGE = 'kdecopula', uev, vals, grid, helpgrid, helpind)
+    .Call(`_kdecopula_eval_cdf`, uev, vals, grid, helpgrid, helpind)
 }
 
 #' Integrate a spline interpolant
@@ -105,11 +105,11 @@ NULL
 NULL
 
 interp_2d <- function(x, vals, grid, tmpgrid, tmpvals) {
-    .Call('kdecopula_interp_2d', PACKAGE = 'kdecopula', x, vals, grid, tmpgrid, tmpvals)
+    .Call(`_kdecopula_interp_2d`, x, vals, grid, tmpgrid, tmpvals)
 }
 
 interp <- function(x, vals, grid, helpind) {
-    .Call('kdecopula_interp', PACKAGE = 'kdecopula', x, vals, grid, helpind)
+    .Call(`_kdecopula_interp`, x, vals, grid, helpind)
 }
 
 #' Gaussian kernel (univariate)
@@ -119,7 +119,7 @@ interp <- function(x, vals, grid, helpind) {
 #' 
 #' @noRd
 kern_gauss_1d <- function(x, b) {
-    .Call('kdecopula_kern_gauss_1d', PACKAGE = 'kdecopula', x, b)
+    .Call(`_kdecopula_kern_gauss_1d`, x, b)
 }
 
 #' Gaussian product kernel (bivariate)
@@ -131,7 +131,7 @@ kern_gauss_1d <- function(x, b) {
 #' @param b bandwidth parameter.
 #' @noRd
 kern_gauss_2d <- function(x, y, b) {
-    .Call('kdecopula_kern_gauss_2d', PACKAGE = 'kdecopula', x, y, b)
+    .Call(`_kdecopula_kern_gauss_2d`, x, y, b)
 }
 
 #' Renormalize a d-dimensional copula density
@@ -144,6 +144,6 @@ kern_gauss_2d <- function(x, y, b) {
 #'
 #' @noRd
 renorm <- function(x, grid, times, helpind) {
-    .Call('kdecopula_renorm', PACKAGE = 'kdecopula', x, grid, times, helpind)
+    .Call(`_kdecopula_renorm`, x, grid, times, helpind)
 }
 
