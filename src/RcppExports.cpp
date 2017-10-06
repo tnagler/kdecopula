@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // eval_mr
 arma::vec eval_mr(const arma::mat& uev, const arma::mat& dat, const double& b);
-RcppExport SEXP kdecopula_eval_mr(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
+RcppExport SEXP _kdecopula_eval_mr(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 // eval_beta
 arma::vec eval_beta(const arma::mat& uev, const arma::mat& dat, double b);
-RcppExport SEXP kdecopula_eval_beta(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
+RcppExport SEXP _kdecopula_eval_beta(SEXP uevSEXP, SEXP datSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -34,7 +34,7 @@ END_RCPP
 }
 // eval_t
 arma::vec eval_t(const arma::mat& uev, const arma::mat& dat, const arma::mat& B);
-RcppExport SEXP kdecopula_eval_t(SEXP uevSEXP, SEXP datSEXP, SEXP BSEXP) {
+RcppExport SEXP _kdecopula_eval_t(SEXP uevSEXP, SEXP datSEXP, SEXP BSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -47,7 +47,7 @@ END_RCPP
 }
 // eval_hfunc_2d
 Rcpp::NumericVector eval_hfunc_2d(const Rcpp::NumericMatrix& uev, const int& cond_var, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid);
-RcppExport SEXP kdecopula_eval_hfunc_2d(SEXP uevSEXP, SEXP cond_varSEXP, SEXP valsSEXP, SEXP gridSEXP) {
+RcppExport SEXP _kdecopula_eval_hfunc_2d(SEXP uevSEXP, SEXP cond_varSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -61,7 +61,7 @@ END_RCPP
 }
 // inv_hfunc
 Rcpp::NumericVector inv_hfunc(const Rcpp::NumericMatrix& uev, const int& cond_var, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid);
-RcppExport SEXP kdecopula_inv_hfunc(SEXP uevSEXP, SEXP cond_varSEXP, SEXP valsSEXP, SEXP gridSEXP) {
+RcppExport SEXP _kdecopula_inv_hfunc(SEXP uevSEXP, SEXP cond_varSEXP, SEXP valsSEXP, SEXP gridSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -75,7 +75,7 @@ END_RCPP
 }
 // eval_cdf
 Rcpp::NumericVector eval_cdf(const Rcpp::NumericMatrix& uev, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid, const Rcpp::NumericMatrix& helpgrid, const Rcpp::IntegerMatrix& helpind);
-RcppExport SEXP kdecopula_eval_cdf(SEXP uevSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpgridSEXP, SEXP helpindSEXP) {
+RcppExport SEXP _kdecopula_eval_cdf(SEXP uevSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpgridSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -90,7 +90,7 @@ END_RCPP
 }
 // interp_2d
 Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x, const Rcpp::NumericMatrix& vals, const Rcpp::NumericVector& grid, Rcpp::NumericVector tmpgrid, Rcpp::NumericVector tmpvals);
-RcppExport SEXP kdecopula_interp_2d(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP tmpgridSEXP, SEXP tmpvalsSEXP) {
+RcppExport SEXP _kdecopula_interp_2d(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP tmpgridSEXP, SEXP tmpvalsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -105,7 +105,7 @@ END_RCPP
 }
 // interp
 Rcpp::NumericVector interp(const Rcpp::NumericMatrix& x, const Rcpp::NumericVector& vals, const Rcpp::NumericVector& grid, const Rcpp::IntegerMatrix& helpind);
-RcppExport SEXP kdecopula_interp(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpindSEXP) {
+RcppExport SEXP _kdecopula_interp(SEXP xSEXP, SEXP valsSEXP, SEXP gridSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -119,7 +119,7 @@ END_RCPP
 }
 // kern_gauss_1d
 arma::vec kern_gauss_1d(const arma::vec& x, const double& b);
-RcppExport SEXP kdecopula_kern_gauss_1d(SEXP xSEXP, SEXP bSEXP) {
+RcppExport SEXP _kdecopula_kern_gauss_1d(SEXP xSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -131,7 +131,7 @@ END_RCPP
 }
 // kern_gauss_2d
 arma::vec kern_gauss_2d(const arma::vec& x, const arma::vec& y, const double& b);
-RcppExport SEXP kdecopula_kern_gauss_2d(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP) {
+RcppExport SEXP _kdecopula_kern_gauss_2d(SEXP xSEXP, SEXP ySEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -144,7 +144,7 @@ END_RCPP
 }
 // renorm
 Rcpp::NumericVector renorm(const Rcpp::NumericVector& x, const Rcpp::NumericVector& grid, const int times, const Rcpp::IntegerMatrix& helpind);
-RcppExport SEXP kdecopula_renorm(SEXP xSEXP, SEXP gridSEXP, SEXP timesSEXP, SEXP helpindSEXP) {
+RcppExport SEXP _kdecopula_renorm(SEXP xSEXP, SEXP gridSEXP, SEXP timesSEXP, SEXP helpindSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -155,4 +155,24 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(renorm(x, grid, times, helpind));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_kdecopula_eval_mr", (DL_FUNC) &_kdecopula_eval_mr, 3},
+    {"_kdecopula_eval_beta", (DL_FUNC) &_kdecopula_eval_beta, 3},
+    {"_kdecopula_eval_t", (DL_FUNC) &_kdecopula_eval_t, 3},
+    {"_kdecopula_eval_hfunc_2d", (DL_FUNC) &_kdecopula_eval_hfunc_2d, 4},
+    {"_kdecopula_inv_hfunc", (DL_FUNC) &_kdecopula_inv_hfunc, 4},
+    {"_kdecopula_eval_cdf", (DL_FUNC) &_kdecopula_eval_cdf, 5},
+    {"_kdecopula_interp_2d", (DL_FUNC) &_kdecopula_interp_2d, 5},
+    {"_kdecopula_interp", (DL_FUNC) &_kdecopula_interp, 4},
+    {"_kdecopula_kern_gauss_1d", (DL_FUNC) &_kdecopula_kern_gauss_1d, 2},
+    {"_kdecopula_kern_gauss_2d", (DL_FUNC) &_kdecopula_kern_gauss_2d, 3},
+    {"_kdecopula_renorm", (DL_FUNC) &_kdecopula_renorm, 4},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_kdecopula(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
