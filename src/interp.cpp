@@ -109,12 +109,12 @@ Rcpp::NumericVector interp_2d(const Rcpp::NumericMatrix& x,
     int N = x.nrow();
     int m = grid.size();
     NumericVector y(4), out(N), a(4);
-    int i = 0;
-    int j = 0;
-    int i0, i3;
+    int i, j, i0, i3;
 
     for (int n = 0; n < N; ++n) {
         // find cell
+        i = 0;
+        j = 0;
         for (int k = 1; k < (m-1); ++k) {
             if((x(n, 0) >= grid[k])) i = k;
             if((x(n, 1) >= grid[k])) j = k;
