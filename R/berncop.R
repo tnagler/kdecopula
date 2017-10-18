@@ -21,27 +21,27 @@ bern_coefs <- function(u, m) {
     # initialize coefficients with empirical frequencies
     ucut <- lapply(1:2, function(i) cut(u[, i], 0:(m + 1) / (m + 1)))
     cf0 <- table(ucut[[1]], ucut[[2]]) / nrow(u)
-    
-    # set up quadratic programming problem
-    m <- m + 1
-    D <- diag(m^2)
-    d <- as.vector(cf0)
-    A1 <- A2 <- matrix(0, m, m^2)
-    for (i in 1:m) {
-        A1[i, (i - 1) * m + 1:m] <- 1
-        A2[i, m * (1:m) - m + i] <- 1
-    }
-    A3 <- diag(m^2)
-    A <- t(rbind(A1, A2, A3))
-    b <- c(rep(1 / m, 2 * m), rep(0, m^2))
-    
-    # solve
-    sol <- tryCatch(solve.QP(D, d, A, b, meq = 2 * m)$solution,
-                    error = function(e) d)
-    sol[sol < 0] <- 0
+    as.matrix(cf0)
+    # # set up quadratic programming problem
+    # m <- m + 1
+    # D <- diag(m^2)
+    # d <- as.vector(cf0)
+    # A1 <- A2 <- matrix(0, m, m^2)
+    # for (i in 1:m) {
+    #     A1[i, (i - 1) * m + 1:m] <- 1
+    #     A2[i, m * (1:m) - m + i] <- 1
+    # }
+    # A3 <- diag(m^2)
+    # A <- t(rbind(A1, A2, A3))
+    # b <- c(rep(1 / m, 2 * m), rep(0, m^2))
+    # 
+    # # solve
+    # sol <- tryCatch(solve.QP(D, d, A, b, meq = 2 * m)$solution,
+    #                 error = function(e) d)
+    # sol[sol < 0] <- 0
     
     # return as matrix
-    matrix(sol, m, m)
+    # matrix(sol, m, m)
 }
 
 #' Fit a Bernstein copula to the data
