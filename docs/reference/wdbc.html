@@ -18,12 +18,23 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+  
+  
+<meta property="og:title" content="Wisconsin Diagnostic Breast Cancer (WDBC) — wdbc" />
 
+<meta property="og:description" content="The data contain measurements on cells in suspicious lumps in a woman's
+breast. Features are computed from a digitized image of a fine needle
+aspirate (FNA) of a breast mass. They describe characteristics of the cell
+nuclei present in the image. All samples are classified as either
+benign or malignant." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -80,10 +91,10 @@
     </div>
 
     
-    <p>The data contain measurements on cells in suspicious lumps in a women's
+    <p>The data contain measurements on cells in suspicious lumps in a woman's
 breast. Features are computed from a digitized image of a fine needle
 aspirate (FNA) of a breast mass. They describe characteristics of the cell
-nuclei present in the image. All samples are classsified as either
+nuclei present in the image. All samples are classified as either
 <em>benign</em> or <em>malignant</em>.</p>
     
 
@@ -91,12 +102,12 @@ nuclei present in the image. All samples are classsified as either
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p><code>wdbc</code> is a <code>data.frame</code> with 31 columns. The first column
-indicates wether the sample is classified as benign (<code>B</code>) or malignant
+indicates whether the sample is classified as benign (<code>B</code>) or malignant
 (<code>M</code>). The remaining columns contain measurements for 30 features.</p>
     
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <p><a href = 'http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)'>http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)</a>
+    <p><a href='http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)'>http://mlr.cs.umass.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)</a>
     Bache, K. &amp; Lichman, M. (2013).
 UCI Machine Learning Repository.
 Irvine, CA: University of California, School of Information and Computer
@@ -200,7 +211,7 @@ of two linearly inseparable sets", Optimization Methods and Software 1,
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
