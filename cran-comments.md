@@ -1,3 +1,6 @@
+The DOI in the CITATION and DESCRIPTION is for a new JSS publication that will 
+be registered after publication on CRAN.
+
 ## Test environments
 * ubuntu 14.04 (devel, release, oldrel) 
 * win-builder (devel)
