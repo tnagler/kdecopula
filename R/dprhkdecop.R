@@ -21,14 +21,23 @@
 #' \code{\link[kdecopula:plot.kdecopula]{plot.kdecopula}}, 
 #' \code{\link[qrng:ghalton]{ghalton}}
 #' 
-#' @references Geenens, G., Charpentier, A., and Paindaveine, D. (2017). Probit
+#' @references 
+#' #' Nagler, T. (2018)
+#' kdecopula: An R Package for the Kernel Estimation of Bivariate Copula 
+#' Densities. 
+#' Journal of Statistical Software 84(7), 1-22
+#' \cr \cr#' 
+#' Geenens, G., Charpentier, A., and Paindaveine, D. (2017). Probit
 #' transformation for nonparametric kernel estimation of the copula density. 
-#' Bernoulli, 23(3), 1848-1873. \cr \cr Nagler, T. (2014). Kernel Methods for
+#' Bernoulli, 23(3), 1848-1873. 
+#' \cr \cr 
+#' Nagler, T. (2014). Kernel Methods for
 #' Vine Copula Estimation. Master's Thesis, Technische Universitaet Muenchen, 
-#' \url{https://mediatum.ub.tum.de/node?id=1231221} \cr \cr Cambou, T., Hofert,
+#' \url{https://mediatum.ub.tum.de/node?id=1231221} 
+#' \cr \cr 
+#' Cambou, T., Hofert,
 #' M., Lemieux, C. (2015). A primer on quasi-random numbers for copula models, 
 #' arXiv:1508.03483
-#' 
 #' 
 #' @examples
 #' 

@@ -121,6 +121,11 @@ plot(rkdecop(500, fit, quasi = TRUE))  # quasi-random
 
 }
 \references{
+Nagler, T. (2018)
+kdecopula: An R Package for the Kernel Estimation of Bivariate Copula
+Densities.
+Journal of Statistical Software 84(7), 1-22
+\cr \cr
 Geenens, G., Charpentier, A., and Paindaveine, D. (2017).
 Probit transformation for nonparametric kernel estimation of the copula
 density.

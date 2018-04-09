@@ -48,6 +48,12 @@ contour(obj)  # contour plot with standard normal margins
 contour(obj, margins = "unif")  # contour plot of copula density
 
 }
+\references{
+Nagler, T. (2018)
+kdecopula: An R Package for the Kernel Estimation of Bivariate Copula
+Densities.
+Journal of Statistical Software 84(7), 1-22
+}
 \seealso{
 \code{\link[kdecopula:kdecop]{kdecop}},
 \code{\link[graphics:contour]{contour}},
