@@ -84,3 +84,18 @@ dberncop <- function(uev, object) {
     }
     est
 }
+
+#' Simulates from 
+#'
+#' @param unew data
+#' @param object berncop object
+#'
+#' @return Bernstein copula density evaluated at uev.
+#' @noRd
+rberncop <- function(n, object) {
+    m <- object$m
+    idx <- sample(seq_len((m + 1)^2), n, replace = TRUE, prob = c(object$coefs))
+    ij <- expand.grid(0:m, 0:m)[idx, ]
+    cbind(rbeta(n, ij[, 1] + 1, m + 1 - ij[, 1]), 
+          rbeta(n, ij[, 2] + 1, m + 1 - ij[, 2]))
+}
