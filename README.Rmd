@@ -13,11 +13,9 @@ knitr::opts_chunk$set(
 kdecopula
 =========
 
-[![Build status Linux](https://travis-ci.org/tnagler/kdecopula.svg?branch=master)](https://travis-ci.org/tnagler/kdecopula)
-[![Build status Windows](https://ci.appveyor.com/api/projects/status/github/tnagler/kdecopula?branch=master&svg=true)](https://ci.appveyor.com/project/tnagler/kdecopula)
-[![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=master)](https://codecov.io/github/tnagler/kdecopula?branch=master)
-[![CRAN version](http://www.r-pkg.org/badges/version/kdecopula)](https://cran.r-project.org/package=kdecopula)
-[![CRAN downloads](http://cranlogs.r-pkg.org/badges/kdecopula)](https://cran.r-project.org/package=kdecopula) 
+[![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=master)](https://codecov.io/github/tnagler/kdecopula?branch=main)
+[![CRAN version](https://www.r-pkg.org/badges/version/kdecopula)](https://CRAN.R-project.org/package=kdecopula)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/kdecopula)](https://CRAN.R-project.org/package=kdecopula) 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 This package provides fast implementations of kernel estimators for the copula 
@@ -194,10 +192,11 @@ application in finance. Risk Books.
 
 Geenens, G., Charpentier, A., and Paindaveine, D. (2014). Probit transformation
 for nonparametric kernel estimation of the copula density. 
-[*arXiv:1404.4414 (stat.ME)*](arxiv.org/abs/1404.4414).
+[*arXiv:1404.4414 (stat.ME)*](https://arxiv.org/abs/1404.4414).
 
 Nagler, T. (2014). Kernel Methods for Vine Copula Estimation. [*Master's Thesis,
 Technische Universität München*](https://mediatum.ub.tum.de/node?id=1231221)
 
-Wen, K. and Wu, X. (2015). Transformation-Kernel Estimation of the Copula 
-Density, Working paper, [preprint](http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf)
+Wen, K. and Wu, X. (2018).
+Transformation-Kernel Estimation of Copula Densities.
+*Journal of Business & Economic Statistics*, 38(1), 148–164.

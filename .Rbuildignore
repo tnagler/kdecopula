@@ -7,6 +7,6 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^revdep$
-^docs$
+^\docs$
 ^_pkgdown\.yml$
-
+docs

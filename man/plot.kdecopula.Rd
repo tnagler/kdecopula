@@ -26,8 +26,8 @@ flipped exponential margins. Default is \code{"norm"} for \code{type =
 grid; default is 100 for \code{type = "contour"}, and 25 for \code{type =
 "surface"}.}
 
-\item{\dots}{optional arguments passed to \code{\link{contour}} or
-\code{\link[lattice]{wireframe}}.}
+\item{\dots}{optional arguments passed to \code{\link[graphics:contour]{contour}}
+or \code{\link[lattice:wireframe]{wireframe}}.}
 }
 \description{
 Produces perspective or contour plots for a \code{kdecopula} object.

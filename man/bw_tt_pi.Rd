@@ -23,10 +23,9 @@ vector of length 4; entries are \eqn{(h, \rho, \theta_1, \theta_2)}.
 The smoothing parameters are selected by the method of Wen and Wu (2015).
 }
 \references{
-Wen, K. and Wu, X. (2015).
-Transformation-Kernel Estimation of the Copula Density,
-Working paper,
-\url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
+Wen, K. and Wu, X. (2018).
+Transformation-Kernel Estimation of Copula Densities
+Journal of Business & Economic Statistics, 38(1), 148–164.
 }
 \author{
 Kuangyu Wen

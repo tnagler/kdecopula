@@ -22,10 +22,9 @@
 #' @author Kuangyu Wen
 #' 
 #' @references 
-#' Wen, K. and Wu, X. (2015).
-#' Transformation-Kernel Estimation of the Copula Density,
-#' Working paper,
-#' \url{http://agecon2.tamu.edu/people/faculty/wu-ximing/agecon2/public/copula.pdf}
+#' Wen, K. and Wu, X. (2018).
+#' Transformation-Kernel Estimation of Copula Densities
+#' Journal of Business & Economic Statistics, 38(1), 148–164.
 #' 
 #' @noRd
 eval_tt <- function(uev, udata, bw) {
