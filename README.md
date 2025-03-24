@@ -1,13 +1,13 @@
 
 # kdecopula
 
-[![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=master)](https://codecov.io/github/tnagler/kdecopula?branch=main)
+[![codecov.io](https://codecov.io/github/tnagler/kdecopula/coverage.svg?branch=main)](https://app.codecov.io/github/tnagler/kdecopula?branch=main)
 [![CRAN
 version](https://www.r-pkg.org/badges/version/kdecopula)](https://CRAN.R-project.org/package=kdecopula)
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/kdecopula)](https://CRAN.R-project.org/package=kdecopula)
 [![License: GPL
-v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This package provides fast implementations of kernel estimators for the
 copula density. Due to its several plotting options it is particularly
@@ -16,7 +16,7 @@ further used for flexible nonparametric estimation of copula densities
 and resampling.
 
 For detailed documentation, see the [package
-vignette](https://arxiv.org/pdf/1603.04229.pdf) and the [API
+vignette](https://arxiv.org/pdf/1603.04229) and the [API
 documentation](https://tnagler.github.io/kdecopula/reference/index.html).
 
 ## Table of contents
@@ -74,8 +74,8 @@ The package provides the following functions:
 
   - `logLik`, `AIC`, `BIC`: Extracts fit statistics.
 
-See the [package
-documentation](https://cran.r-project.org/web/packages/kdecopula/kdecopula.pdf)
+See the [API
+documentation](https://tnagler.github.io/kdecopula/reference/index.html)
 for more details on arguments and options.
 
 ------------------------------------------------------------------------
