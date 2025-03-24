@@ -12,3 +12,4 @@ src/kdecopula.dll
 *.dll
 .directory
 *Rplots.pdf
+revdep/

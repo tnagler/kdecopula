@@ -1,13 +1,14 @@
 Package: kdecopula
 Type: Package
 Title: Kernel Smoothing for Bivariate Copula Densities
-Version: 0.9.1
+Version: 0.9.2
 Authors@R: c(
     person("Thomas", "Nagler", , "thomas.nagler@tum.de", c("aut", "cre")),
     person("Kuangyu", "Wen",, role = "ctb")
     )
 Description: Provides fast implementations of kernel smoothing techniques for
-    bivariate copula densities, in particular density estimation and resampling.
+    bivariate copula densities, in particular density estimation and resampling,
+    see Nagler (2018) <doi:10.18637/jss.v084.i07>. 
 URL: https://github.com/tnagler/kdecopula
 BugReports: https://github.com/tnagler/kdecopula/issues
 Depends:

@@ -8,8 +8,13 @@
 <title>Kernel Smoothing for Bivariate Copula Densities • kdecopula</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Kernel Smoothing for Bivariate Copula Densities">
+<meta property="og:description" content="Provides fast implementations of kernel smoothing techniques for
+    bivariate copula densities, in particular density estimation and resampling,
+    see Nagler (2018) &lt;doi:10.18637/jss.v084.i07&gt;. ">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -93,7 +98,7 @@
 </li>
 <li>
 <p>the latest development version:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"tnagler/kdecopula"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"tnagler/kdecopula"</span>)</code></pre></div>
 </li>
 </ul>
 </div>
@@ -125,7 +130,7 @@
 <p>Let’s consider some variables of the <em>Wiscon diagnostic breast cancer</em> data included in this package. The data are transformed to pseudo-observations of the copula by the empirical probability integral/rank transform:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(kdecopula)
 <span class="kw">data</span>(wdbc)  <span class="co"># load data</span>
-u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">8</span>)], <span class="dv">2</span>, rank) /<span class="st"> </span>(<span class="kw">nrow</span>(wdbc) +<span class="st"> </span><span class="dv">1</span>)  <span class="co"># empirical PIT</span>
+u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">8</span>)], <span class="dv">2</span>, rank) <span class="op">/</span><span class="st"> </span>(<span class="kw">nrow</span>(wdbc) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)  <span class="co"># empirical PIT</span>
 <span class="kw">plot</span>(u)  <span class="co"># scatter plot</span></code></pre></div>
 <p><img src="inst/README-unnamed-chunk-3-1.png" width="384"></p>
 <p>We see that the data are slightly asymmetric w.r.t. both diagonals. Common parametric copula models are usually not flexible enough to reflect this. Let’s see how a kernel estimator does.</p>
@@ -161,12 +166,12 @@ u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class
 <p><img src="inst/README-unnamed-chunk-7-1.png" width="384"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">contour</span>(kde.fit, <span class="dt">margins =</span> <span class="st">"unif"</span>)</code></pre></div>
 <p><img src="inst/README-unnamed-chunk-8-1.png" width="384"></p>
-<p>You can also pass further arguments to the <code>...</code> argument to refine the aesthetics. The arguments are forwaded to<br><code>lattice::wireframe</code> or <code>graphics::contour</code>, respectively.</p>
+<p>You can also pass further arguments to the <code>...</code> argument to refine the aesthetics. The arguments are forwaded to<br><code><a href="http://www.rdocumentation.org/packages/lattice/topics/cloud">lattice::wireframe</a></code> or <code><a href="http://www.rdocumentation.org/packages/graphics/topics/contour">graphics::contour</a></code>, respectively.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(kde.fit, 
      <span class="dt">zlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>),  <span class="co"># z-axis limits</span>
-     <span class="dt">screen =</span> <span class="kw">list</span>(<span class="dt">x =</span> -<span class="dv">75</span>, <span class="dt">z =</span> <span class="dv">45</span>),  <span class="co"># rotate screen</span>
+     <span class="dt">screen =</span> <span class="kw">list</span>(<span class="dt">x =</span> <span class="op">-</span><span class="dv">75</span>, <span class="dt">z =</span> <span class="dv">45</span>),  <span class="co"># rotate screen</span>
      <span class="dt">xlab =</span> <span class="kw">list</span>(<span class="dt">rot =</span> <span class="dv">25</span>),  <span class="co"># labels can be rotated as well</span>
-     <span class="dt">ylab =</span> <span class="kw">list</span>(<span class="dt">label =</span> <span class="st">"other label"</span>, <span class="dt">rot =</span> -<span class="dv">25</span>))  </code></pre></div>
+     <span class="dt">ylab =</span> <span class="kw">list</span>(<span class="dt">label =</span> <span class="st">"other label"</span>, <span class="dt">rot =</span> <span class="op">-</span><span class="dv">25</span>))  </code></pre></div>
 <p><img src="inst/README-unnamed-chunk-9-1.png" width="384"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">contour</span>(kde.fit, <span class="dt">col =</span> <span class="kw">terrain.colors</span>(<span class="dv">30</span>), <span class="dt">levels =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">0.3</span>, <span class="dt">by =</span> <span class="fl">0.01</span>))</code></pre></div>
 <p><img src="inst/README-unnamed-chunk-10-1.png" width="384"></p>
@@ -177,10 +182,10 @@ u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class
 <p>The density and <em>cdf</em> can be computed easily:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/dkdecop.html">dkdecop</a></span>(<span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>), kde.fit)  <span class="co"># estimated copula density</span>
 <span class="co">#&gt; [1] 1.691764</span>
-<span class="kw"><a href="reference/dkdecop.html">pkdecop</a></span>(<span class="kw">cbind</span>(<span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>)), kde.fit) <span class="co"># corresponding copula cdf</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/kdecopula/topics/dkdecop">pkdecop</a></span>(<span class="kw">cbind</span>(<span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>)), kde.fit) <span class="co"># corresponding copula cdf</span>
 <span class="co">#&gt; [1] 0.0327257 0.8505370</span></code></pre></div>
 <p>Furthermore, we can simulate synthetic data from the estimated density:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">unew &lt;-<span class="st"> </span><span class="kw"><a href="reference/dkdecop.html">rkdecop</a></span>(<span class="dv">655</span>, kde.fit)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">unew &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/kdecopula/topics/dkdecop">rkdecop</a></span>(<span class="dv">655</span>, kde.fit)
 <span class="kw">plot</span>(unew)</code></pre></div>
 <p><img src="inst/README-unnamed-chunk-12-1.png" width="384"></p>
 <p>We see that the asymmetries observed in the data are adequately reflected by the estimated model.</p>
@@ -200,7 +205,8 @@ u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Links</h2>
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cran.r-project.org/package=kdecopula">https://​cran.r-project.org/​package=kdecopula</a>
 </li>
@@ -211,6 +217,10 @@ u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class
 </ul>
 <h2>License</h2>
 <p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing kdecopula</a></li>
+</ul>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Thomas Nagler <br><small class="roles"> Author, maintainer </small> </li>
@@ -235,7 +245,7 @@ u &lt;-<span class="st"> </span><span class="kw">apply</span>(wdbc[, <span class
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

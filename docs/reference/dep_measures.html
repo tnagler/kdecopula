@@ -18,12 +18,21 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+  
+  
+<meta property="og:title" content="Dependence measures of a <code>kdecop()</code> fit — dep_measures" />
 
+<meta property="og:description" content="Calculates several dependence measures derived from the copula density. All
+measures except "blomqvist" are computed by quasi Monte Carlo methods
+(see rkdecop()." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -82,7 +91,7 @@
     
     <p>Calculates several dependence measures derived from the copula density. All
 measures except <code>"blomqvist"</code> are computed by quasi Monte Carlo methods
-(see <code><a href='dkdecop.html'>rkdecop()</a></code>.</p>
+(see <code>rkdecop()</code>.</p>
     
 
     <pre class="usage"><span class='fu'>dep_measures</span>(<span class='no'>object</span>, <span class='kw'>measures</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>n_qmc</span> <span class='kw'>=</span> <span class='fl'>10</span>^<span class='fl'>3</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>5</span>)</pre>
@@ -147,7 +156,7 @@ Journal of the American Statistical Association, 84(405)</p>
 <span class='co'>## estimate copula density and calculate dependence measures</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kdecop.html'>kdecop</a></span>(<span class='no'>udat</span>[, <span class='fl'>5</span>:<span class='fl'>6</span>])
 <span class='fu'>dep_measures</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;    kendall   spearman  blomqvist       gini vd_waerden      minfo    linfoot 
-#&gt;  0.4928176  0.6814890  0.4883190  0.5505876  0.6967170  0.3153931  0.6839786 </div><div class='input'>
+#&gt;  0.4928176  0.6814890  0.4883190  0.5505876  0.6967170  0.3331881  0.6974480 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -171,7 +180,7 @@ Journal of the American Statistical Association, 84(405)</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
