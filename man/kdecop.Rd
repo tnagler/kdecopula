@@ -4,8 +4,15 @@
 \alias{kdecop}
 \title{Bivariate kernel copula density estimation}
 \usage{
-kdecop(udata, bw = NA, mult = 1, method = "TLL2nn", knots = 30,
-  renorm.iter = 3L, info = TRUE)
+kdecop(
+  udata,
+  bw = NA,
+  mult = 1,
+  method = "TLL2nn",
+  knots = 30,
+  renorm.iter = 3L,
+  info = TRUE
+)
 }
 \arguments{
 \item{udata}{\code{nx2} matrix of copula data.}

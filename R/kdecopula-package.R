@@ -72,7 +72,7 @@
 #' ## simulate 500 samples from density estimate
 #' rkdecop(500, dens.est)
 #'
-NULL
+"_PACKAGE"
 
 
 #' Wisconsin Diagnostic Breast Cancer (WDBC)

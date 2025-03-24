@@ -3,7 +3,6 @@
 \name{plot.kdecopula}
 \alias{plot.kdecopula}
 \alias{contour.kdecopula}
-\alias{contour.kdecopula}
 \title{Plotting \code{kdecopula} objects}
 \usage{
 \method{plot}{kdecopula}(x, type = "surface", margins, size, ...)
@@ -28,7 +27,7 @@ grid; default is 100 for \code{type = "contour"}, and 25 for \code{type =
 "surface"}.}
 
 \item{\dots}{optional arguments passed to \code{\link{contour}} or
-\code{\link{wireframe}}.}
+\code{\link[lattice]{wireframe}}.}
 }
 \description{
 Produces perspective or contour plots for a \code{kdecopula} object.

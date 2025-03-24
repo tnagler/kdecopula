@@ -4,8 +4,7 @@
 \alias{predict.kdecopula}
 \title{Prediction method for \code{kdecop()} fits}
 \usage{
-\method{predict}{kdecopula}(object, newdata, what = "pdf", stable = FALSE,
-  ...)
+\method{predict}{kdecopula}(object, newdata, what = "pdf", stable = FALSE, ...)
 }
 \arguments{
 \item{object}{an object of class \code{kdecopula}.}

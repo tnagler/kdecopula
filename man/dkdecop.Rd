@@ -4,8 +4,6 @@
 \alias{dkdecop}
 \alias{pkdecop}
 \alias{rkdecop}
-\alias{pkdecop}
-\alias{rkdecop}
 \title{Working with \code{kdecopula} objects}
 \usage{
 dkdecop(u, obj, stable = FALSE)
@@ -26,7 +24,7 @@ density is cut off at \eqn{50}.}
 
 \item{quasi}{logical; the default (\code{FALSE}) returns pseudo-random
 numbers, use \code{TRUE} for quasi-random numbers (generalized Halton, see
-\code{\link[qrng:ghalton]{qrng::ghalton()}}).}
+\code{\link[qrng:qrng]{qrng::ghalton()}}).}
 }
 \value{
 A numeric vector of the density/cdf or a \code{n x 2} matrix of

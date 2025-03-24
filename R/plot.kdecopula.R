@@ -17,8 +17,8 @@
 #' @param size integer; the plot is based on values on a \eqn{size x size}
 #' grid; default is 100 for \code{type = "contour"}, and 25 for \code{type =
 #' "surface"}.
-#' @param \dots optional arguments passed to \code{\link{contour}} or
-#' \code{\link{wireframe}}.
+#' @param \dots optional arguments passed to \code{\link[graphics:contour]{contour}} 
+#' or \code{\link[lattice:wireframe]{wireframe}}.
 #'
 #'
 #' @author Thomas Nagler

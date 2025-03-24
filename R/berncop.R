@@ -91,6 +91,7 @@ dberncop <- function(uev, object) {
 #' @param object berncop object
 #'
 #' @return Bernstein copula density evaluated at uev.
+#' @importFrom stats rbeta
 #' @noRd
 rberncop <- function(n, object) {
     m <- object$m

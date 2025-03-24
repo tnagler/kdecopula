@@ -4,8 +4,7 @@
 \alias{simulate.kdecopula}
 \title{Simulate data from a \code{kdecop()} fit.}
 \usage{
-\method{simulate}{kdecopula}(object, nsim = 1, seed = NULL, quasi = FALSE,
-  ...)
+\method{simulate}{kdecopula}(object, nsim = 1, seed = NULL, quasi = FALSE, ...)
 }
 \arguments{
 \item{object}{an object of class \code{kdecopula}.}
