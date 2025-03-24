@@ -23,6 +23,11 @@
 #' @author Thomas Nagler
 #'
 #' @references
+#' Nagler, T. (2018)
+#' kdecopula: An R Package for the Kernel Estimation of Bivariate Copula 
+#' Densities. 
+#' Journal of Statistical Software 84(7), 1-22
+#' \cr \cr
 #' Gijbels, I. and Mielniczuk, J. (1990).
 #' Estimating the density of a copula function.
 #' Communications in Statistics - Theory and Methods, 19(2):445-464.

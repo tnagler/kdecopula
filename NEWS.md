@@ -1,4 +1,4 @@
-kdecopula (in progress)
+kdecopula 0.9.2
 -------------------------------
 
 NEW FEATURES
